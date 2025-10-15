@@ -9,7 +9,7 @@
 
 		int callback(pk::unit@ unit, const pk::point &in pos)
 		{
-			if (unit.has_skill(특기_화신))
+			if (unit.has_skill(특기_화신) or unit.has_skill(특기_화공))
 				return 0;
 			int n = 50 + pk::rand(50);
 			if (unit.has_skill(특기_등갑))

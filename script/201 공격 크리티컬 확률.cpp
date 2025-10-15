@@ -71,8 +71,8 @@
 			// 공격, 일제
 			else
 			{
+				if (attacker.has_skill(특기_구축)) return true;	// 구축 무력조건 없음 (특기종합패치)
 				if (pk::get_best_member_stat(attacker, 특기_신장, 무장능력_무력) > target_strength) return true;
-				if (pk::get_best_member_stat(attacker, 특기_구축, 무장능력_무력) > target_strength) return true;
 
 				if (pk::get_weapon_id(attacker) == 병기_군마)
 				{
@@ -90,9 +90,9 @@
 			pk::person@ leader = pk::get_person(attacker.leader);
 
 			if (attacker.attr.stat[부대능력_무력] >= 80)
-				n = 2;
+				n = 5;
 			else if (attacker.attr.stat[부대능력_무력] >= 60)
-				n = 1;
+				n = 3;
 
 			n = n + pk::get_tekisei(attacker);
 
@@ -102,9 +102,9 @@
 				if (pk::is_valid_person_id(deputy))
 				{
 					if (pk::is_gikyoudai(leader, deputy) or pk::is_fuufu(leader, deputy))
-						n = n + 4;
+						n = n + 7;
 					else if (pk::is_like(leader, deputy))
-						n = n + 2;
+						n = n + 5;
 					else if (pk::is_dislike(leader, deputy))
 						n = n - 5;
 				}

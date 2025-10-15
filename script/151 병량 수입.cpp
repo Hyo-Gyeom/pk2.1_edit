@@ -53,6 +53,10 @@
 					{
 						if (func_49ed70(building.get_pos(), 시설_곡창))
 							y = y * 1.5f;
+
+						// 법령정비 기교 농장 수입 15% 증가 (특기종합패치)
+						if (pk::has_tech(city, 기교_법령정비))
+							y = y * 1.15f;
 					}
 					// 군둔농일 경우 병력수에 비례하여 생산력 조정.
 					else if (facility_id == 시설_군둔농)
@@ -66,11 +70,11 @@
 			switch (pk::get_scenario().difficulty)
 			{
 			case 난이도_특급:
-				// 특급일 경우 플레이어 0.75배, 컴퓨터 1.25배.
+				// 특급일 경우 플레이어 0.75배, 컴퓨터 2배.
 				if (city.is_player())
 					n = n * 0.75f;
 				else
-					n = n * 1.25f;
+					n = n * 2.f;
 				break;
 
 			case 난이도_초급:

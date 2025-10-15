@@ -4,16 +4,16 @@
 	{
 		Main()
 		{
-			pk::reset_func(101);
-			pk::set_func(101, pk::func101_t(func101));
+			// pk::reset_func(101);
+			// pk::set_func(101, pk::func101_t(func101));
 			pk::reset_func(110);
 			pk::set_func(110, pk::func110_t(func110));
 			pk::reset_func(152);
 			pk::set_func(152, pk::func152_t(func152));
 			pk::reset_func(153);
 			pk::set_func(153, pk::func153_t(func153));
-			pk::reset_func(157);
-			pk::set_func(157, pk::func157_t(func157));
+			//pk::reset_func(157);
+			//pk::set_func(157, pk::func157_t(func157));
 			pk::reset_func(168);
 			pk::set_func(168, pk::func168_t(func168));
 			pk::reset_func(169);
@@ -34,11 +34,14 @@
 			pk::set_func(253, pk::func253_t(func253));
 			pk::reset_func(254);
 			pk::set_func(254, pk::func254_t(func254));
+	
 			pk::reset_func(255);
 			pk::set_func(255, pk::func255_t(func255));
+
 			@func256_ = cast<pk::func256_t@>(pk::get_func(256));
 			pk::reset_func(256);
 			pk::set_func(256, pk::func256_t(func256));
+
 			xml();
 		}
 
@@ -69,23 +72,6 @@
 		int func153(pk::building@ building, int city_harvest)
 		{
 			return city_harvest * 0.01f;
-		}
-
-		/***/
-		int func157(pk::person@ prisoner)
-		{
-			int n = prisoner.prisoner_timer;
-
-			// 포로가 된지 2턴 미만인 경우 탈출하지 않음
-			if (n < 2)
-				return 0;
-
-			n = n - 2;
-			if (n < 1)
-				n = 1;
-			n = n * n * pk::max(prisoner.stat[무장능력_지력], prisoner.stat[무장능력_무력], 30) / 166;
-
-			return pk::max(n, 1);
 		}
 
 		/***/
@@ -189,7 +175,7 @@
 		/***/
 		int func216(pk::unit@ unit, const pk::point &in pos)
 		{
-			if (unit.has_skill(특기_화신))
+			if (unit.has_skill(특기_화신) or unit.has_skill(특기_화공))
 				return 0;
 			int n = pk::max(unit.troops * 0.01f, 50.f);
 			n += pk::rand(n);
@@ -362,8 +348,8 @@
 					// 플레이어가 공격중일 때만 방어 강화
 					if (base.num_player_units > 0)
 					{
-						context.push_cmd(거점AI_순찰);
 						context.push_cmd(거점AI_징병);
+						context.push_cmd(거점AI_순찰);
 						context.push_cmd(거점AI_순찰);
 						context.push_cmd(거점AI_징병);
 						context.push_cmd(거점AI_순찰);
@@ -396,20 +382,18 @@
 				switch (base.status)
 				{
 				case 거점상태_후방:
-					context.push_cmd(거점AI_순찰);
-					context.push_cmd(거점AI_포상);
+					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_생산);
+					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_최소인재탐색);
 					context.push_cmd(거점AI_최소무장등용);
-					context.push_cmd(거점AI_최소타세력무장등용);
-					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_거래);
-					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
+					context.push_cmd(거점AI_순찰);
+					context.push_cmd(거점AI_포상);
+					context.push_cmd(거점AI_계략);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_거래2);
-					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_철거);
 					context.push_cmd(거점AI_개발);
@@ -424,39 +408,40 @@
 
 				case 거점상태_경계:
 					context.push_cmd(거점AI_공격);
+					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_생산);
+					context.push_cmd(거점AI_최소인재탐색);
+					context.push_cmd(거점AI_최소무장등용);
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_이동);
-					context.push_cmd(거점AI_최소인재탐색);
-					context.push_cmd(거점AI_최소무장등용);
-					context.push_cmd(거점AI_최소타세력무장등용);
 					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_계략);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_거래);
-					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_철거);
 					context.push_cmd(거점AI_개발);
 					context.push_cmd(거점AI_흡수합병);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
 				case 거점상태_전방:
+					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_공격);
+					context.push_cmd(거점AI_최소인재탐색);
+					context.push_cmd(거점AI_최소무장등용);
 					context.push_cmd(거점AI_설치);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_최소인재탐색);
-					context.push_cmd(거점AI_최소무장등용);
-					context.push_cmd(거점AI_최소타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_철거);
 					context.push_cmd(거점AI_흡수합병);
@@ -467,12 +452,10 @@
 					// 병기가 병력보다 모자르다면 병기생산 우선
 					if (total_weapons < pk::get_troops(building) - 5000)
 						context.push_cmd(거점AI_생산);
-					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_거래);
-					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_인재탐색);
 					context.push_cmd(거점AI_무장등용);
@@ -510,15 +493,16 @@
 					// 병기가 병력보다 모자르다면 병기생산 우선
 					if (total_weapons < pk::get_troops(building) - 5000)
 						context.push_cmd(거점AI_생산);
+
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_거래);
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -532,14 +516,17 @@
 				switch (base.status)
 				{
 				case 거점상태_후방:
-					context.push_cmd(거점AI_포상);
+					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_훈련);
+					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -547,30 +534,36 @@
 
 				case 거점상태_경계:
 					context.push_cmd(거점AI_공격);
+					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_거래);
+					context.push_cmd(거점AI_순찰);
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
 				case 거점상태_전방:
-					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_공격);
+					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_거래);
+					context.push_cmd(거점AI_순찰);
+					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_설치);
 					context.push_cmd(거점AI_훈련);
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -578,6 +571,9 @@
 
 				case 거점상태_전투:
 					context.push_cmd(거점AI_방어);
+					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_거래);
+					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_이동);
@@ -718,12 +714,12 @@
 			pk::load_xml("""
 			<pk utf8="true" trace="true">
 				<건설명령버그수정 값="true"/>
-				<전투경험치패널티 값="true"/>
-				<기사공격숲제외 값="true"/>
+				<전투경험치패널티 값="false"/>
+				<기사공격숲제외 값="false"/>
 				<낙석사용 값="true"/>
-				<대미지패널티 초급="" 상급="0.9" 특급="0.7"/>
-				<무장.능력상승필요경험치 값="30"/>
-				<무장.최대능력치 값="130"/>
+				<대미지패널티 초급="" 상급="0.9" 특급="0.75"/>
+				<무장.능력상승필요경험치 값="70"/>
+				<무장.최대능력치 값="125"/>
 				<비활성상태입력무시 값="true"/>
 				<업화종버그수정 값="true"/>
 				<위임군단제어 값="true"/>
@@ -1666,7 +1662,6 @@
 			pk::load_xml("""
 			<pk utf8="true" trace="true">
 				<병기 번호="0">
-					<능력 공격="90" 방어="90"/>
 					<이동력비용 내="10" 물가="10" 산="10"/>
 				</병기>
 				<병기 번호="1">
@@ -1887,10 +1882,10 @@
 			pk::load_xml("""
 			<pk utf8="true" trace="true">
 				<인공지능.개발.개발지탐색향상 값="true"/>
-				<인공지능.개발.공방강제 값="false"/>
+				<인공지능.개발.공방강제 값="true"/>
 				<인공지능.개발.암시장사용 값="false"/>
 				<인공지능.개발.최대시설가중치>
-					<전체 병영="127" 대장간="127" 공방="0" 조선="0" 연병소="0" 대시장="1" 어시장="1"/>
+					<전체 병영="127" 대장간="127" 마구간="127" 공방="0" 조선="0" 연병소="0" 대시장="1" 어시장="1"/>
 				</인공지능.개발.최대시설가중치>
 				<인공지능.개발.최소시설가중치>
 					<전체 시장="16"/>
@@ -1902,30 +1897,30 @@
 					<강릉 조선="0"/>
 					<장사 조선="0"/>
 				</인공지능.개발.최소시설수>
-				<인공지능.개발.특색가중치 대장간="127" 공방="1" 조선="0"/>
+				<인공지능.개발.특색가중치 마구간="127" 대장간="127" 공방="1" 조선="0"/>
 				<인공지능.개발.특수가중치 부절태="127" 인재부="0" 외교부="1" 계략부="1" 연병소="1"/>
 				<인공지능.공격.가중치.경로.육로 값="14"/>
 				<인공지능.공격.가중치.빈도시 값="80"/>
 				<인공지능.공격.같은주우선 값="false"/>
 				<인공지능.공격.공격임무사용 값="false"/>
 				<인공지능.공격.국력기준 값="0"/>
-				<인공지능.공격.기력기준 값="85"/>
-				<인공지능.공격.능력우선부대출진 값="false"/>
+				<인공지능.공격.기력기준 값="50"/>
+				<인공지능.공격.능력우선부대출진 값="true"/>
 				<인공지능.공격.도시공략세력확인 값="false"/>
 				<인공지능.공격.병량제한 값="false"/>
 				<인공지능.공격.보유도시수비례 값="false"/>
 				<인공지능.공격.손씨양주우선 값="false"/>
-				<인공지능.공격.숙련병기력기준 값="105"/>
+				<인공지능.공격.숙련병기력기준 값="100"/>
 				<인공지능.공격.우호도기준 값="80"/>
 				<인공지능.공격.최소시설필요 값="false"/>
-				<인공지능.공격.플레이어우선 값="false"/>
+				<인공지능.공격.플레이어우선 값="true"/>
 				<인공지능.기교연구.차축강화우선 값="false"/>
 				<인공지능.무장등용.소요무장수한정 값="false"/>
 				<인공지능.무장등용.최소무장수한정 값="false"/>
 				<인공지능.설치.국력기준 값="0"/>
-				<인공지능.설치.보유금기준 값="6000"/>
+				<인공지능.설치.보유금기준 값="5000"/>
 				<인공지능.수송.비전투거점한정 값="false"/>
-				<인공지능.순찰.치안기준 값="98"/>
+				<인공지능.순찰.치안기준 값="90"/>
 				<인공지능.순찰.국력기준 값="0"/>
 				<인공지능.인재탐색.소요무장수한정 값="false"/>
 				<인공지능.인재탐색.최소무장수한정 값="false"/>
@@ -1939,66 +1934,66 @@
 			pk::load_xml("""
 			<pk utf8="true" trace="true">
 				<적성 번호="1">
-					<필요경험치 값="15"/>
+					<필요경험치 값="0"/>
 					<전법성공확률 값="1"/>
 				</적성>
 				<적성 번호="2">
-					<필요경험치 값="20"/>
-					<전법성공확률 값="3"/>
+					<필요경험치 값="50"/>
+					<전법성공확률 값="2"/>
 				</적성>
 				<적성 번호="3">
-					<필요경험치 값="30"/>
-					<전법성공확률 값="5"/>
+					<필요경험치 값="100"/>
+					<전법성공확률 값="3"/>
 				</적성>
 				<적성 번호="4">
 					<이름 값="S1"/>
-					<필요경험치 값="45"/>
-					<전법성공확률 값="7"/>
+					<필요경험치 값="115"/>
+					<전법성공확률 값="5"/>
 				</적성>
 				<적성 번호="5">
 					<이름 값="S2"/>
-					<필요경험치 값="60"/>
-					<전법성공확률 값="9"/>
+					<필요경험치 값="130"/>
+					<전법성공확률 값="6"/>
 				</적성>
 				<적성 번호="6">
 					<이름 값="S3"/>
-					<필요경험치 값="80"/>
-					<전법성공확률 값="11"/>
+					<필요경험치 값="150"/>
+					<전법성공확률 값="7"/>
 				</적성>
 				<적성 번호="7">
 					<이름 값="S4"/>
-					<필요경험치 값="100"/>
-					<전법성공확률 값="13"/>
+					<필요경험치 값="170"/>
+					<전법성공확률 값="8"/>
 				</적성>
 				<적성 번호="8">
 					<이름 값="S5"/>
-					<필요경험치 값="120"/>
-					<전법성공확률 값="15"/>
+					<필요경험치 값="200"/>
+					<전법성공확률 값="9"/>
 				</적성>
 				<적성 번호="9">
 					<이름 값="S6"/>
-					<필요경험치 값="140"/>
-					<전법성공확률 값="17"/>
+					<필요경험치 값="210"/>
+					<전법성공확률 값="10"/>
 				</적성>
 				<적성 번호="10">
 					<이름 값="S7"/>
-					<필요경험치 값="175"/>
-					<전법성공확률 값="19"/>
+					<필요경험치 값="220"/>
+					<전법성공확률 값="11"/>
 				</적성>
 				<적성 번호="11">
 					<이름 값="S8"/>
-					<필요경험치 값="200"/>
-					<전법성공확률 값="21"/>
+					<필요경험치 값="230"/>
+					<전법성공확률 값="12"/>
 				</적성>
 				<적성 번호="12">
 					<이름 값="S9"/>
-					<필요경험치 값="225"/>
-					<전법성공확률 값="23"/>
+					<필요경험치 값="240"/>
+					<전법성공확률 값="13"/>
 				</적성>
 				<적성 번호="13">
-					<이름 값="S+"/>
+					<이름 값="X"/>
 					<필요경험치 값="250"/>
-					<전법성공확률 값="25"/>
+					<전법성공확률 값="15"/>
 				</적성>
 			</pk>
 			""");
@@ -2031,21 +2026,21 @@
 					<화계가능 값="true"/>
 				</지형>
 				<지형 번호="6">
-					<이동가능 값="true"/>
-					<화계가능 값="true"/>
+					<이동가능 값="false"/>
+					<화계가능 값="false"/>
 					<피해종류 값="벼랑길"/>
 				</지형>
 				<지형 번호="13">
 					<화계가능 값="true"/>
 				</지형>
 				<지형 번호="14">
-					<이동가능 값="true"/>
-					<화계가능 값="true"/>
+					<이동가능 값="false"/>
+					<화계가능 값="false"/>
 					<피해종류 값="벼랑길"/>
 				</지형>
 				<지형 번호="15">
-					<이동가능 값="true"/>
-					<화계가능 값="true"/>
+					<이동가능 값="false"/>
+					<화계가능 값="false"/>
 					<피해종류 값="벼랑길"/>
 				</지형>
 				<지형 번호="19">

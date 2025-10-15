@@ -32,7 +32,7 @@
 				return 0;
 
 			// 일반 무장이고 군주와의 궁합 25 이하(좋음)
-			if (person.mibun != 신분_포로 and pk::get_aishou_distance(person, kunshu_id) <= 25)
+			if (person.mibun != 신분_포로 and pk::get_aishou_distance(person, kunshu_id) <= 50)
 			{
 				// 의리가 보통 이상이거나 야망이 보통 이하
 				if (person.giri >= 의리_보통 or person.ambition <= 야망_보통)
@@ -43,9 +43,9 @@
 				}
 			}
 
-			// 인심장악 기교가 연구된 경우 66% 확률로 감소하지 않음
+			// 인심장악 기교가 연구된 경우 75% 확률로 감소하지 않음
 			pk::force@ force = pk::get_force(person.get_force_id());
-			if (pk::is_alive(force) and pk::has_tech(force, 기교_인심장악) and pk::rand(3) >= 1)
+			if (pk::is_alive(force) and pk::has_tech(force, 기교_인심장악) and pk::rand(4) >= 1)
 				return 0;
 
 			int n = pk::rand(3);

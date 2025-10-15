@@ -34,7 +34,17 @@
 				info.troops_damage *= 2;
 				info.atk_skill = 특기_화신;
 			}
-
+			else if (attacker.has_skill(특기_화공))
+			{
+				info.troops_damage *= 1.5f;
+				info.atk_skill = 특기_화공;
+			}
+/**
+			if (target.weapon == 병기_충차 or target.weapon == 병기_정란 or target.weapon == 병기_투석 or target.weapon == 병기_목수)
+			{
+				info.troops_damage *= 2.f;
+			}
+*/
 			if (target.has_skill(특기_등갑))
 			{
 				info.troops_damage *= 2;
@@ -44,6 +54,17 @@
 			{
 				info.troops_damage = 0;
 				info.def_skill = 특기_화신;
+			}
+
+
+			if (target.is_instance(pk::unit::type_id))
+			{
+				pk::unit@ target_unit = pk::hex_object_to_unit(target);
+				if (target_unit.weapon == 병기_충차 or target_unit.weapon == 병기_정란 
+				        or target_unit.weapon == 병기_투석 or target_unit.weapon == 병기_목수)
+				{
+				        info.troops_damage *= 2.f;
+				}
 			}
 
 			if (target.is_instance(pk::building::type_id))

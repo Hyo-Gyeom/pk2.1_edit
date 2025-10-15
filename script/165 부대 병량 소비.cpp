@@ -18,14 +18,34 @@
 			if (unit.type == 부대종류_전투)
 			{
 				int facility_id = func_49d8e0(unit);
-				if (facility_id == 시설_성채)
-					m = 1.f;
+				if (facility_id == 시설_도시)
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.f; // 100% 감소
+					else
+						m = 0.5f; // 50% 감소
+				}
+				else if (facility_id == 시설_성채)
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.25f; // 75% 감소
+					else
+						m = 0.5f; // 50% 감소
+				}
 				else if (facility_id == 시설_요새)
-					m = 4.f / 3; // 1.333...
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.5f; // 50% 감소
+					else
+						m = 0.65f; // 35% 감소
+				}
 				else if (facility_id == 시설_진)
-					m = 5.f / 3; // 1.666...
-				else
-					m = 2.f;
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.75f; // 25% 감소
+					else
+						m = 0.8f; // 20% 감소
+				}
 			}
 
 			if (unit.is_on_fire())

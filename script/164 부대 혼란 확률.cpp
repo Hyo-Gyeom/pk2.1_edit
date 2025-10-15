@@ -53,7 +53,11 @@
 			if (troops * 20 >= max_enemy_troops and troops * 40 >= sum_enemy_troops)
 				return 0;
 
-			return 100;
+			// 혼란 대신 위보상태로
+			if (unit.status == 부대상태_통상)
+				pk::set_status(unit, unit, 부대상태_위보, 0, true);
+
+			return 0;
 		}
 
 		pk::int_int_int func_59b130(pk::unit@ src)

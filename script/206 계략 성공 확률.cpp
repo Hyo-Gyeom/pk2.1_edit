@@ -250,10 +250,15 @@
 				n = pk::max(1, pk::min(99, c));
 				return pk::int_bool(n + pk::core::strategy_chance(src.leader), false);
 			}
-
-			if (src.has_skill(특기_경국) and dst !is null and !pk::has_female_member(dst))
+			
+			// 계략 기본 2배
+			if (src.has_skill(특기_경국) and dst !is null)
 				n *= 2;
-
+			else if (src.has_skill(특기_연환) and pk::is_neighbor_pos(src_pos, dst_pos)) // 연환 특기 추가 (특기종합패치)
+				n *= 2;
+			else if (src.has_skill(특기_귀모) and !pk::is_neighbor_pos(src_pos, dst_pos)) // 귀모 특기 추가 (특기종합패치)
+				n *= 2;
+					
 			return pk::int_bool(n + pk::core::strategy_chance(src.leader), false);
 		}
 

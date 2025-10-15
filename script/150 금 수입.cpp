@@ -9,6 +9,7 @@
 
 		int callback(pk::city@ city)
 		{
+
 			if (city is null or !pk::is_valid_force_id(city.get_force_id()))
 				return 0;
 
@@ -55,6 +56,10 @@
 					{
 						if (func_49ed70(building.get_pos(), 시설_조폐))
 							y = y * 1.5f;
+
+						// 항관확장 기교 시장 수입 15% 증가 (특기종합패치)
+						if (pk::has_tech(city, 기교_항관확장))
+							y = y * 1.15f;
 					}
 					n = n + y;
 				}
@@ -63,11 +68,11 @@
 			switch (pk::get_scenario().difficulty)
 			{
 			case 난이도_특급:
-				// 특급일 경우 플레이어 0.75배, 컴퓨터 1.25배.
+				// 특급일 경우 플레이어 0.75배, 컴퓨터 1.5배.
 				if (city.is_player())
 					n = n * 0.75f;
 				else
-					n = n * 1.25f;
+					n = n * 1.5f;
 				break;
 
 			case 난이도_초급:

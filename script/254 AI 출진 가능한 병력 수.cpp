@@ -11,7 +11,9 @@
 		{
 			pk::person@ kunshu = pk::get_person(pk::get_kunshu_id(building));
 			int character = building.is_player() ? 성격_냉정 : kunshu.character;
-			return troops * (character + 3);
+			// return troops * (character + 3);
+			return troops * (20);
+
 		}
 	}
 

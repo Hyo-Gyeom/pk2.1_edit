@@ -89,6 +89,9 @@
 			int def = equipment.stat[병기능력_방어];
 			int mov = equipment.stat[병기능력_이동];
 
+			int add_atk = 0;
+			int add_def = 0;
+
 			if (weapon_id == 병기_검 or (weapon_id == 병기_주가 and type == 부대종류_수송))
 				apt = 0.6f;
 
@@ -116,14 +119,14 @@
 
 				if (pk::has_tech(force, tech_id))
 				{
-					atk = atk + 10;
-					def = def + 10;
+					add_atk += 15;
+					add_def += 15;
 				}
 			}
 
-			attr.stat[부대능력_공격] = pk::min(255.f, pk::max(1.f, (attr.stat[부대능력_무력] * atk * apt * 0.01f) * str * sts));
+			attr.stat[부대능력_공격] = pk::min(255.f, pk::max(1.f, (attr.stat[부대능력_무력] * atk * apt * 0.01f) * str * sts + add_atk));
 
-			attr.stat[부대능력_방어] = pk::min(255.f, pk::max(1.f, (attr.stat[부대능력_통솔] * def * apt * 0.01f) * ldr * sts));
+			attr.stat[부대능력_방어] = pk::min(255.f, pk::max(1.f, (attr.stat[부대능력_통솔] * def * apt * 0.01f) * ldr * sts + add_def));
 
 			attr.stat[부대능력_건설] = pk::min(255.f, pk::max(1.f, (attr.stat[부대능력_정치] * 2.f / 3 + 50) * ldr * sts));
 
@@ -173,7 +176,7 @@
 			else
 			{
 				if (pk::has_tech(force, 기교_목우유마))
-					mov = mov + 3;
+					mov = mov + 10;
 				mov = mov + 5;
 				mov = mov + int(pk::core::skill_constant(member, 특기_운반)); // 5
 			}
@@ -194,19 +197,34 @@
 
 			int leader_id = leader.get_id();
 			int deputy_id = deputy.get_id();
-
+			
+			// 의형제, 부부는 100%
 			if (pk::is_gikyoudai(leader, deputy_id) or pk::is_fuufu(leader, deputy_id))
 				return deputy_stat;
 
-			if (pk::is_like(leader, deputy_id) or pk::is_like(deputy, leader_id))
+			// 혐호
+			if (pk::is_dislike(leader, deputy_id) or pk::is_dislike(deputy, leader_id))
+					return leader_stat;
+
+			// 특기종합패치 부장에게 보좌 특기가 있을 때 부장 효율 증가
+			if (pk::has_skill(deputy, 특기_보좌))
+			{
+				// 친애무장과 가족은 의형제처럼 100%
+				if (pk::is_like(leader, deputy_id) or pk::is_like(deputy, leader_id) or pk::is_ketsuen(leader, deputy_id))
+					return deputy_stat;
+				// 일반 무장은 친애 무장처럼 50%
+					return leader_stat + (deputy_stat - leader_stat) / 2;
+			}
+			// 보좌 특기가 없으면
+			else
+			{	
+				// 친애 가족 50%		
+				if (pk::is_like(leader, deputy_id) or pk::is_like(deputy, leader_id) or pk::is_ketsuen(leader, deputy_id))
 				return leader_stat + (deputy_stat - leader_stat) / 2;
 
-			if (pk::is_ketsuen(leader, deputy_id))
-				return leader_stat + (deputy_stat - leader_stat) / 3;
-
-			if (pk::is_dislike(leader, deputy_id) or pk::is_dislike(deputy, leader_id))
-				return leader_stat;
-
+				
+			}
+			//일반 25%
 			return leader_stat + (deputy_stat - leader_stat) / 4;
 		}
 

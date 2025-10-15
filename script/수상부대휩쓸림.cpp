@@ -13,9 +13,9 @@
 			for (int i = 0; i < list.length; i++)
 			{
 				pk::unit@ unit = list[i];
-				if (!pk::is_in_water(unit) or pk::get_tekisei(unit) >= 적성_S)
+				if (!pk::is_in_water(unit) or pk::get_tekisei(unit) >= 적성_A)
 					continue;
-				int n = pk::rand(적성_S - pk::get_tekisei(unit));
+				int n = pk::rand(적성_A - pk::get_tekisei(unit));
 				if (n == 0)
 					continue;
 				array<pk::point> steps;
