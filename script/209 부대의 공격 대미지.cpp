@@ -212,7 +212,7 @@
 					troops_damage *= 1.1f;
 
 				if (target_unit.has_skill(특기_등갑))
-					troops_damage = troops_damage / 2;
+					troops_damage = troops_damage * 0.5f;
 				
 				if (target_unit.has_skill(특기_철벽))
 					troops_damage = troops_damage * 0.8f;
@@ -297,21 +297,20 @@
 			if (target_building !is null)
 			{
 				int facility_id = target_building.facility;
-				int hp_atk = 0;
+				int tactics_atk = 0;
 				float hp_damage = 0;
 
 				pk::trace("start info.troops_damage : " + info.troops_damage);
 
-				hp_atk = 5;
 				if (pk::is_valid_tactics_id(tactics_id))
-					hp_atk = pk::get_tactics(tactics_id).hp_atk;
+					tactics_atk = pk::get_tactics(tactics_id).hp_atk;
 				else if (pk::is_neighbor_pos(attacker.get_pos(), target_pos))
-					hp_atk = 15;
+					tactics_atk = 15;
 
 				if (attacker.weapon == 병기_충차 or attacker.weapon == 병기_목수)
-					hp_damage = func_5af050(atk, command, hp_atk, buffed);
+					hp_damage = func_5af050(atk, command, tactics_atk, buffed);
 				else
-					hp_damage = func_5aeff0(atk, command, hp_atk, buffed);
+					hp_damage = func_5aeff0(atk, command, tactics_atk, buffed);
 
 				if (facility_id >= 시설_불씨 and facility_id <= 시설_업화종)
 				{
@@ -331,16 +330,17 @@
 					switch (facility_id)
 					{			
 					case 시설_도시:
+						hp_damage *= 0.5f;
 						break;
 					case 시설_항구:
+						hp_damage *= 0.8f;
 						break;
 					case 시설_관문:
 						info.troops_damage *= 0.5f;
 						hp_damage *= 0.5f;
 						break;
 					default:
-						info.troops_damage *= 0.9f;
-						hp_damage *= 0.7f;
+						hp_damage *= 0.8f;
 						break;
 					}
 
@@ -752,31 +752,75 @@
 			return n;
 		}
 
-		/***/
+		/** 
+			건물 내구 공격시 부대 기본 공격력 설정
+		*/
 		float func_5aeff0(int src_atk, int src_troops, int tactics_atk, int buffed)
 		{
 			pk::trace("src_troops : " +src_troops);
 			pk::trace("src_atk : " + src_atk);
 			pk::trace("tactics_atk : " + tactics_atk);
 			pk::trace("buffed : " + buffed);
-
+		/** 			
+			기존 부대 공격력 공식
 			src_troops = pk::max(src_troops, 1);
 			float a = sqrt(src_atk * src_atk / 15.f);
 			float b = sqrt(src_troops);
 			float c = tactics_atk * 4 + 100;
 			float d = buffed + 10;
 			return a * b * c * d / 10000;
+		*/
+
+			/**
+				장수가 성장함에 따라 공격력이 증가하기 때문에 조절 필요
+			*/
+
+			src_troops = pk::max(src_troops, 1);
+			
+			// 최대 병력수 1.5만 - max값 150
+			float troops_atk = src_troops / 100.f;
+
+			// 기본 부대 공격력이 높아짐에 따라 1~2.55배 상승	
+			float base_atk = 1.0 + (float(src_atk) - 1) * 1.55 / 254.0;
+			// 전법 데미지 추가
+			tactics_atk = 1 + (sqrt(tactics_atk) / 10.f);
+			// 버프 태고대 20%증가
+			float buf = pk::max(buffed * 1.2f, 1.f);
+			
+			pk::trace("buffed : " + troops_atk * base_atk * tactics_atk * buf);
+	
+			return troops_atk * base_atk * tactics_atk * buf;
+
 		}
 
-		/***/
+		/**
+			충차 목수 내구 데미지
+		*/
 		float func_5af050(int src_atk, int src_troops, int tactics_atk, int buffed)
 		{
+			/**
+				기존
+				src_troops = pk::max(src_troops, 1);
+				float a = sqrt(src_atk * src_atk / 15.f);
+				float b = sqrt(src_troops);
+				float c = tactics_atk * 4 + 100;
+				float d = buffed + 10;
+				return a * pk::min(b, 40.f) * c * d / 10000 + (src_troops / 25) + b;
+			*/
+
 			src_troops = pk::max(src_troops, 1);
-			float a = sqrt(src_atk * src_atk / 15.f);
-			float b = sqrt(src_troops);
-			float c = tactics_atk * 4 + 100;
-			float d = buffed + 10;
-			return a * pk::min(b, 40.f) * c * d / 10000 + (src_troops / 25) + b;
+			
+			// 최대 병력수 1.5만 - max값 150
+			float troops_atk = src_troops / 100.f;
+
+			// 기본 부대 공격력이 높아짐에 따라 1~2.55배 상승	
+			float base_atk = 1.0f + (float(src_atk) - 1.f) * 1.55f / 254.0f;
+			// 전법 데미지 충차 목수는 전법데미지가 매우 높음
+			tactics_atk = 1.f + (sqrt(tactics_atk) / 10.f);
+			// 버프 태고대 20%증가
+			float buf = pk::max(buffed * 1.2f, 1.f);
+			
+			return troops_atk * base_atk * tactics_atk * buf;
 		}
 
 		/***/
