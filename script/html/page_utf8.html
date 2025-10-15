@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.18"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>San11PK: UTF-8</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">San11PK
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'검색');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="PageDoc"><div class="header">
+  <div class="headertitle">
+<div class="title">UTF-8 </div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>목차</h3>
+<ul><li class="level1"><a href="#page_utf8_xml">파일 설명</a></li>
+<li class="level1"><a href="#page_utf8_str">문자열</a></li>
+<li class="level1"><a href="#page_utf8_fxn">관련 함수</a></li>
+</ul>
+</div>
+<div class="textblock"><p>UTF-8 인코딩을 위해 무엇이 바뀌었는지 설명합니다.</p>
+<h1><a class="anchor" id="page_utf8_xml"></a>
+파일 설명</h1>
+<ul>
+<li>shiftjis.xml, kr enums.cpp 두 파일은 이전 버전과의 호환성을 위해 ANSI 인코딩을 유지합니다.</li>
+<li>ini 파일은 ANSI 버전과의 호환성을 위해 UTF-8 BOM 이 반드시 필요합니다.<br  />
+ xml, cpp 파일은 BOM 이 꼭 필요하지 않지만 사용을 권장합니다.<br  />
+ <img src="ini_utf8.png" alt="" align="left" class="inline"/><table class="doxtable">
+</table>
+</li>
+</ul>
+<ul>
+<li>xml 파일에서 UTF-8 인코딩을 사용할 경우 루트 노드에 utf8 속성 값을 설정해야합니다.<br  />
+ UTF-8로 인코딩된 cpp 파일에서 <a class="el" href="namespacepk.html#abc3688232944766451f4ed4861abac73">pk::load_xml</a> 함수를 사용할 때도 마찬가지입니다.<br  />
+ <img src="xml_utf8.png" alt="" align="left" class="inline"/><table class="doxtable">
+</table>
+</li>
+</ul>
+<ul>
+<li>ANSI 인코딩을 사용하는 파일은 콘솔창에서 제대로 표시되지 않습니다.</li>
+</ul>
+<h1><a class="anchor" id="page_utf8_str"></a>
+문자열</h1>
+<ul>
+<li><a class="el" href="namespacepk.html#a57cbe755d854589730617855f2b22c6b">pk::draw_text</a>, <a class="el" href="namespacepk.html#a083c612a8c7a5df2f317e1122e1502c9">pk::message_box</a>, <a class="el" href="namespacepk.html#a7e1b04a405626de4abff5af98865c375">pk::balloon</a> 등 게임 안에서 문자열을 표시하는 함수의 경우 문자열의 시작이 '\xff\x??'일 경우 해당 언어로 표시할 수 있습니다.<br  />
+ 다만 encoding.xml에서 설정한 폰트 파일이 필요합니다. <div class="fragment"><div class="line"><a class="code" href="namespacepk.html#a57cbe755d854589730617855f2b22c6b">pk::draw_text</a>(<span class="stringliteral">&quot;\xff\x01&quot;</span> + <a class="code" href="namespacepk.html#a14e855b1df526dfa54970a31691473c8">pk::u8encode</a>(<span class="stringliteral">&quot;テスト&quot;</span>, LANG_JP), <a class="code" href="structpk_1_1point.html">pk::point</a>(100, 200), -1, FONT_BIG, 0xffff0000);</div>
+<div class="line"><a class="code" href="namespacepk.html#a57cbe755d854589730617855f2b22c6b">pk::draw_text</a>(<span class="stringliteral">&quot;\xff\x02&quot;</span> + <a class="code" href="namespacepk.html#a14e855b1df526dfa54970a31691473c8">pk::u8encode</a>(<span class="stringliteral">&quot;테스트&quot;</span>, LANG_KR), <a class="code" href="structpk_1_1point.html">pk::point</a>(100, 250), -1, FONT_BIG, 0xffff0000);</div>
+<div class="line"><a class="code" href="namespacepk.html#a57cbe755d854589730617855f2b22c6b">pk::draw_text</a>(<span class="stringliteral">&quot;\xff\x03&quot;</span> + <a class="code" href="namespacepk.html#a14e855b1df526dfa54970a31691473c8">pk::u8encode</a>(<span class="stringliteral">&quot;测试&quot;</span>, LANG_SC), <a class="code" href="structpk_1_1point.html">pk::point</a>(100, 300), -1, FONT_BIG, 0xffff0000);</div>
+</div><!-- fragment --> <img src="encoding.png" alt="" align="left" class="inline"/><table class="doxtable">
+</table>
+</li>
+</ul>
+<h1><a class="anchor" id="page_utf8_fxn"></a>
+관련 함수</h1>
+<p>자세한 설명은 각 함수를 클릭하세요.<br  />
+</p><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">ANSI </th><th class="markdownTableHeadNone">UTF-8  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><br  />
+ </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a5fa026f50ff0faa2df249f41c0aa2028" title="ansi -&gt; utf8">pk::to_utf8</a>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><br  />
+ </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a1fe20c1fb16af6fb80edf131381d99de" title="utf8 -&gt; ansi">pk::from_utf8</a>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a6f50cb442c554667af1d4a622745906f">pk::critical</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a676d1b930d0f4fdd436c53b6de3c1ed7" title="로그 파일 쓰기">pk::u8critical</a>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#afde39c6bffdc965918760891d8092722">pk::decode</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a258aba64030f223c3d76f1f3f9acc7b6" title="utf8로 변환">pk::u8decode</a>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a7c908d5f6bf3ae81008fec0ff99fd43e">pk::encode</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a14e855b1df526dfa54970a31691473c8" title="일본어로 변환">pk::u8encode</a>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a3bcf6bc97eec23f335f76d4be6983f64">pk::format</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#ab117546916a3c4321f5b6ad3c193a5b7">pk::u8format</a>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a65b32292c64fee6e82e488353e444fed">pk::info</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#aff807186e260f9081485eb010e0ac027" title="로그 파일 쓰기">pk::u8info</a>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a511ba2523a5d36610e055978709d5ca3">pk::printf</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#abe6152bb26e033fe09b196936464defc" title="콘솔 쓰기">pk::u8printf</a>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a42fd640401213fd8d50347475582e927">pk::trace</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a076254bd753d7d52b9fd4d712b021a3d" title="로그 파일 쓰기">pk::u8trace</a>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#ab1a46bf9e74e4466b92cd11ed445b67c">pk::warning</a> </td><td class="markdownTableBodyNone"><a class="el" href="namespacepk.html#a798b6a2c4dfceed70d1433bcfcd63bf4" title="로그 파일 쓰기">pk::u8warning</a>  </td></tr>
+</table>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<div class="ttc" id="astructpk_1_1point_html"><div class="ttname"><a href="structpk_1_1point.html">pk::point</a></div><div class="ttdef"><b>Definition:</b> pk_types.h:98</div></div>
+<div class="ttc" id="anamespacepk_html_a57cbe755d854589730617855f2b22c6b"><div class="ttname"><a href="namespacepk.html#a57cbe755d854589730617855f2b22c6b">pk::draw_text</a></div><div class="ttdeci">void draw_text(const string &amp;str, const point &amp;pos, uint color=0xffffffff, int fontsize=0, uint outline_color=0xff000000) NOEXCEPT</div></div>
+<div class="ttc" id="anamespacepk_html_a14e855b1df526dfa54970a31691473c8"><div class="ttname"><a href="namespacepk.html#a14e855b1df526dfa54970a31691473c8">pk::u8encode</a></div><div class="ttdeci">string u8encode(const string &amp;str, int lang=-1) NOEXCEPT</div><div class="ttdoc">일본어로 변환</div></div>
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+다음에 의해 생성됨 :  &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.18
+</small></address>
+</body>
+</html>

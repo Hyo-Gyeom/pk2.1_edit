@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pk utf8="true" trace="true">
+	<!-- default 값이 true일 경우 pk::u8encode, pk::u8decode 인코딩의 기본값으로 사용합니다. -->
+	<enc lang="1" font16="font/jp16.wftx" font24="font/jp24.wftx"/>
+	<enc lang="2" font16="font/kr16.wftx" font24="font/kr24.wftx" default="true"/>
+	<enc lang="3" font16="font/sc16.wftx" font24="font/sc24.wftx"/>
+</pk>

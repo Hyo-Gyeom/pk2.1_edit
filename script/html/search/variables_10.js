@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['r_1899',['r',['../structpk_1_1rgb.html#a8d891564d4217a6d988188e294a4df55',1,'pk::rgb']]],
+  ['range_1900',['range',['../structpk_1_1facility.html#ae1ba48312b55573b6df161833c7e5178',1,'pk::facility']]],
+  ['rank_1901',['rank',['../structpk_1_1person.html#a916bed14033a2dedd4f2f810d469b739',1,'pk::person']]],
+  ['rate_1902',['rate',['../structpk_1_1city.html#a7976313e729bb00644fadbb2d7335d64',1,'pk::city']]],
+  ['region_1903',['region',['../structpk_1_1province.html#a1bee127804dea5c2fee47f8c087853c7',1,'pk::province']]],
+  ['relations_1904',['relations',['../structpk_1_1force.html#a23df497d7e26d4b77b2e01781227ca7b',1,'pk::force::relations()'],['../structpk_1_1scenario.html#a8ea0396592e1ce953907fe82df378fe1',1,'pk::scenario::relations()']]],
+  ['releasable_1905',['releasable',['../structpk_1_1prisoner__info.html#ae84b8768777d95d17bd2f87da16ab870',1,'pk::prisoner_info::releasable()'],['../structpk_1_1destroy__info.html#ab9c01b3756377fcfb671ffd20d1602dd',1,'pk::destroy_info::releasable()']]],
+  ['request_1906',['request',['../structpk_1_1exchange__cmd__info.html#a9a5442b3cff41cd0f137faa622e248f8',1,'pk::exchange_cmd_info']]],
+  ['request_5ftarget_1907',['request_target',['../structpk_1_1force.html#ac84afce6fdd174856df3ffe83efec583',1,'pk::force']]],
+  ['request_5ftimer_1908',['request_timer',['../structpk_1_1force.html#a6a99236b5e78f9d37d50a73aac2e9a98',1,'pk::force']]],
+  ['requested_5ffrom_1909',['requested_from',['../structpk_1_1unit.html#ae7118689b2cc652dc17102911d5f1af0',1,'pk::unit']]],
+  ['required_5fability_1910',['required_ability',['../structpk_1_1ability.html#aaff4afc5a65872c74f8ec72035ef1047',1,'pk::ability']]],
+  ['required_5ftech_1911',['required_tech',['../structpk_1_1facility.html#a369c7ee16d0c44ff6409bdbc3d20b079',1,'pk::facility::required_tech()'],['../structpk_1_1tech.html#a1859eb1ddaa749b78c76da6b9b039412',1,'pk::tech::required_tech()']]],
+  ['researching_5fability_1912',['researching_ability',['../structpk_1_1force.html#ab5b660e2406b1e721c28eac31ab8f6b0',1,'pk::force']]],
+  ['researching_5fability_5ftimer_1913',['researching_ability_timer',['../structpk_1_1force.html#a9bfea7b52c93c44e23740adf3a163df8',1,'pk::force']]],
+  ['researching_5ftech_1914',['researching_tech',['../structpk_1_1force.html#a4a555ca5386dab9844590ed97844d3ce',1,'pk::force']]],
+  ['researching_5ftech_5ftimer_1915',['researching_tech_timer',['../structpk_1_1force.html#af1239052870ba44dd8235bbde4aa3b95',1,'pk::force']]],
+  ['returnable_1916',['returnable',['../structpk_1_1prisoner__info.html#aea8cf1950c6c3a26ff2e5f7918fc12f0',1,'pk::prisoner_info']]],
+  ['revenue_1917',['revenue',['../structpk_1_1city.html#a80b9b3d86da9bcfa682e66a214654df5',1,'pk::city']]],
+  ['reward_5fdone_1918',['reward_done',['../structpk_1_1person.html#a6c49f75db72a5d86db4ab91f21188087',1,'pk::person']]],
+  ['right_1919',['right',['../structpk_1_1rectangle.html#a003145961b87594cc05b7ab0d5a04cc0',1,'pk::rectangle']]],
+  ['right_5fweapon_1920',['right_weapon',['../structpk_1_1person.html#a7c2a33c7422a0a281699463d90f857c6',1,'pk::person']]]
+];

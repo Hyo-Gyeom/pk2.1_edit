@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.18"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>San11PK: 폴더 설명</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">San11PK
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'검색');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="PageDoc"><div class="header">
+  <div class="headertitle">
+<div class="title">폴더 설명 </div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>목차</h3>
+<ul><li class="level1"><a href="#page_dir_data">data 폴더</a></li>
+<li class="level1"><a href="#page_dir_media">media 폴더</a></li>
+<li class="level1"><a href="#page_dir_script">script 폴더</a></li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="page_dir_data"></a>
+data 폴더</h1>
+<ul>
+<li>data 폴더의 모든 xml 파일을 로드하며 파일 이름이 '#'으로 시작한다면 로드하지 않습니다.</li>
+<li>xml 파일 이름은 구분하지 않으며 루트 노드의 이름은 항상 'pk'입니다.</li>
+<li>중복된 값은 나중에 로드된 xml 파일의 값이 적용됩니다.</li>
+<li>xml 파일의 데이터는 scenario.s11 파일이 로드된 후 해당 데이터를 덮어쓰는 방식입니다.</li>
+<li>이미지, 사운드 파일을 입력할 때 경로는 xml 파일 경로를 기준으로 설정하시면 됩니다.</li>
+<li>자신의 조형이나 음성을 만들어 배포할 때는 아래와 같이 만들어서 배포하시면 됩니다. 자료를 받는 사람은 따로 추가 작업 없이 data 폴더에 넣기만 하면 됩니다. xml 파일을 배포할때는 가능한 중복되는 데이터가 최소화 되도록 만들어주시기 바랍니다.(조형을 배포하는데 부가무력같은 값을 설정하지 않도록) <div class="image">
+<img src="howto_xml2.png" alt=""/>
+</div>
+</li>
+</ul>
+<h1><a class="anchor" id="page_dir_media"></a>
+media 폴더</h1>
+<ul>
+<li>san11pkres.bin 파일 중 이름이 알려진 파일들을 덮어쓰기 위한 폴더입니다.</li>
+</ul>
+<h1><a class="anchor" id="page_dir_script"></a>
+script 폴더</h1>
+<ul>
+<li>script 폴더의 모든 cpp 파일을 로드하며 파일 이름이 '#'으로 시작한다면 로드하지 않습니다. </li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+다음에 의해 생성됨 :  &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.18
+</small></address>
+</body>
+</html>

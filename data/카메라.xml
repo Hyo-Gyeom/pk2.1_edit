@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pk utf8="true" trace="true">
+	<!-- 기본값: 30.0 -->
+	<camera.fov 값=""/>
+
+	<!-- 기본값: 16.0 -->
+	<camera.near 값=""/>
+
+	<!-- 기본값: 1000.0 -->
+	<camera.far 값=""/>
+
+	<!-- 기본값: 560.0 -->
+	<camera.min_x 값=""/>
+
+	<!-- 기본값: 4480.0 -->
+	<camera.max_x 값=""/>
+
+	<!-- 기본값: 4580.0 -->
+	<camera.max_y 값=""/>
+
+	<!-- 기본값: 22.5 -->
+	<camera.min_angle 값=""/>
+
+	<!-- 기본값: 55.0 -->
+	<camera.max_angle 값=""/>
+
+	<!-- 확대 거리(기본값: 220.0) -->
+	<camera.zoom_in 값=""/>
+
+	<!-- CG품질 저 축소거리(기본값: 400.0) -->
+	<camera.zoom_out0 값=""/>
+
+	<!-- CG품질 중 축소거리(기본값: 500.0) -->
+	<camera.zoom_out1 값=""/>
+
+	<!-- CG품질 고 축소거리(기본값: 600.0) -->
+	<camera.zoom_out2 값=""/>
+
+	<!-- 지형 통과(기본값: false) -->
+	<camera.through 값=""/>
+
+	<!-- 낮을 수록 안개가 줄어듬.(기본값: 2.55) -->
+	<camera.fog 값=""/>
+
+	<!--
+	보고 있는 좌표를 고정하지 않고 터치스크린을 컨트롤하듯 화면을 회전.
+	카메라 좌표를 이동하려면 방향키를 사용.
+	기본값: false
+	-->
+	<camera.free 값=""/>
+
+	<!-- free 값이 true일 경우 X축 방향을 반대로(기본값: false) -->
+	<camera.reverse_x 값=""/>
+
+	<!-- free 값이 true일 경우 Y축 방향을 반대로(기본값: true) -->
+	<camera.reverse_y 값=""/>
+</pk>

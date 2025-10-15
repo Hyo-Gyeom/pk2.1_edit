@@ -1,0 +1,29 @@
+* AngelScript 2.34.0 (zlib)
+  www.angelcode.com/angelscript
+
+  호환성을 위해 아래 함수들이 수정됨.
+  SymbolLookup
+  SymbolLookupMember
+  CompileExpressionPostOp
+
+* DirectXMath 3.14 (MIT)
+  https://github.com/Microsoft/DirectXMath
+
+* FFmpeg 3.1.1 (LGPLv2.1)
+  www.ffmpeg.org
+
+* fmt 6.1.2 (BSD)
+  https://github.com/fmtlib/fmt
+
+* spdlog 1.5.0 (MIT)
+  https://github.com/gabime/spdlog
+
+  XP 지원을 위해 아래 함수들이 수정됨.
+  registry::register_logger
+  registry::drop_all
+
+* TinyXML-2 8.0.0 (zlib)
+  https://github.com/leethomason/tinyxml2
+
+* 아이콘
+  raindropmemory.deviantart.com

@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.18"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>San11PK: 이벤트(pk::bind)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">San11PK
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'검색');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="PageDoc"><div class="header">
+  <div class="headertitle">
+<div class="title">이벤트(pk::bind) </div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>목차</h3>
+<ul><li class="level1"><a href="#page_event_details">설명</a></li>
+<li class="level1"><a href="#page_event_list">목록</a><ul><li class="level2"><a href="#page_event_100">100 첫 타이틀 화면</a></li>
+<li class="level2"><a href="#page_event_101">101 게임 종료</a></li>
+<li class="level2"><a href="#page_event_102">102 시나리오 초기화</a></li>
+<li class="level2"><a href="#page_event_103">103 시나리오 시작</a></li>
+<li class="level2"><a href="#page_event_104">104 시나리오 종료</a></li>
+<li class="level2"><a href="#page_event_105">105 저장</a></li>
+<li class="level2"><a href="#page_event_106">106 불러오기</a></li>
+<li class="level2"><a href="#page_event_107">107 새날</a></li>
+<li class="level2"><a href="#page_event_108">108 새달</a></li>
+<li class="level2"><a href="#page_event_109">109 새계절</a></li>
+<li class="level2"><a href="#page_event_110">110 새해</a></li>
+<li class="level2"><a href="#page_event_111">111 턴 시작</a></li>
+<li class="level2"><a href="#page_event_112">112 턴 종료</a></li>
+<li class="level2"><a href="#page_event_120">120 게임 화면 그리기</a></li>
+<li class="level2"><a href="#page_event_130">132 주도권 위임</a></li>
+<li class="level2"><a href="#page_event_140">140 군단 생성</a></li>
+<li class="level2"><a href="#page_event_152">152 무장 세력 변경</a></li>
+<li class="level2"><a href="#page_event_160">160 건물 생성</a></li>
+<li class="level2"><a href="#page_event_161">161 건물 제거</a></li>
+<li class="level2"><a href="#page_event_162">162 건물 완성</a></li>
+<li class="level2"><a href="#page_event_170">170 부대 생성</a></li>
+<li class="level2"><a href="#page_event_171">171 부대 제거</a></li>
+<li class="level2"><a href="#page_event_172">172 부대 좌표 변경</a></li>
+<li class="level2"><a href="#page_event_173">173 부대 경험치 획득</a></li>
+<li class="level2"><a href="#page_event_174">174 부대 행동 완료</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="page_event_details"></a>
+설명</h1>
+<ul>
+<li>이벤트 처리를 목적으로 하며 여러 함수를 등록할 수 있습니다. 용도에 맞지 않게 사용할 경우 튕기거나 프레임 드랍 등이 발생할 수 있습니다.(예: 120 게임 화면 그리기 이벤트에서 부대나 도시의 정보 등을 수정)</li>
+</ul>
+<h1><a class="anchor" id="page_event_list"></a>
+목록</h1>
+<h2><a class="anchor" id="page_event_100"></a>
+100 첫 타이틀 화면</h2>
+<p>void trigger100_t(); </p>
+<h2><a class="anchor" id="page_event_101"></a>
+101 게임 종료</h2>
+<p>void trigger101_t(); </p>
+<h2><a class="anchor" id="page_event_102"></a>
+102 시나리오 초기화</h2>
+<p>void trigger102_t();<br  />
+<br  />
+ 맵이 보이지 않는 상태입니다. </p>
+<h2><a class="anchor" id="page_event_103"></a>
+103 시나리오 시작</h2>
+<p>void trigger103_t();<br  />
+<br  />
+ 맵이 보이는 상태입니다. </p>
+<h2><a class="anchor" id="page_event_104"></a>
+104 시나리오 종료</h2>
+<p>void trigger104_t(); </p>
+<h2><a class="anchor" id="page_event_105"></a>
+105 저장</h2>
+<p>void trigger105_t(int file_id);<br  />
+<br  />
+ 스크립트 데이터를 저장하기 위한 용도로만 사용하세요. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>파일 번호('Save001.s11' 의 001 값을 말합니다.) </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_106"></a>
+106 불러오기</h2>
+<p>void trigger106_t(int file_id);<br  />
+<br  />
+ 스크립트 데이터를 불러오기 위한 용도로만 사용하세요. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>파일 번호 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_107"></a>
+107 새날</h2>
+<p>void trigger107_t(); </p>
+<h2><a class="anchor" id="page_event_108"></a>
+108 새달</h2>
+<p>void trigger108_t(); </p>
+<h2><a class="anchor" id="page_event_109"></a>
+109 새계절</h2>
+<p>void trigger109_t(); </p>
+<h2><a class="anchor" id="page_event_110"></a>
+110 새해</h2>
+<p>void trigger110_t(); </p>
+<h2><a class="anchor" id="page_event_111"></a>
+111 턴 시작</h2>
+<p>void trigger111_t(<a class="el" href="structpk_1_1force.html" title="세력">pk::force</a>@ force); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td>세력 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_112"></a>
+112 턴 종료</h2>
+<p>void trigger112_t(<a class="el" href="structpk_1_1force.html" title="세력">pk::force</a>@ force); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td>세력 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_120"></a>
+120 게임 화면 그리기</h2>
+<p>void trigger120_t(); </p>
+<h2><a class="anchor" id="page_event_130"></a>
+132 주도권 위임</h2>
+<p>void trigger132_t(<a class="el" href="structpk_1_1force.html" title="세력">pk::force</a>@ force); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td>세력 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_140"></a>
+140 군단 생성</h2>
+<p>void trigger140_t(<a class="el" href="structpk_1_1district.html" title="군단">pk::district</a>@ district, int type); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">district</td><td>군단 </td></tr>
+    <tr><td class="paramname">type</td><td>사용하지 않음 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_152"></a>
+152 무장 세력 변경</h2>
+<p>void trigger152_t(<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ person, <a class="el" href="structpk_1_1force.html" title="세력">pk::force</a>@ force); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">person</td><td>무장 </td></tr>
+    <tr><td class="paramname">force</td><td>세력 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_160"></a>
+160 건물 생성</h2>
+<p>void trigger160_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, int type);<br  />
+<br  />
+ 제방, 유적, 묘에 대해서는 완성 이벤트가 발생하지 않습니다. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>건물 </td></tr>
+    <tr><td class="paramname">type</td><td>사용하지 않음 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_161"></a>
+161 건물 제거</h2>
+<p>void trigger161_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, int type); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>건물 </td></tr>
+    <tr><td class="paramname">type</td><td><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">파괴  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">흡수합병  </td></tr>
+</table>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>참고</dt><dd><a class="el" href="namespacepk.html#a24c37c1b0fbec36d2125700a44fe5741">pk::kill</a> </dd></dl>
+<h2><a class="anchor" id="page_event_162"></a>
+162 건물 완성</h2>
+<p>void trigger162_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>건물 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_170"></a>
+170 부대 생성</h2>
+<p>void trigger170_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, int type); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">type</td><td><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">출진  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">임의  </td></tr>
+</table>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_171"></a>
+171 부대 제거</h2>
+<p>void trigger171_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, int type); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">type</td><td><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">괴멸  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">진입  </td></tr>
+</table>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>참고</dt><dd><a class="el" href="namespacepk.html#a24c37c1b0fbec36d2125700a44fe5741">pk::kill</a> </dd></dl>
+<h2><a class="anchor" id="page_event_172"></a>
+172 부대 좌표 변경</h2>
+<p>void trigger172_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in);<br  />
+<br  />
+ <a class="el" href="namespacepk.html#aa04c824de89af4c6675ea260c9ada5f1" title="좌표 설정">pk::set_pos</a> 함수가 아닌 부대의 좌표 프로퍼티를 직접 수정할 경우 이벤트가 발생하지 않습니다. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">pos</td><td>좌표 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_173"></a>
+173 부대 경험치 획득</h2>
+<p>void trigger173_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, int type); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">type</td><td>경험치 종류 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_event_174"></a>
+174 부대 행동 완료</h2>
+<p>void trigger173_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit);<br  />
+<br  />
+ <a class="el" href="namespacepk.html#a2e44cab2172c507f1e60ad77b479f758" title="행동 완료">pk::action_done</a> 함수가 아닌 부대의 행동완료 프로퍼티를 직접 수정할 경우 이벤트가 발생하지 않습니다. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 <br  />
+</td></tr>
+  </table>
+  </dd>
+</dl>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+다음에 의해 생성됨 :  &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.18
+</small></address>
+</body>
+</html>

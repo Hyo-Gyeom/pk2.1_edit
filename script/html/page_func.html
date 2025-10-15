@@ -1,0 +1,984 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.18"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>San11PK: 함수(pk::set_func)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">San11PK
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'검색');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="PageDoc"><div class="header">
+  <div class="headertitle">
+<div class="title">함수(pk::set_func) </div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>목차</h3>
+<ul><li class="level1"><a href="#page_func_details">설명</a></li>
+<li class="level1"><a href="#page_func_list">목록</a><ul><li class="level2"><a href="#page_func_100">100 징병 병력 증감</a></li>
+<li class="level2"><a href="#page_func_101">101 징병 치안 증감</a></li>
+<li class="level2"><a href="#page_func_102">102 병기생산량</a></li>
+<li class="level2"><a href="#page_func_103">103 병기생산기간</a></li>
+<li class="level2"><a href="#page_func_104">104 순찰 치안 증감</a></li>
+<li class="level2"><a href="#page_func_105">105 훈련 기력 증감</a></li>
+<li class="level2"><a href="#page_func_106">106 금 수송 제한(unused)</a></li>
+<li class="level2"><a href="#page_func_107">107 병량 수송 제한(unused)</a></li>
+<li class="level2"><a href="#page_func_108">108 병력 수송 제한(unused)</a></li>
+<li class="level2"><a href="#page_func_109">109 병기 수송 제한(unused)</a></li>
+<li class="level2"><a href="#page_func_110">110 보물 발견 확률</a></li>
+<li class="level2"><a href="#page_func_111">111 등용 확률</a></li>
+<li class="level2"><a href="#page_func_112">112 동맹 확률</a></li>
+<li class="level2"><a href="#page_func_113">113 항복권고 확률</a></li>
+<li class="level2"><a href="#page_func_150">150 금 수입</a></li>
+<li class="level2"><a href="#page_func_151">151 병량 수입</a></li>
+<li class="level2"><a href="#page_func_152">152 관문, 항구 금 수입</a></li>
+<li class="level2"><a href="#page_func_153">153 관문, 항구 병량 수입</a></li>
+<li class="level2"><a href="#page_func_154">154 월별 치안 감소</a></li>
+<li class="level2"><a href="#page_func_155">155 월별 충성도 감소</a></li>
+<li class="level2"><a href="#page_func_156">156 턴별 병력 감소</a></li>
+<li class="level2"><a href="#page_func_157">157 포로 탈출 확률</a></li>
+<li class="level2"><a href="#page_func_158">158 월별 본거지 발생 확률</a></li>
+<li class="level2"><a href="#page_func_159">159 역병 병령 증감</a></li>
+<li class="level2"><a href="#page_func_160">160 역병 치안 증감</a></li>
+<li class="level2"><a href="#page_func_161">161 역병 상병 변화</a></li>
+<li class="level2"><a href="#page_func_162">162 행동력 계산</a></li>
+<li class="level2"><a href="#page_func_163">163 부대 능력치 계산</a></li>
+<li class="level2"><a href="#page_func_164">164 부대 혼란 확률</a></li>
+<li class="level2"><a href="#page_func_165">165 부대 병량 소비</a></li>
+<li class="level2"><a href="#page_func_166">166 부대 병량 예상 잔여 기간</a></li>
+<li class="level2"><a href="#page_func_167">167 거점 병량 소비</a></li>
+<li class="level2"><a href="#page_func_168">168 거점 점령 후처리</a></li>
+<li class="level2"><a href="#page_func_169">169 지형 이동 가능 설정</a></li>
+<li class="level2"><a href="#page_func_170">170 유적 발견 확률</a></li>
+<li class="level2"><a href="#page_func_171">171 도독 선택</a></li>
+<li class="level2"><a href="#page_func_172">172 태수 선택</a></li>
+<li class="level2"><a href="#page_func_173">173 거병 확률</a></li>
+<li class="level2"><a href="#page_func_200">200 지원 공격 확률</a></li>
+<li class="level2"><a href="#page_func_201">201 공격 크리티컬 확률</a></li>
+<li class="level2"><a href="#page_func_202">202 전법 성공 확률</a></li>
+<li class="level2"><a href="#page_func_203">203 기병 전법 사망 확률</a></li>
+<li class="level2"><a href="#page_func_204">204 나선첨 확률(deprecated)</a></li>
+<li class="level2"><a href="#page_func_205">205 계략 소비 기력</a></li>
+<li class="level2"><a href="#page_func_206">206 계략 성공 확률</a></li>
+<li class="level2"><a href="#page_func_207">207 계략 크리티컬 확률</a></li>
+<li class="level2"><a href="#page_func_208">208 석병팔진 확률</a></li>
+<li class="level2"><a href="#page_func_209">209 부대의 공격 대미지</a></li>
+<li class="level2"><a href="#page_func_210">210 지원 공격 대미지</a></li>
+<li class="level2"><a href="#page_func_211">211 건물의 공격 대미지</a></li>
+<li class="level2"><a href="#page_func_212">212 충돌 대미지</a></li>
+<li class="level2"><a href="#page_func_213">213 함정 대미지</a></li>
+<li class="level2"><a href="#page_func_214">214 화계 대미지</a></li>
+<li class="level2"><a href="#page_func_215">215 낙뢰 대미지</a></li>
+<li class="level2"><a href="#page_func_216">216 불(지형) 피해</a></li>
+<li class="level2"><a href="#page_func_217">217 독천 피해</a></li>
+<li class="level2"><a href="#page_func_218">218 벼랑길 피해</a></li>
+<li class="level2"><a href="#page_func_220">220 포로 확률</a></li>
+<li class="level2"><a href="#page_func_221">221 나선첨 확률</a></li>
+<li class="level2"><a href="#page_func_222">222 질주 혼란 확률</a></li>
+<li class="level2"><a href="#page_func_223">223 기각 혼란 확률</a></li>
+<li class="level2"><a href="#page_func_250">250(legacy)</a></li>
+<li class="level2"><a href="#page_func_251">251(legacy)</a></li>
+<li class="level2"><a href="#page_func_252">252(legacy)</a></li>
+<li class="level2"><a href="#page_func_253">253 AI 출진할 병력 수(legacy)</a></li>
+<li class="level2"><a href="#page_func_254">254 AI 출진 가능한 병력 수(legacy)</a></li>
+<li class="level2"><a href="#page_func_255">255 거점 AI 행동 순서</a></li>
+<li class="level2"><a href="#page_func_256">256 거점 AI 실행 전</a></li>
+<li class="level2"><a href="#page_func_257">257 거점 AI 실행 후</a></li>
+<li class="level2"><a href="#page_func_258">258 포로 처우</a></li>
+<li class="level2"><a href="#page_func_258a">258a 포로 처우</a></li>
+<li class="level2"><a href="#page_func_259">259 컴퓨터 출진명령</a></li>
+<li class="level2"><a href="#page_func_260">260 AI 개발 시설, 좌표 선택</a></li>
+<li class="level2"><a href="#page_func_261">261 AI 스크립트</a></li>
+<li class="level2"><a href="#page_func_262">262 부대 임무 핸들러</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="page_func_details"></a>
+설명</h1>
+<ul>
+<li>특정 함수를 재정의하거나 후킹을 목적으로 합니다.</li>
+<li>하나의 함수만을 설정할 수 있습니다만 <a class="el" href="namespacepk.html#a265c2dc361f91f05c3fd69425ea99fa2">pk::get_func</a> 함수를 통해 이전 핸들러를 얻어 체인을 만들 수도 있습니다. 체인을 만들때는 재귀가 일어나지 않도록 주의하시기 바랍니다.</li>
+<li><a class="el" href="namespacepk.html#a265c2dc361f91f05c3fd69425ea99fa2">pk::get_func</a> 함수는 해당 번호에 함수가 설정되어 있지 않다면 원본 함수가 반환됩니다.</li>
+</ul>
+<h1><a class="anchor" id="page_func_list"></a>
+목록</h1>
+<h2><a class="anchor" id="page_func_100"></a>
+100 징병 병력 증감</h2>
+<p>int func100_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, const <a class="el" href="classpk_1_1detail_1_1arrayptr.html">pk::detail::arrayptr</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt; &amp;in actors); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+    <tr><td class="paramname">actors</td><td>실행 무장 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병력 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_101"></a>
+101 징병 치안 증감</h2>
+<p>int func101_t(<a class="el" href="structpk_1_1city.html" title="도시">pk::city</a>@ city, const <a class="el" href="classpk_1_1detail_1_1arrayptr.html">pk::detail::arrayptr</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt; &amp;in actors, int troops); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">city</td><td>도시 </td></tr>
+    <tr><td class="paramname">actors</td><td>실행 무장 </td></tr>
+    <tr><td class="paramname">troops</td><td>징병된 병력(100번 리턴 값) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>치안 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_102"></a>
+102 병기생산량</h2>
+<p>int func102_t(<a class="el" href="structpk_1_1city.html" title="도시">pk::city</a>@ city, const <a class="el" href="classpk_1_1detail_1_1arrayptr.html">pk::detail::arrayptr</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt; &amp;in actors, int weapon_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">city</td><td>도시 </td></tr>
+    <tr><td class="paramname">actors</td><td>실행 무장 </td></tr>
+    <tr><td class="paramname">weapon_id</td><td>병기 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병기 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_103"></a>
+103 병기생산기간</h2>
+<p>int func103_t(const <a class="el" href="classpk_1_1detail_1_1arrayptr.html">pk::detail::arrayptr</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt; &amp;in actors, int weapon_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">actors</td><td>실행 무장 </td></tr>
+    <tr><td class="paramname">weapon_id</td><td>병기 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>기간(턴 수) </dd></dl>
+<h2><a class="anchor" id="page_func_104"></a>
+104 순찰 치안 증감</h2>
+<p>int func104_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, const <a class="el" href="classpk_1_1detail_1_1arrayptr.html">pk::detail::arrayptr</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt; &amp;in actors); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+    <tr><td class="paramname">actors</td><td>실행 무장 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>치안 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_105"></a>
+105 훈련 기력 증감</h2>
+<p>int func105_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, const <a class="el" href="classpk_1_1detail_1_1arrayptr.html">pk::detail::arrayptr</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt; &amp;in actors); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+    <tr><td class="paramname">actors</td><td>실행 무장 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>기력 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_106"></a>
+106 금 수송 제한(unused)</h2>
+<p>uint func106_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ base); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">base</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>최대값 </dd></dl>
+<h2><a class="anchor" id="page_func_107"></a>
+107 병량 수송 제한(unused)</h2>
+<p>uint func107_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ base); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">base</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>최대값 </dd></dl>
+<h2><a class="anchor" id="page_func_108"></a>
+108 병력 수송 제한(unused)</h2>
+<p>uint func108_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ base); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">base</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>최대값 </dd></dl>
+<h2><a class="anchor" id="page_func_109"></a>
+109 병기 수송 제한(unused)</h2>
+<p>uint func109_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ base, int weapon_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">base</td><td>거점 </td></tr>
+    <tr><td class="paramname">weapon_id</td><td>병기 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>최대값 </dd></dl>
+<h2><a class="anchor" id="page_func_110"></a>
+110 보물 발견 확률</h2>
+<p>int func110_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, <a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ actor, <a class="el" href="structpk_1_1item.html" title="보물">pk::item</a>@ item); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+    <tr><td class="paramname">actor</td><td>실행 무장 </td></tr>
+    <tr><td class="paramname">item</td><td>미발견된 보물 중 무작위 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_111"></a>
+111 등용 확률</h2>
+<p>bool func111_t(<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ target, <a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ actor, int type, int seed); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>목표 무장 </td></tr>
+    <tr><td class="paramname">actor</td><td>실행 무장 </td></tr>
+    <tr><td class="paramname">type</td><td><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">일반 등용  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">포로처우 등용  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">포로처우(세력멸망) 등용  </td></tr>
+</table>
+</td></tr>
+    <tr><td class="paramname">seed</td><td>난수생성 시드값 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>등용 성공 여부 </dd></dl>
+<h2><a class="anchor" id="page_func_112"></a>
+112 동맹 확률</h2>
+<p><a class="el" href="structpk_1_1int__bool.html" title="튜플">pk::int_bool</a> func112_t(const pk::alliance_cmd_info &amp;in info); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info</td><td>명령 정보 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>반환값1</dt><dd><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">성공  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">설전  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">실패  </td></tr>
+</table>
+</dd></dl>
+<dl class="section user"><dt>반환값2</dt><dd>군사의 예측 결과가 정확할지 여부 </dd></dl>
+<h2><a class="anchor" id="page_func_113"></a>
+113 항복권고 확률</h2>
+<p><a class="el" href="structpk_1_1int__bool.html" title="튜플">pk::int_bool</a> func113_t(const pk::solicit_cmd_info &amp;in info); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info</td><td>명령 정보 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>반환값1</dt><dd><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">성공  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">설전  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">실패  </td></tr>
+</table>
+</dd></dl>
+<dl class="section user"><dt>반환값2</dt><dd>군사의 예측 결과가 정확할지 여부 </dd></dl>
+<h2><a class="anchor" id="page_func_150"></a>
+150 금 수입</h2>
+<p>int func150_t(<a class="el" href="structpk_1_1city.html" title="도시">pk::city</a>@ city); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">city</td><td>도시 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>금 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_151"></a>
+151 병량 수입</h2>
+<p>int func151_t(<a class="el" href="structpk_1_1city.html" title="도시">pk::city</a>@ city); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">city</td><td>도시 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병량 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_152"></a>
+152 관문, 항구 금 수입</h2>
+<p>int func152_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, int city_revenue); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>관문, 항구 </td></tr>
+    <tr><td class="paramname">city_revenue</td><td>도시 금 수입(150번 리턴 값) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>금 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_153"></a>
+153 관문, 항구 병량 수입</h2>
+<p>int func153_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, int city_harvest); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>관문, 항구 </td></tr>
+    <tr><td class="paramname">city_harvest</td><td>도시 병량 수입(151번 리턴 값) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병량 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_154"></a>
+154 월별 치안 감소</h2>
+<p>int func154_t(<a class="el" href="structpk_1_1city.html" title="도시">pk::city</a>@ city); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">city</td><td>도시 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>치안 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_155"></a>
+155 월별 충성도 감소</h2>
+<p>int func155_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, <a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ person); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>소속 거점 </td></tr>
+    <tr><td class="paramname">person</td><td>무장 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>충성도 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_156"></a>
+156 턴별 병력 감소</h2>
+<p>int func156_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building);<br  />
+<br  />
+ 전투중인 거점의 병력 감소(탈영, 도주)입니다. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>감소 병력 </dd></dl>
+<h2><a class="anchor" id="page_func_157"></a>
+157 포로 탈출 확률</h2>
+<p>int func157_t(<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ person); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">prisoner</td><td>포로 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_158"></a>
+158 월별 본거지 발생 확률</h2>
+<p>int func158_t(<a class="el" href="structpk_1_1city.html" title="도시">pk::city</a>@ city); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">city</td><td>도시 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_159"></a>
+159 역병 병령 증감</h2>
+<p>int func159_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병력 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_160"></a>
+160 역병 치안 증감</h2>
+<p>int func160_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>치안 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_161"></a>
+161 역병 상병 변화</h2>
+<p>int func161_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, <a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ person); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+    <tr><td class="paramname">person</td><td>건강 상태인 무장 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>무장 상병. -1일 경우 변경하지 않음. </dd></dl>
+<h2><a class="anchor" id="page_func_162"></a>
+162 행동력 계산</h2>
+<p>int func162_t(<a class="el" href="structpk_1_1district.html" title="군단">pk::district</a>@ district); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">district</td><td>군단 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>행동력 </dd></dl>
+<h2><a class="anchor" id="page_func_163"></a>
+163 부대 능력치 계산</h2>
+<p>void func163_t(<a class="el" href="structpk_1_1unit__attr.html" title="부대 능력치">pk::unit_attr</a>&amp; attr, const <a class="el" href="classpk_1_1detail_1_1arrayptr.html">pk::detail::arrayptr</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt; &amp;in member, int weapon_id, uint troops, int type, int status, bool navy, bool shoubyou); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">attr</td><td>부대 능력치 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">member</td><td>소속 무장 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">weapon_id</td><td>병기 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">troops</td><td>병력 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">type</td><td>부대 종류 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">status</td><td>부대 상태 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">navy</td><td>수상부대 능력 여부 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">shoubyou</td><td>상병 계산 여부(stat, max_stat 여부) </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_164"></a>
+164 부대 혼란 확률</h2>
+<p>int func164_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_165"></a>
+165 부대 병량 소비</h2>
+<p>int func165_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병량 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_166"></a>
+166 부대 병량 예상 잔여 기간</h2>
+<p>int func166_t(int food, int troops); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">food</td><td>병량 </td></tr>
+    <tr><td class="paramname">troops</td><td>병력 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>턴 수 </dd></dl>
+<h2><a class="anchor" id="page_func_167"></a>
+167 거점 병량 소비</h2>
+<p>int func167_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병량 증감 </dd></dl>
+<h2><a class="anchor" id="page_func_168"></a>
+168 거점 점령 후처리</h2>
+<p>void func168_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ base, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">base</td><td>점령한 거점 </td></tr>
+    <tr><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_169"></a>
+169 지형 이동 가능 설정</h2>
+<p>bool func169_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, int terrain_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">terrain_id</td><td>지형 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>이동 가능 </dd></dl>
+<h2><a class="anchor" id="page_func_170"></a>
+170 유적 발견 확률</h2>
+<p>int func170_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, int facility_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">facility_id</td><td>유적, 묘 중 하나 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_171"></a>
+171 도독 선택</h2>
+<p>void func171_t(<a class="el" href="structpk_1_1list.html" title="리스트">pk::list</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt;&amp; list); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">list</td><td>후보 무장 목록(순위에 맞게 정렬) </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_172"></a>
+172 태수 선택</h2>
+<p>void func172_t(<a class="el" href="structpk_1_1list.html" title="리스트">pk::list</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt;&amp; list); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">list</td><td>후보 무장 목록(순위에 맞게 정렬) </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_173"></a>
+173 거병 확률</h2>
+<p>bool func173_t(); </p><dl class="section return"><dt>반환값</dt><dd>거병 이벤트 발생 여부 </dd></dl>
+<h2><a class="anchor" id="page_func_200"></a>
+200 지원 공격 확률</h2>
+<p>int func200_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ assister, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ target); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">assister</td><td>지원을 실행할 부대 </td></tr>
+    <tr><td class="paramname">attacker</td><td>지원할 부대(목표 부대를 공격한 부대) </td></tr>
+    <tr><td class="paramname">target</td><td>목표 부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_201"></a>
+201 공격 크리티컬 확률</h2>
+<p>bool func201_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1hex__object.html">pk::hex_object</a>@ target, int tactics_id, bool ranged); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+    <tr><td class="paramname">target</td><td>목표 오브젝트 </td></tr>
+    <tr><td class="paramname">tactics_id</td><td>전법 </td></tr>
+    <tr><td class="paramname">ranged</td><td>두 칸 이상 떨어진 곳을 공격 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>크리티컬 여부 </dd></dl>
+<h2><a class="anchor" id="page_func_202"></a>
+202 전법 성공 확률</h2>
+<p>int func202_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in pos, <a class="el" href="structpk_1_1hex__object.html">pk::hex_object</a>@ target, int tactics_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attacker</td><td>전법 실행 부대 </td></tr>
+    <tr><td class="paramname">pos</td><td>전법 실행 좌표 </td></tr>
+    <tr><td class="paramname">target</td><td>목표 오브젝트 </td></tr>
+    <tr><td class="paramname">tactics_id</td><td>전법 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_203"></a>
+203 기병 전법 사망 확률</h2>
+<p>int func203_t(<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ attacker, <a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ target, int tactics_id, bool critical); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attacker</td><td>전법 실행 부대 </td></tr>
+    <tr><td class="paramname">target</td><td>목표 부대 </td></tr>
+    <tr><td class="paramname">tactics_id</td><td>전법 </td></tr>
+    <tr><td class="paramname">critical</td><td>크리티컬 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_204"></a>
+204 나선첨 확률(deprecated)</h2>
+<p>int func204_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ target, bool critical); </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">잘못된 코드:</a></b></dt><dd>func221_t </dd></dl>
+<h2><a class="anchor" id="page_func_205"></a>
+205 계략 소비 기력</h2>
+<p>int func205_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ src, int strategy_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>실행 부대 </td></tr>
+    <tr><td class="paramname">strategy_id</td><td>계략 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>소비 기력 </dd></dl>
+<h2><a class="anchor" id="page_func_206"></a>
+206 계략 성공 확률</h2>
+<p><a class="el" href="structpk_1_1int__bool.html" title="튜플">pk::int_bool</a> func206_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ src, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in src_pos, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in dst_pos, int strategy_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>실행 부대 </td></tr>
+    <tr><td class="paramname">src_pos</td><td>실행 좌표 </td></tr>
+    <tr><td class="paramname">dst_pos</td><td>목표 좌표 </td></tr>
+    <tr><td class="paramname">strategy_id</td><td>계략 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>반환값1</dt><dd>확률 </dd></dl>
+<dl class="section user"><dt>반환값2</dt><dd>간파 당함 </dd></dl>
+<h2><a class="anchor" id="page_func_207"></a>
+207 계략 크리티컬 확률</h2>
+<p>int func207_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ src, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in src_pos, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in dst_pos, int strategy_id); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>실행 부대 </td></tr>
+    <tr><td class="paramname">src_pos</td><td>실행 좌표 </td></tr>
+    <tr><td class="paramname">dst_pos</td><td>목표 좌표 </td></tr>
+    <tr><td class="paramname">strategy_id</td><td>계략 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_208"></a>
+208 석병팔진 확률</h2>
+<p>int func208_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>석병팔진 범위 안에 진입한 부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>확률 </dd></dl>
+<h2><a class="anchor" id="page_func_209"></a>
+209 부대의 공격 대미지</h2>
+<p>void func209_t(<a class="el" href="structpk_1_1damage__info.html" title="대미지 정보">pk::damage_info</a>&amp; info, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, int tactics_id, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in target_pos, int type, int critical, bool ambush); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">info</td><td>대미지 정보 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">tactics_id</td><td>전법 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">target_pos</td><td>목표 좌표 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">type</td><td><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">공격  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">반격  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">반격  </td></tr>
+</table>
+</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">critical</td><td><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">크리티컬 확률 계산  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">크리티컬 성공 강제  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">크리티컬 실패 강제  </td></tr>
+</table>
+</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ambush</td><td>복병 여부 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_210"></a>
+210 지원 공격 대미지</h2>
+<p>void func210_t(<a class="el" href="structpk_1_1damage__info.html" title="대미지 정보">pk::damage_info</a>&amp; info, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in target_pos); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">info</td><td>대미지 정보 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">target_pos</td><td>목표 좌표 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_211"></a>
+211 건물의 공격 대미지</h2>
+<p>void func211_t(<a class="el" href="structpk_1_1damage__info.html" title="대미지 정보">pk::damage_info</a>&amp; info, <a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ attacker, <a class="el" href="structpk_1_1hex__object.html">pk::hex_object</a>@ target); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">info</td><td>대미지 정보 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">attacker</td><td>공격 건물 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">target</td><td>목표 오브젝트 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_212"></a>
+212 충돌 대미지</h2>
+<p>void func212_t(<a class="el" href="structpk_1_1damage__info.html" title="대미지 정보">pk::damage_info</a>&amp; info, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1hex__object.html">pk::hex_object</a>@ sub_target); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">info</td><td>대미지 정보 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">sub_target</td><td>밀어낸 부대와 충돌한 부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_213"></a>
+213 함정 대미지</h2>
+<p>void func213_t(<a class="el" href="structpk_1_1damage__info.html" title="대미지 정보">pk::damage_info</a>&amp; info, int trap, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1hex__object.html">pk::hex_object</a>@ target, bool critical); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">info</td><td>대미지 정보 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">trap</td><td>함정 시설 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">target</td><td>목표 오브젝트 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">critical</td><td>크리티컬 여부 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_214"></a>
+214 화계 대미지</h2>
+<p>void func214_t(<a class="el" href="structpk_1_1damage__info.html" title="대미지 정보">pk::damage_info</a>&amp; info, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1hex__object.html">pk::hex_object</a>@ target, bool critical); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">info</td><td>대미지 정보 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">target</td><td>목표 오브젝트 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">critical</td><td>크리티컬 여부 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_215"></a>
+215 낙뢰 대미지</h2>
+<p>void func215_t(<a class="el" href="structpk_1_1damage__info.html" title="대미지 정보">pk::damage_info</a>&amp; info, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1hex__object.html">pk::hex_object</a>@ target, bool critical); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">info</td><td>대미지 정보 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">attacker</td><td>공격 부대 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">target</td><td>낙뢰를 받은 부대 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">critical</td><td>크리티컬 여부 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_216"></a>
+216 불(지형) 피해</h2>
+<p>int func216_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in pos); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">pos</td><td>좌표 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병력 피해량 </dd></dl>
+<h2><a class="anchor" id="page_func_217"></a>
+217 독천 피해</h2>
+<p>int func217_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in pos); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">pos</td><td>좌표 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병력 피해량 </dd></dl>
+<h2><a class="anchor" id="page_func_218"></a>
+218 벼랑길 피해</h2>
+<p>int func218_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit, const <a class="el" href="structpk_1_1point.html">pk::point</a> &amp;in pos); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+    <tr><td class="paramname">pos</td><td>좌표 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병력 피해량 </dd></dl>
+<h2><a class="anchor" id="page_func_220"></a>
+220 포로 확률</h2>
+<p>void func220_t(const <a class="el" href="structpk_1_1destroy__info.html" title="격파 정보">pk::destroy_info</a> &amp;in info, <a class="el" href="structpk_1_1list.html" title="리스트">pk::list</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt;&amp; captured, <a class="el" href="structpk_1_1list.html" title="리스트">pk::list</a>&lt;<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>&gt;&amp; escaped, bool tactics_bonus);<br  />
+<br  />
+ 부대를 격파하거나 거점을 점령할 경우 호출되는 함수입니다. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">info</td><td>공격 정보 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">captured</td><td>포로로 잡힐 무장 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">escaped</td><td>탈출할 무장 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">tactics_bonus</td><td>극병 전법으로 부대가 격파되었는지 여부를 나타냅니다. </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_221"></a>
+221 나선첨 확률</h2>
+<p>int func221_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ target, bool critical); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attacker</td><td>전법 실행 부대 </td></tr>
+    <tr><td class="paramname">target</td><td>목표 부대 </td></tr>
+    <tr><td class="paramname">critical</td><td>크리티컬 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>혼란 기간 </dd></dl>
+<h2><a class="anchor" id="page_func_222"></a>
+222 질주 혼란 확률</h2>
+<p>int func222_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ target); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attacker</td><td>질주 특기를 보유한 기병 전법 실행 부대 </td></tr>
+    <tr><td class="paramname">target</td><td>목표 부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>혼란 기간 </dd></dl>
+<h2><a class="anchor" id="page_func_223"></a>
+223 기각 혼란 확률</h2>
+<p>int func222_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ attacker, <a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ target); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attacker</td><td>기각 특기를 보유한 공격 부대 </td></tr>
+    <tr><td class="paramname">target</td><td>목표 부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>혼란 기간 </dd></dl>
+<h2><a class="anchor" id="page_func_250"></a>
+250(legacy)</h2>
+<p>void func250_t(<a class="el" href="structpk_1_1ai__context__base.html">pk::ai_context_base</a>@ base_info, int src, const <a class="el" href="structpk_1_1list.html" title="리스트">pk::list</a>&lt;<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>&gt; &amp;in dst_list); </p>
+<h2><a class="anchor" id="page_func_251"></a>
+251(legacy)</h2>
+<p>void func251_t(<a class="el" href="structpk_1_1ai__context__base.html">pk::ai_context_base</a>@ base_info, <a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ base); </p>
+<h2><a class="anchor" id="page_func_252"></a>
+252(legacy)</h2>
+<p>void func252_t(<a class="el" href="structpk_1_1ai__context.html">pk::ai_context</a>@ context); </p>
+<h2><a class="anchor" id="page_func_253"></a>
+253 AI 출진할 병력 수(legacy)</h2>
+<p>int func253_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ src, int src_rank, <a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ dst, int dst_troops);<br  />
+<br  />
+ 원본 계산식에 따르면 병력이 아무리 많아도 목표 거점 병력 수의 2배 까지만 출진하며 세력이 약하고 군주 성격이 대담해질수록 출진하는 병력 수가 줄어듭니다.(무모해집니다.)<br  />
+ 예1) 적 병력 수 1000 기준 </p><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter">세력순위백분율(강함 &lt;-&gt; 약함)<br  />
+군주 성격 </th><th class="markdownTableHeadCenter">100<br  />
+<br  />
+ </th><th class="markdownTableHeadCenter">80<br  />
+<br  />
+ </th><th class="markdownTableHeadCenter">60<br  />
+<br  />
+ </th><th class="markdownTableHeadCenter">40<br  />
+<br  />
+ </th><th class="markdownTableHeadCenter">20<br  />
+<br  />
+ </th><th class="markdownTableHeadCenter">2(최소)<br  />
+<br  />
+  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">소심 </td><td class="markdownTableBodyCenter">1950 </td><td class="markdownTableBodyCenter">1850 </td><td class="markdownTableBodyCenter">1750 </td><td class="markdownTableBodyCenter">1650 </td><td class="markdownTableBodyCenter">1550 </td><td class="markdownTableBodyCenter">1460  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">냉정 </td><td class="markdownTableBodyCenter">1800 </td><td class="markdownTableBodyCenter">1700 </td><td class="markdownTableBodyCenter">1600 </td><td class="markdownTableBodyCenter">1500 </td><td class="markdownTableBodyCenter">1400 </td><td class="markdownTableBodyCenter">1310  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">대담 </td><td class="markdownTableBodyCenter">1650 </td><td class="markdownTableBodyCenter">1550 </td><td class="markdownTableBodyCenter">1450 </td><td class="markdownTableBodyCenter">1350 </td><td class="markdownTableBodyCenter">1250 </td><td class="markdownTableBodyCenter">1160  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">저돌 </td><td class="markdownTableBodyCenter">1500 </td><td class="markdownTableBodyCenter">1400 </td><td class="markdownTableBodyCenter">1300 </td><td class="markdownTableBodyCenter">1200 </td><td class="markdownTableBodyCenter">1100 </td><td class="markdownTableBodyCenter">1010  </td></tr>
+</table>
+<dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>출진 거점 </td></tr>
+    <tr><td class="paramname">src_rank</td><td>출진 거점 세력 백분율 순위 </td></tr>
+    <tr><td class="paramname">dst</td><td>목표 거점 </td></tr>
+    <tr><td class="paramname">dst_troops</td><td>목표 거점 예상 병력 수: 구역 내 부대 병력 합 + max(거점 소속 무장 지휘 합, 거점 병력) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>출진할 병력 수(인접 거점에서 같이 출진하는 병력 수도 포함됩니다.) </dd></dl>
+<h2><a class="anchor" id="page_func_254"></a>
+254 AI 출진 가능한 병력 수(legacy)</h2>
+<p>int func254_t(<a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, int troops)<br  />
+<br  />
+ 원본 계산식에 따르면 군주의 성격이 대담해질수록 과장됩니다.(무모해집니다.) </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">building</td><td>출진할 거점 </td></tr>
+    <tr><td class="paramname">troops</td><td>출진 가능한 실제 병력 수: 구역 내 부대 병력 합 + max(거점 소속 무장 지휘 합, 거점 병력) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>병력 수(반환값보다 많은 병력을 가진 거점은 공격하지 않습니다.) </dd></dl>
+<h2><a class="anchor" id="page_func_255"></a>
+255 거점 AI 행동 순서</h2>
+<p>void func255_t(<a class="el" href="structpk_1_1ai__context.html">pk::ai_context</a>@ context, <a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>컨텍스트 </td></tr>
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_256"></a>
+256 거점 AI 실행 전</h2>
+<p>void func256_t(<a class="el" href="structpk_1_1ai__context.html">pk::ai_context</a>@ context, <a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, int cmd); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>컨텍스트 </td></tr>
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+    <tr><td class="paramname">cmd</td><td>거점AI </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_257"></a>
+257 거점 AI 실행 후</h2>
+<p>void func257_t(<a class="el" href="structpk_1_1ai__context.html">pk::ai_context</a>@ context, <a class="el" href="structpk_1_1building.html" title="건물">pk::building</a>@ building, int cmd); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>컨텍스트 </td></tr>
+    <tr><td class="paramname">building</td><td>거점 </td></tr>
+    <tr><td class="paramname">cmd</td><td>거점AI </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_258"></a>
+258 포로 처우</h2>
+<p>int func258_t(<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ prisoner, const <a class="el" href="structpk_1_1prisoner__info.html">pk::prisoner_info</a> &amp;in info); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">prisoner</td><td>포로 </td></tr>
+    <tr><td class="paramname">info</td><td>포로 정보 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">값 </th><th class="markdownTableHeadNone">설명  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">포로처우_등용  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1 </td><td class="markdownTableBodyNone">포로처우_포로  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2 </td><td class="markdownTableBodyNone">포로처우_해방  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">3 </td><td class="markdownTableBodyNone">포로처우_처단  </td></tr>
+</table>
+</dd></dl>
+<h2><a class="anchor" id="page_func_258a"></a>
+258a 포로 처우</h2>
+<p>int func258a_t(<a class="el" href="structpk_1_1person.html" title="무장">pk::person</a>@ prisoner, const <a class="el" href="structpk_1_1destroy__info.html" title="격파 정보">pk::destroy_info</a> &amp;in info);<br  />
+<br  />
+ </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">잘못된 코드:</a></b></dt><dd>func258_t </dd></dl>
+<h2><a class="anchor" id="page_func_259"></a>
+259 컴퓨터 출진명령</h2>
+<p>void func259_t(pk::com_deploy_cmd_info&amp; info); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">info</td><td>명령 정보 </td></tr>
+  </table>
+  </dd>
+</dl>
+<h2><a class="anchor" id="page_func_260"></a>
+260 AI 개발 시설, 좌표 선택</h2>
+<p><a class="el" href="structpk_1_1int__point.html" title="튜플">pk::int_point</a> func260_t(<a class="el" href="structpk_1_1city.html" title="도시">pk::city</a>@ city, int status); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">city</td><td>도시 </td></tr>
+    <tr><td class="paramname">status</td><td>거점 상태 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>반환값1</dt><dd>시설(-1일 경우 건설하지 않음, -2일 경우 컴퓨터에게 맡김) </dd></dl>
+<dl class="section user"><dt>반환값2</dt><dd>좌표(시설이 -1, -2가 아닌 경우에만 적용) </dd></dl>
+<h2><a class="anchor" id="page_func_261"></a>
+261 AI 스크립트</h2>
+<p>bool func261_t(<a class="el" href="structpk_1_1force.html" title="세력">pk::force</a>@ force); </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">force</td><td>세력 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>자신이 처리했다면 true. 컴퓨터에게 맡기려면 false. </dd></dl>
+<h2><a class="anchor" id="page_func_262"></a>
+262 부대 임무 핸들러</h2>
+<p>bool func262_t(<a class="el" href="structpk_1_1unit.html" title="부대">pk::unit</a>@ unit);<br  />
+<br  />
+ <a class="el" href="namespacepk.html#a5dafb53ca8874a1915ede469b7552446">pk::run_order</a> 함수가 실행될 경우 이 스크립트가 실행됩니다. </p><dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unit</td><td>부대 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>반환값</dt><dd>자신이 처리했다면 true. 컴퓨터에게 맡기려면 false. </dd></dl>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+다음에 의해 생성됨 :  &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.18
+</small></address>
+</body>
+</html>
