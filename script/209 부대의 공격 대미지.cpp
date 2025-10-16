@@ -306,11 +306,32 @@
 					tactics_atk = pk::get_tactics(tactics_id).hp_atk;
 				else if (pk::is_neighbor_pos(attacker.get_pos(), target_pos))
 					tactics_atk = 15;
-
+				/**
 				if (attacker.weapon == 병기_충차 or attacker.weapon == 병기_목수)
 					hp_damage = func_5af050(atk, command, tactics_atk, buffed);
 				else
 					hp_damage = func_5aeff0(atk, command, tactics_atk, buffed);
+				*/
+
+				if (attacker.weapon == 병기_충차 or attacker.weapon == 병기_목수)
+				{
+					// 충차, 목수는 병력 데미지 없음
+					info.troops_damage = 0;
+					// 병기는 성장하기 어렵고 능력치가 낮은 장수를 많이 쓰기에 공격력 * 2
+					hp_damage = func_5aeff0(atk * 2, command, tactics_atk, buffed) * 2.f;
+				}
+				else if (attacker.weapon == 병기_정란 or attacker.weapon == 병기_투석)
+				{
+					// 정란, 투석 일반 병기보다 * 2배 데미지
+					info.troops_damage = func_5aeff0(atk * 2, command, tactics_atk, buffed) * 2.f; 
+					hp_damage = func_5aeff0(atk * 2, command, tactics_atk, buffed) * 0.25f;
+				}
+				else
+				{
+					info.troops_damage = func_5aeff0(atk, command, tactics_atk, buffed);
+					// 일반 무기로는 내구도 1/4 
+					hp_damage = info.troops_damage * 0.25f;
+				}
 
 				if (facility_id >= 시설_불씨 and facility_id <= 시설_업화종)
 				{
@@ -330,10 +351,8 @@
 					switch (facility_id)
 					{			
 					case 시설_도시:
-						hp_damage *= 0.5f;
 						break;
 					case 시설_항구:
-						hp_damage *= 0.8f;
 						break;
 					case 시설_관문:
 						info.troops_damage *= 0.5f;
@@ -343,7 +362,6 @@
 						hp_damage *= 0.8f;
 						break;
 					}
-
 				}
 
 				if (facility_id == 시설_제방 and not target_building.completed)
@@ -358,97 +376,93 @@
 				{
 					if (facility_id == 시설_도시 or facility_id == 시설_항구 or facility_id == 시설_관문)
 					{	
+						/**
+							태수 능력을 추가함에 따라 공격부대의 공격력으로 상쇄
+						*/					
 						pk::city@ city = pk::building_to_city(target_building);
 						pk::person@ taishu = pk::get_person(city.taishu);
 
 						float taishu_troops_damage = 0;
 						float taishu_hp_damage = 0;
 						int attacker_atk = attacker.attr.stat[부대능력_공격];	
-
+					
 						if (pk::is_alive(taishu))
 						{
 				        		float taishu_status = taishu.stat[무장능력_통솔] * 2
                         							+ taishu.stat[무장능력_무력]
 					                		        + taishu.stat[무장능력_지력];
-							// 능력치 최고값 125 * 4 최대 250(500를 기준으로 능력치에 따라 병력공격력 감소
+
+							// 능력치 최고값 125 * 4 최대 300(600)를 기준으로 능력치에 따라 병력공격력 감소
 							taishu_troops_damage =  taishu_status / 2.f;
-							// 능력치 최고값 125 * 4 각 병기 125, 250을 기준으로 능력치에 따라 내구공격력 감소
+
+							// 능력치 최고값 125 * 4 각 병기 150, 75을 기준으로 능력치에 따라 내구공격력 감소
 							if (attacker.weapon == 병기_충차 or attacker.weapon == 병기_목수)
 								taishu_hp_damage =  taishu_status / 4.f;
 							else
-								taishu_hp_damage =  taishu_status / 2.f;
+								taishu_hp_damage =  taishu_status / 8.f;
 
 							pk::trace("attacker_atk : " + attacker_atk);
 							pk::trace("taishu_troops_damage : " + taishu_troops_damage);
 
-							info.troops_damage += attacker_atk - taishu_troops_damage;
-							hp_damage += (attacker_atk * 0.5) - taishu_hp_damage;
-
-							pk::trace("add taishu troops : " + info.troops_damage);
-							pk::trace("add taishu_hp : " + hp_damage);
-
 							// 부대 공격력 능력 적용
-							if (0 >= info.troops_damage)
-							{						
-								// 최소 데미지 넘지 못 할 경우 최소데미지
-								info.troops_damage = pk::max(200.f, float(info.troops_damage));
-								hp_damage = pk::max(50.f, float(hp_damage));
 
-								pk::trace("- info.troops_damage : " + info.troops_damage);
-								pk::trace("- hp_damage : " + hp_damage);
+							if (attacker.weapon == 병기_충차 or attacker.weapon == 병기_목수)
+								hp_damage += (attacker_atk) - taishu_hp_damage;
+							else
+							{
+								info.troops_damage += attacker_atk - taishu_troops_damage;
+								hp_damage += (attacker_atk * 0.25) - taishu_hp_damage;
 							}
-
+					
 							// 방어 스킬 적용
 							if (building.has_skill(특기_공신) or building.has_skill(특기_신산))
 							{
-								info.troops_damage *= 0.77f;
-								hp_damage *= 0.77f;
+								info.troops_damage *= 0.70f;
+								hp_damage *= 0.70f;
 							}
 							else if (building.has_skill(특기_공성) or building.has_skill(특기_화신))
 							{
-								info.troops_damage *= 0.85f;
-								hp_damage *= 0.85f;
+								info.troops_damage *= 0.80f;
+								hp_damage *= 0.80f;
 							}
 
 							if (building.has_skill(특기_통찰))
 							{
-								info.troops_damage *= 0.85f;
-								hp_damage *= 0.85f;
+								info.troops_damage *= 0.80f;
+								hp_damage *= 0.80f;
 							}
 							else if (target_unit.has_skill(특기_명경) or target_unit.has_skill(특기_규율) or target_unit.has_skill(특기_침착))
 							{
-								info.troops_damage *= 0.91f; 
-								hp_damage *= 0.91f;
+								info.troops_damage *= 0.90f; 
+								hp_damage *= 0.90f;
 							}
 
 							if (building.has_skill(특기_불굴) or building.has_skill(특기_금강) or building.has_skill(특기_둔전))
 							{
-								info.troops_damage *= 0.91f; 
-								hp_damage *= 0.91f;
+								info.troops_damage *= 0.90f; 
+								hp_damage *= 0.90f;
 							}
 
 							if (building.has_skill(특기_철벽) or building.has_skill(특기_정묘))
 							{
-								info.troops_damage *= 0.85f;
-								hp_damage *= 0.85f; 
+								info.troops_damage *= 0.80f;
+								hp_damage *= 0.80f; 
 							}
 
 							if (building.has_skill(특기_위압))
 							{
-								info.troops_damage *= 0.85f;
-								hp_damage *= 0.85f; 
+								info.troops_damage *= 0.80f;
+								hp_damage *= 0.80f; 
 							}
 
 							if (building.has_skill(특기_축성))
 							{
-								info.troops_damage *= 0.91f; 
-								hp_damage *= 0.85f; 
+								info.troops_damage *= 0.90f; 
+								hp_damage *= 0.80f; 
 							}
 						}
 					}
 				}
-				pk::trace("add target troops skill atk : " + info.troops_damage);
-				pk::trace("add target hp skill atk : " + hp_damage);
 
 				// 부대 스킬 공격력
 				if (attacker.has_skill(특기_공신) or attacker.has_skill(특기_신산))
@@ -461,6 +475,7 @@
 					info.troops_damage *= 1.2f;
 					hp_damage *= 1.2f;
 				}
+
 				if (attacker.has_skill(특기_사정) or attacker.has_skill(특기_발명))
 				{
 					info.troops_damage *= 1.2f;				
@@ -482,6 +497,7 @@
 					info.troops_damage *= 1.1f;
 					hp_damage *= 1.1f;
 				}
+
 				if (attacker.has_skill(특기_사수) or attacker.has_skill(특기_백마))
 					info.troops_damage *= 1.2f;
 			
@@ -502,9 +518,9 @@
 					info.troops_damage *= 1.2f;				
 					hp_damage *= 1.2f;
 				}			
-			
-				pk::trace("add attacker troops skill atk : " + info.troops_damage);
-				pk::trace("add attacker hp skill atk : " + hp_damage);						
+						
+				
+				// 부대의 기술 공격력 적용
 				if (attacker.has_tech(기교_강노) or attacker.has_tech(기교_기사))
 				{
 					info.troops_damage *= 1.2f;
@@ -558,9 +574,8 @@
 					}
 				}
 
-				pk::trace("add attacker troops tech atk : " + info.troops_damage);
-				pk::trace("add attacker hp tech atk : " + hp_damage);
-		
+	
+				// 방어 기술 적용	
 				// 기교연구로 항관확장 익혔을 경우 거점 피해량 설정.
                			if (pk::has_tech(target_building, 기교_항관확장)) 
 				{
@@ -574,53 +589,50 @@
 				// 기교연구로 화살방패 익혔을 경우 거점 피해량 설정
                			if (pk::has_tech(target_building, 기교_화살방패)) 
 				{
-					info.troops_damage = info.troops_damage * 0.85f;
-					hp_damage = hp_damage * 0.85f;					
+					info.troops_damage = info.troops_damage * 0.70f;
+					hp_damage = hp_damage * 0.90f;					
 				}
 
 				// 기교연구로 숙련병 익혔을 경우 거점 피해량 설정
                			if (pk::has_tech(target_building, 기교_숙련병)) 
 				{
-					info.troops_damage = info.troops_damage * 0.91f;
-					hp_damage = hp_damage * 0.91f;					
+					info.troops_damage = info.troops_damage * 0.90f;
+					hp_damage = hp_damage * 0.90f;					
 				}
 
 				// 기교연구로 석조건축 익혔을 경우 거점 피해량 설정
                			if (pk::has_tech(target_building, 기교_석조건축)) 
 				{
-					info.troops_damage = info.troops_damage * 0.77f;
-					hp_damage = hp_damage * 0.77f;					
+					info.troops_damage = info.troops_damage * 0.90f;
+					hp_damage = hp_damage * 0.70f;					
 				}
 
 				// 기교연구로 공병육성 익혔을 경우 거점 피해량 설정
                			if (pk::has_tech(target_building, 기교_공병육성)) // 기교_공병육성
 				{
-					info.troops_damage = info.troops_damage * 0.85f;
-					hp_damage = hp_damage * 0.85f;
+					info.troops_damage = info.troops_damage * 0.80f;
+					hp_damage = hp_damage * 0.80f;
 				}
 
 				// 기교연구로 시설강화 시 설정
 				if (pk::has_tech(target_building, 기교_시설강화))
 				{
-					info.troops_damage = info.troops_damage * 0.85f;
-					hp_damage = hp_damage * 0.85f;	
+					info.troops_damage = info.troops_damage * 0.80f;
+					hp_damage = hp_damage * 0.80f;	
 				}
             		   	// 기교연구로 성벽강화 시 설정
 				if (pk::has_tech(target_building, 기교_성벽강화))
 				{
-					info.troops_damage = info.troops_damage * 0.85f;
-					hp_damage = hp_damage * 0.85f;
+					info.troops_damage = info.troops_damage * 0.70f;
+					hp_damage = hp_damage * 0.70f;
 				}
 
             			 // 기교연구로 방어강화 시 설정               			
 				if (pk::has_tech(target_building, 기교_방어강화))
 				{
-					info.troops_damage = info.troops_damage * 0.85f;
-					hp_damage = hp_damage * 0.85f;					
+					info.troops_damage = info.troops_damage * 0.80f;
+					hp_damage = hp_damage * 0.80f;					
 				}
-
-				pk::trace("add target troops tech atk : " + info.troops_damage);
-				pk::trace("add target hp tech atk : " + hp_damage);
 
 				if (info.critical)
 					hp_damage *= 크리티컬_공격력;
@@ -631,9 +643,8 @@
 					info.troops_damage *= float(pk::core["대미지패널티"][pk::get_scenario().difficulty]);
 				}
 				
-				pk::trace("last troops atk : " + info.troops_damage);
-				pk::trace("last hp atk : " + hp_damage);
-				pk::trace("===========================================");
+				info.troops_damage += pk::rand(info.troops_damage * 0.1f)
+				hp_damage += pk::rand(hp_damage * 0.1f)
 
 				info.hp_damage = hp_damage;
 			}
@@ -753,7 +764,7 @@
 		}
 
 		/** 
-			건물 내구 공격시 부대 기본 공격력 설정
+			건물 공격시 부대 기본 공격력 설정
 		*/
 		float func_5aeff0(int src_atk, int src_troops, int tactics_atk, int buffed)
 		{
@@ -761,36 +772,43 @@
 			pk::trace("src_atk : " + src_atk);
 			pk::trace("tactics_atk : " + tactics_atk);
 			pk::trace("buffed : " + buffed);
-		/** 			
-			기존 부대 공격력 공식
-			src_troops = pk::max(src_troops, 1);
-			float a = sqrt(src_atk * src_atk / 15.f);
-			float b = sqrt(src_troops);
-			float c = tactics_atk * 4 + 100;
-			float d = buffed + 10;
-			return a * b * c * d / 10000;
-		*/
 
 			/**
 				장수가 성장함에 따라 공격력이 증가하기 때문에 조절 필요
 			*/
 
-			src_troops = pk::max(src_troops, 1);
+			src_troops = pk::max(src_troops, 1000);
 			
-			// 최대 병력수 1.5만 - max값 150
-			float troops_atk = src_troops / 100.f;
+			// 최대 병력수 1.5만 최소 1000			
+			const int in_min = 1000;
+			const int in_max = 15000;  
+			// 병력의 최소 공격력250 최대 공격력 500
+			const float out_min = 250.0f; 
+			const float out_max = 500.0f;
 
-			// 기본 부대 공격력이 높아짐에 따라 1~2.55배 상승	
-			float base_atk = 1.0 + (float(src_atk) - 1) * 1.55 / 254.0;
-			// 전법 데미지 추가
+			// 0~1 구간 정규화
+			float t = float(src_troops - in_min) / float(in_max - in_min);
+
+			// t² → 초반 급상승, 후반 완만
+			t = t * t;
+
+			float troops_atk = out_min + (out_max - out_min) * t;
+
+			// 최소 30데미지  
+			src_atk = pk::max(src_atk, 30);
+
+			// 기본 부대 공격력이 높아짐에 따라 선형으로 1~2.55배 상승	
+			float base_atk = 1.0 + (float(src_atk) - 1.f) * 1.55 / 254.0f;
+			
+			// 전법 데미지 추가 or 근접공격시 추가데미지
 			tactics_atk = 1 + (sqrt(tactics_atk) / 10.f);
+			
 			// 버프 태고대 20%증가
 			float buf = pk::max(buffed * 1.2f, 1.f);
 			
-			pk::trace("buffed : " + troops_atk * base_atk * tactics_atk * buf);
+			pk::trace("base_atk : " + troops_atk * base_atk * tactics_atk * buf);
 	
 			return troops_atk * base_atk * tactics_atk * buf;
-
 		}
 
 		/**
@@ -811,7 +829,7 @@
 			src_troops = pk::max(src_troops, 1);
 			
 			// 최대 병력수 1.5만 - max값 150
-			float troops_atk = src_troops / 100.f;
+			float troops_atk = src_troops / 50.f;
 
 			// 기본 부대 공격력이 높아짐에 따라 1~2.55배 상승	
 			float base_atk = 1.0f + (float(src_atk) - 1.f) * 1.55f / 254.0f;
