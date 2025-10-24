@@ -412,8 +412,6 @@
 					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_최소인재탐색);
 					context.push_cmd(거점AI_최소무장등용);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_이동);
@@ -427,7 +425,8 @@
 					context.push_cmd(거점AI_개발);
 					context.push_cmd(거점AI_흡수합병);
 					context.push_cmd(거점AI_관문수송);
-
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -497,12 +496,12 @@
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_거래);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_포상);
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -537,14 +536,14 @@
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_순찰);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_계략);
+					context.push_cmd(거점AI_인재탐색);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -1885,20 +1884,19 @@
 				<인공지능.개발.공방강제 값="true"/>
 				<인공지능.개발.암시장사용 값="false"/>
 				<인공지능.개발.최대시설가중치>
-					<전체 병영="127" 대장간="127" 마구간="127" 공방="0" 조선="0" 연병소="0" 대시장="1" 어시장="1"/>
+					<전체 병영="127" 대장간="125" 마구간="126" 공방="1" 조선="0" 연병소="0" 대시장="100" 어시장="100"/>
 				</인공지능.개발.최대시설가중치>
 				<인공지능.개발.최소시설가중치>
 					<전체 시장="16"/>
 				</인공지능.개발.최소시설가중치>
 				<인공지능.개발.최소시설수>
-					<소패 공방="0"/>
 					<오 조선="0"/>
 					<시상 조선="0"/>
 					<강릉 조선="0"/>
 					<장사 조선="0"/>
 				</인공지능.개발.최소시설수>
 				<인공지능.개발.특색가중치 마구간="127" 대장간="127" 공방="1" 조선="0"/>
-				<인공지능.개발.특수가중치 부절태="127" 인재부="0" 외교부="1" 계략부="1" 연병소="1"/>
+				<인공지능.개발.특수가중치 군사부="127" 부절태="100" 인재부="0" 외교부="1" 계략부="1" 연병소="1"/>
 				<인공지능.공격.가중치.경로.육로 값="14"/>
 				<인공지능.공격.가중치.빈도시 값="80"/>
 				<인공지능.공격.같은주우선 값="false"/>

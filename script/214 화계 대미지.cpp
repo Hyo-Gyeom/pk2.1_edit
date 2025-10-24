@@ -63,7 +63,8 @@
 				if (target_unit.weapon == 병기_충차 or target_unit.weapon == 병기_정란 
 				        or target_unit.weapon == 병기_투석 or target_unit.weapon == 병기_목수)
 				{
-				        info.troops_damage *= 2.f;
+					// 예상보다 4배 만큼의 성능을 보여주고 있음
+					// info.troops_damage *= 0.25f
 				}
 			}
 
