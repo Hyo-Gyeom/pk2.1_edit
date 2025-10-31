@@ -180,10 +180,10 @@
 					}					
 					
 					if (attacker.has_skill(특기_맹장)) 
-						troops_damage *= 1.10f;
+						troops_damage *= 1.05f;
 
 					if (attacker.has_skill(특기_위압)) 
-						troops_damage *= 1.20f;
+						troops_damage *= 1.1f;
 
 					pk::force@ target_force = pk::get_force(target_unit.get_force_id());
 					if (pk::has_tech(target_force, 기교_숙련병))
@@ -200,19 +200,19 @@
 
 					if (target_unit.has_skill(특기_위압))
 						troops_damage = troops_damage * 0.85f;
-
+					
 					if (info.debuffer == 시설_진)
 						troops_damage *= 0.90f;
 					else if (info.debuffer == 시설_요새)
 						troops_damage *= 0.80f;
 					else if (info.debuffer == 시설_성채)
 						troops_damage *= 0.70f;
-			
+
 					// 병기는 무조건 불로 처리 해야함
 					if (target_unit.weapon == 병기_충차 or target_unit.weapon == 병기_목수 or target_unit.weapon == 병기_정란 or target_unit.weapon == 병기_투석)
 						troops_damage *= 0.5f;
 		
-					if (troops_damage >= 1000.f and weapon_id != 병기_정란 or weapon_id != 병기_투석)
+					if (troops_damage > 1000.f and (weapon_id != 병기_정란 or weapon_id != 병기_투석))
 					{	
 						// 스탯 한계치 125를 기준으로
 						float percent = ((attacker.attr.stat[부대능력_통솔] * 2) + attacker.attr.stat[부대능력_지력]) / 375.f;
