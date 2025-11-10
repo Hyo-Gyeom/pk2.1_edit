@@ -9,7 +9,7 @@
 
 		void callback()
 		{
-			if (pk::get_scenario().loaded or pk::get_scenario().no != 7) return;
+			if (pk::get_scenario().loaded or pk::get_scenario().no != 15) return;
 			if (pk::choose(pk::u8encode("세력을 재배치 하시겠습니까?"), { pk::u8encode("예"), pk::u8encode("아니오") }) == 1) return;
 
 			pk::list<pk::force@> force_list = pk::get_force_list();

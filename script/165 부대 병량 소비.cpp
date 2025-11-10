@@ -15,7 +15,9 @@
 			int n = 0;
 			float m = 1.f;
 
-			if (unit.type == 부대종류_전투)
+			// if (unit.type == 부대종류_전투 && !unit.is_player())
+			// 모든 부대 적용 및 플레이어와 컴퓨터 다르게 적용
+			if (!unit.is_player())
 			{
 				int facility_id = func_49d8e0(unit);
 				if (facility_id == 시설_도시)
@@ -46,6 +48,38 @@
 					else
 						m = 0.8f; // 20% 감소
 				}
+			} 
+			else
+			{
+				int facility_id = func_49d8e0(unit);
+				if (facility_id == 시설_도시)
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.5f; // 50% 감소
+					else
+						m = 0.75f; // 25% 감소
+				}
+				else if (facility_id == 시설_성채)
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.6f; // 40% 감소
+					else
+						m = 0.80f; // 80% 감소
+				}
+				else if (facility_id == 시설_요새)
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.7f; // 30% 감소
+					else
+						m = 0.85f; // 15% 감소
+				}
+				else if (facility_id == 시설_진)
+				{
+					if (unit.has_skill(특기_둔전)) // 둔전 특기 추가 (특기종합패치)
+						m = 0.8f; // 20% 감소
+					else
+						m = 0.9f; // 10% 감소
+				}
 			}
 
 			if (unit.is_on_fire())
@@ -58,7 +92,11 @@
 			return n;
 		}
 
-		/***/
+		/**
+		* 부대 주변 시설 확인
+		* @param unit 확인할 부대
+		* @return 부대 주변의 시설 ID, 없으면 -1
+		*/
 		int func_49d8e0(pk::unit@ unit)
 		{
 			int force_id = unit.get_force_id();

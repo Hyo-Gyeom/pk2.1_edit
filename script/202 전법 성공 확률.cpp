@@ -25,19 +25,19 @@
 			// if (pk::get_tekisei(attacker) == 적성_A) n = 5; else if (pk::get_tekisei(attacker) == 적성_S) n = 10;
 			n = int(pk::core["적성"][pk::get_tekisei(attacker)]["전법성공확률"]) + pk::core::tactics_chance(attacker.leader);
 
-			// 정묘 특기 전법 성공률 10% 증가 (특기종합패치)
+			// 정묘 특기 전법 성공률 15% 증가 (특기종합패치)
 			if (attacker.has_skill(특기_정묘))
-				n = n + 10;
+				n = n + 15;
 
 			// 아래 두 특기는 정묘와 중첩 가능
 
-			// 행군 특기 기병 전법 성공률 5% 증가 (특기종합패치)
+			// 행군 특기 기병 전법 성공률 10% 증가 (특기종합패치)
 			if (attacker.has_skill(특기_행군) and tactics_id >= 전법_돌격 and tactics_id <= 전법_돌진)
-				n = n + 5;
+				n = n + 10;
 
-			// 사수 특기 노병 전법 성공률 5% 증가 (특기종합패치)
+			// 사수 특기 노병 전법 성공률 10% 증가 (특기종합패치)
 			if (attacker.has_skill(특기_사수) and tactics_id >= 전법_화시 and tactics_id <= 전법_난사)
-				n = n + 5;
+				n = n + 10;
 			
 
 			switch (tactics_id)
@@ -139,7 +139,7 @@
 			case 지형_모래: return -5;
 			case 지형_습지: return -15;
 			case 지형_독천: return -15;
-			case 지형_숲: return 10;
+			case 지형_숲: return 15;
 			case 지형_내: return -10;
 			case 지형_강: return -10;
 			case 지형_바다: return -10;

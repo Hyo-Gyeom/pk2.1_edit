@@ -1,7 +1,8 @@
 /*
-// 제작자: 사용자 요청
+// 제작자:
 // 설명: 부대 출진 시 지휘관의 적성에 따라 병종을 자동으로 변경
 // Update: 2025.10.28 / 초기 버전 작성
+//         2025.11.09 / 병종 우선순위 시스템 추가 (적성 동일 시 우선순위 반영, 우선순위도 같으면 랜덤 선택)
 */
 
 namespace 출진병종최적화
@@ -16,12 +17,13 @@ namespace 출진병종최적화
     const int 적성_최소기준 = 0;  // 0:적성C, 1:적성B, 2:적성A, 3:적성S
     
     // 병종 변경 우선순위 (높을수록 우선, 같으면 적성으로 결정)
-    const int 창병_우선순위 = 0;
+    const int 창병_우선순위 = 1;  // 투신일 경우 창병 우선
     const int 극병_우선순위 = 0;
     const int 노병_우선순위 = 0;
-    const int 기병_우선순위 = 0;
-    const int 병기_우선순위 = 0;  // 충차, 정란, 투석 등
-    
+    const int 기병_우선순위 = 2;  // 최우선
+    const int 충차_우선순위 = 0;  // 충차, 목수
+    const int 정란_우선순위 = 1;  // 정란, 투석
+
     //---------------------------------------------------------------------------------------
     
     class Main
@@ -131,11 +133,19 @@ namespace 출진병종최적화
                 int tekisei_창병 = leader.tekisei[병종_창병];
                 int tekisei_극병 = leader.tekisei[병종_극병];
                 
-                // 적성이 같으면 창병, 아니면 높은 쪽
-                if (tekisei_창병 >= tekisei_극병)
+                // 적성이 다르면 높은 쪽 선택
+                if (tekisei_창병 > tekisei_극병)
                     return 병종_창병;
                 else
                     return 병종_극병;
+                
+                // 적성이 같으면 우선순위로 비교
+                if (창병_우선순위 > 극병_우선순위)
+                    return 병종_창병;
+                else if (극병_우선순위 > 창병_우선순위)
+                    return 병종_극병;
+                else
+                    return pk::rand_bool(50) ? 병종_창병 : 병종_극병; // 우선순위도 같으면 랜덤
             }
             
             // 3단계: 현재 공성병기(충차, 정란, 투석, 목수)인 경우 처리
@@ -150,33 +160,95 @@ namespace 출진병종최적화
                         max_other_tekisei = tekisei;
                 }
                 
-                // 다른 적성이 A(2) 이하면 공성병기 유지
-                if (max_other_tekisei <= 2)
+                // 다른 적성이 B(1) 이하면 공성병기 유지
+                if (max_other_tekisei <= 1)
                 {
                     return current_heishu;  // 현재 병종 유지
                 }
                 // 아니면 4단계로 진행 (높은 병종으로 변경)
             }
             
-            // 4단계: 투신도 없고 특화 특기도 없으면 적성으로 결정
-            // 적성이 같으면 기병 우선
-            int best_heishu = 병종_창병;
-            int best_tekisei = leader.tekisei[병종_창병];
-            
-            // 각 병종별로 적성 비교 (창병, 극병, 노병, 기병)
-            for (int i = 병종_창병; i <= 병종_기병; i++)
+            // 4단계: 투신도 없고 특화 특기도 없고 공성병기도 아니면 최종 적성으로 결정
+            // 최대 적성을 가진 병종들 찾기
+            array<int> candidates;
+            int max_tekisei = -1;            
+            for (int i = 병종_창병; i <= 병종_병기; i++)
             {
                 int tekisei = leader.tekisei[i];
                 
-                // 적성이 높으면 변경, 같으면 기병 우선
-                if (tekisei > best_tekisei || (tekisei == best_tekisei && i == 병종_기병))
+                if (tekisei > max_tekisei)
                 {
-                    best_tekisei = tekisei;
-                    best_heishu = i;
+                    // 더 높은 적성 발견 - 후보 초기화
+                    max_tekisei = tekisei;
+                    candidates.resize(0);
+                    candidates.insertLast(i);
+                }
+                else if (tekisei == max_tekisei)
+                {
+                    // 같은 적성 - 후보에 추가
+                    candidates.insertLast(i);
                 }
             }
             
-            return best_heishu;
+            // 후보가 1개면 바로 반환
+            if (candidates.length() == 1)
+                return candidates[0];
+            
+            // 후보가 여러 개면 우선순위로 비교            
+            // 첫 번째 후보를 초기 최우선 병종으로 설정
+            int best_heishu = candidates[0];
+            int best_priority = get_heishu_priority(best_heishu);
+            
+            // 최종 후보 목록 (우선순위가 가장 높은 병종들)
+            array<int> top_candidates;
+            top_candidates.insertLast(best_heishu);
+            
+            // 나머지 후보들과 우선순위 비교
+            for (uint i = 1; i < candidates.length(); i++)
+            {
+                int heishu = candidates[i];
+                int priority = get_heishu_priority(heishu);
+                
+                if (priority > best_priority)
+                {
+                    // 더 높은 우선순위 발견 - 기존 후보 초기화하고 새로 시작
+                    best_priority = priority;
+                    best_heishu = heishu;
+                    top_candidates.resize(0);  // 기존 후보 제거
+                    top_candidates.insertLast(heishu);  // 새 최우선 병종 추가
+                }
+                else if (priority == best_priority)
+                {
+                    // 같은 우선순위 발견 - 최종 후보에 추가
+                    top_candidates.insertLast(heishu);
+                }
+            }
+            
+            // 우선순위도 같으면 랜덤 선택
+            if (top_candidates.length() == 1)
+                return top_candidates[0];
+            else
+                return top_candidates[pk::rand(top_candidates.length())];
+        }
+        
+        // 병종별 우선순위 반환
+        int get_heishu_priority(int heishu)
+        {
+            if (heishu == 병종_창병) return 창병_우선순위;
+            else if (heishu == 병종_극병) return 극병_우선순위;
+            else if (heishu == 병종_노병) return 노병_우선순위;
+            else if (heishu == 병종_기병) return 기병_우선순위;
+            else if (heishu == 병종_병기)
+            {
+                // 충차와 정란 우선순위 비교
+                if (충차_우선순위 > 정란_우선순위)
+                    return 충차_우선순위;
+                else if (정란_우선순위 > 충차_우선순위)
+                    return 정란_우선순위;
+                else
+                    return pk::rand_bool(50) ? 충차_우선순위 : 정란_우선순위;  // 같으면 랜덤
+            }
+            return 0;
         }
         
         // 특화 특기로 병종 결정 (신, 장 특기가 있으면 해당 병종 반환)
@@ -201,35 +273,12 @@ namespace 출진병종최적화
                 pk::has_skill(leader, 특기_질주) || pk::has_skill(leader, 특기_백마))
                 return 병종_기병;
             
+            // 충차, 정란, 투석, 목수 특화 특기
+            // if (pk::has_skill(leader, 특기_공신) || pk::has_skill(leader, 특기_공성))
+            //  return 병종_병기;
+                
             // 특화 특기가 없음
             return -1;
-        }
-        
-        // 병종 점수 계산
-        int get_heishu_score(pk::person@ leader, int heishu, int current_heishu)
-        {
-            if (!pk::is_alive(leader)) return 0;
-            
-            // 적성값 (0~3: C~S)
-            int tekisei = leader.tekisei[heishu];
-            
-            // 최소 기준 미달 시 0점
-            if (tekisei < 적성_최소기준) return 0;
-            
-            // 기본 점수 = 적성 * 100
-            int score = tekisei * 100;
-            
-            // 병종별 우선순위 보너스
-            if (heishu == 병종_창병) score += 창병_우선순위;
-            else if (heishu == 병종_극병) score += 극병_우선순위;
-            else if (heishu == 병종_노병) score += 노병_우선순위;
-            else if (heishu == 병종_기병) score += 기병_우선순위;
-            else if (heishu == 병종_병기) score += 병기_우선순위;
-            
-            // 현재 병종이면 약간의 보너스 (불필요한 변경 방지)
-            if (heishu == current_heishu) score += 10;
-            
-            return score;
         }
         
         // 병종 변경 실행
@@ -283,14 +332,27 @@ namespace 출진병종최적화
             if (heishu == 병종_기병) return 병기_군마;    // 군마
             if (heishu == 병종_병기)
             {
-                // 투석 기교 연구 완료시 투석, 아니면 정란
-                pk::force@ force = pk::get_force(leader.get_force_id());
-                if (pk::is_alive(force) && pk::has_tech(force, 기교_투석개발))
-                    return 병기_투석;
+                int weapon_id = -1;  // 병기 ID를 담을 변수                
+                // 충차와 정란 우선순위 비교
+                if (충차_우선순위 > 정란_우선순위)
+                    weapon_id = 병기_충차;
+
+                else if (정란_우선순위 > 충차_우선순위)
+                    weapon_id = 병기_정란;
                 else
-                    return 병기_정란;
+                    weapon_id = pk::rand_bool(50) ? 병기_충차 : 병기_정란;  // 같으면 랜덤
+
+                // 투석 기교 연구 완료시 투석
+                pk::force@ force = pk::get_force(leader.get_force_id());
+                if (pk::has_tech(force, 기교_투석개발))
+                    return 병기_투석;
+                
+                if (pk::has_tech(force, 기교_목수개발))
+                    return 병기_목수;
             }
-            if (heishu == 병종_수군) return 병기_주가;    // 주가
+            
+            // if (heishu == 병종_수군) return 병기_주가;    // 주가
+
             return -1;
         }
         
@@ -366,4 +428,5 @@ namespace 출진병종최적화
     
     Main main;
 }
+
 

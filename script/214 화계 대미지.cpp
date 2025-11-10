@@ -56,7 +56,7 @@
 				info.def_skill = 특기_화신;
 			}
 
-
+			// 타겟이 부대일떄
 			if (target.is_instance(pk::unit::type_id))
 			{
 				pk::unit@ target_unit = pk::hex_object_to_unit(target);
@@ -65,6 +65,12 @@
 				{
 					// 예상보다 4배 만큼의 성능을 보여주고 있음
 					// info.troops_damage *= 0.25f
+				}
+
+				// 부대가 숲 지형에 있으면 2배 데미지
+				if (pk::get_hex(target.get_pos()).terrain == 지형_숲)
+				{
+					info.troops_damage *= 2;
 				}
 			}
 

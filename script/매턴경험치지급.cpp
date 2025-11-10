@@ -1,7 +1,8 @@
 /*
-// 제작자: 사용자 요청
+// 제작자:
 // 설명: 매턴 장수들에게 경험치를 자동으로 지급
 // Update: 2025.10.29 / 초기 버전 작성
+//         2025.11.09 / 763~799번 무장 수동 처리 수정 및및 추가
 */
 
 namespace 매턴경험치지급
@@ -11,15 +12,22 @@ namespace 매턴경험치지급
     const bool 경험치지급_활성화 = true;          // true: 기능 활성화, false: 기능 비활성화
     const int  경험치지급_적용대상 = 2;           // 0: 모든 세력, 1: 플레이어 세력만, 2: 컴퓨터 세력만
     const int 능력치_상승_필요경험치 = 70;    // 능력치 1 오르는데 필요한 경험치
+    
+    // 최종 능력치 최대값 게임내 최대값과 동일해야하며 763~799번 무장은 수동으로 능력치 상승을 시켜줘야함
+    const int 최종_능력치_최대값 = 125;      
+    
     // 능력치 최소값 설정 (이 값 미만이면 경험치 지급 안 함)
     const int 능력치_최소값 = 10;
     
     // 능력치 최대값 설정 (이 값 이상이면 경험치 지급 안 함)
-    const int 통솔_최대값 = 100;
-    const int 무력_최대값 = 100;
-    const int 지력_최대값 = 100;
-    const int 정치_최대값 = 100;
-    const int 매력_최대값 = 100;
+    const int 통솔_최대값 = 99;
+    const int 무력_최대값 = 99;
+    const int 지력_최대값 = 89;
+    const int 정치_최대값 = 89;
+    const int 매력_최대값 = 89;
+
+    // 지 정 매 최대 상승값 (기본 지 50 정 50 매 50 이면 최대 각 70이 상한)
+    const int 지정매_최대_상승값 = 20;
     
     // 능력치 구간별 경험치 지급량
     // 구간1: 1~49, 구간2: 50~69, 구간3: 70~79, 구간4: 80~89, 구간5: 90~최대값
@@ -39,19 +47,19 @@ namespace 매턴경험치지급
     const int 지력_경험치_구간2 = 7;
     const int 지력_경험치_구간3 = 5;
     const int 지력_경험치_구간4 = 3;
-    const int 지력_경험치_구간5 = 3;
+    const int 지력_경험치_구간5 = 1;
     
     const int 정치_경험치_구간1 = 10;
     const int 정치_경험치_구간2 = 7;
     const int 정치_경험치_구간3 = 5;
     const int 정치_경험치_구간4 = 3;
-    const int 정치_경험치_구간5 = 3;
+    const int 정치_경험치_구간5 = 1;
     
     const int 매력_경험치_구간1 = 10;
     const int 매력_경험치_구간2 = 7;
     const int 매력_경험치_구간3 = 5;
     const int 매력_경험치_구간4 = 3;
-    const int 매력_경험치_구간5 = 3;
+    const int 매력_경험치_구간5 = 1;
     
     // 병종 적성 경험치 (병종최적화 로직으로 선택된 병종만 지급)
     const int 적성_경험치 = 4;    // 선택된 병종에 지급할 적성 경험치
@@ -84,8 +92,18 @@ namespace 매턴경험치지급
                 pk::person@ person = person_list[i];
                 if (!pk::is_alive(person)) continue;
                 
-                // 경험치 지급
-                give_exp_to_person(person);
+                int person_id = person.get_id();
+                
+                // 763~799번 무장 특수 처리
+                if (person_id >= 763 && person_id <= 799)
+                {
+                    give_exp_to_special_person(person);
+                }
+                else
+                {
+                    // 일반 무장 경험치 지급
+                    give_exp_to_person(person);
+                }
             }
         }
         
@@ -103,7 +121,7 @@ namespace 매턴경험치지급
             return false;
         }
         
-        // 장수에게 경험치 지급
+        // 일반 무장 경험치 지급
         void give_exp_to_person(pk::person@ person)
         {
             if (person is null) return;
@@ -122,33 +140,42 @@ namespace 매턴경험치지급
             {
                 pk::add_heishu_exp(person, best_heishu, 적성_경험치);
             }
+        }
+        
+        // 763~799번 무장 전용 경험치 지급 및 능력치 상승
+        void give_exp_to_special_person(pk::person@ person)
+        {
+            if (person is null) return;
+            if (!pk::is_alive(person)) return;
             
-            // 763~799번 무장 특수 처리 (통솔, 무력만)
             int person_id = person.get_id();
-            if (person_id >= 763 && person_id <= 799)
+            
+            // 디버그 출력
+            pk::trace("무장 " + person_id + " 처리: 통솔=" + person.stat[무장능력_통솔] + " exp=" + person.stat_exp[무장능력_통솔] + " / 무력=" + person.stat[무장능력_무력] + " exp=" + person.stat_exp[무장능력_무력]);
+            
+            // 능력 경험치 지급 (구간별 차등)
+            give_stat_exp(person, 무장능력_통솔, 통솔_최대값, 통솔_경험치_구간1, 통솔_경험치_구간2, 통솔_경험치_구간3, 통솔_경험치_구간4, 통솔_경험치_구간5);
+            give_stat_exp(person, 무장능력_무력, 무력_최대값, 무력_경험치_구간1, 무력_경험치_구간2, 무력_경험치_구간3, 무력_경험치_구간4, 무력_경험치_구간5);
+            give_stat_exp(person, 무장능력_지력, 지력_최대값, 지력_경험치_구간1, 지력_경험치_구간2, 지력_경험치_구간3, 지력_경험치_구간4, 지력_경험치_구간5);
+            give_stat_exp(person, 무장능력_정치, 정치_최대값, 정치_경험치_구간1, 정치_경험치_구간2, 정치_경험치_구간3, 정치_경험치_구간4, 정치_경험치_구간5);
+            give_stat_exp(person, 무장능력_매력, 매력_최대값, 매력_경험치_구간1, 매력_경험치_구간2, 매력_경험치_구간3, 매력_경험치_구간4, 매력_경험치_구간5);
+            
+            // 능력치 타입 배열
+            array<int> stat_types = {무장능력_통솔, 무장능력_무력, 무장능력_지력, 무장능력_정치, 무장능력_매력};
+            
+            // 모든 능력치 자동 상승
+            for (uint j = 0; j < stat_types.length(); j++)
             {
-                // 통솔 처리
-                int current_exp_tousui = person.stat_exp[무장능력_통솔];
-                if (current_exp_tousui >= 능력치_상승_필요경험치)
-                {
-                    if (person.stat[무장능력_통솔] < 통솔_최대값)
-                    {
-                        person.stat[무장능력_통솔] = person.stat[무장능력_통솔] + 1;
-                    }
-                    person.stat_exp[무장능력_통솔] = 0;
-                }
+                int stat_type = stat_types[j];
                 
-                // 무력 처리
-                int current_exp_buryoku = person.stat_exp[무장능력_무력];
-                if (current_exp_buryoku >= 능력치_상승_필요경험치)
+                if(person.base_stat[stat_type] < 최종_능력치_최대값 && person.stat_exp[stat_type] >= 능력치_상승_필요경험치)
                 {
-                    if (person.stat[무장능력_무력] < 무력_최대값)
-                    {
-                        person.stat[무장능력_무력] = person.stat[무장능력_무력] + 1;
-                    }
-                    person.stat_exp[무장능력_무력] = 0;
+                    person.base_stat[stat_type] = person.base_stat[stat_type] + 1;
+                    person.stat_exp[stat_type] = person.stat_exp[stat_type] - 능력치_상승_필요경험치;                    
+                    pk::trace("무장 " + person_id + " 능력치[" + stat_type + "] +1");
                 }
             }
+            person.update();
         }
         
         // 능력치 구간별 경험치 지급
@@ -159,9 +186,9 @@ namespace 매턴경험치지급
             // 최소값 미만이거나 최대값 이상이면 지급 안 함
             if (current_stat < 능력치_최소값 || current_stat >= max_value) return;
             
-            // 현재 능력치의 경험치가 필요경험치 * 30 이상이면 지급 안 함
+            // 현재 능력치의 경험치가 필요경험치 * 지정매_최대_상승값 이상이면 지급 안 함
             int current_exp = person.stat_exp[stat_type];
-            if (current_exp >= 능력치_상승_필요경험치 * 30) return;
+            if (current_exp >= 능력치_상승_필요경험치 * 지정매_최대_상승값) return;
             
             int exp_amount = 0;
             
