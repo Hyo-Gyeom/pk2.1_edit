@@ -9,6 +9,10 @@
 
 		bool callback(pk::unit@ attacker, pk::hex_object@ target, int tactics_id, bool ranged)
 		{
+			// Null 체크
+			if (!pk::is_alive(attacker)) return false;
+			if (!pk::is_alive(target)) return false;
+			
 			pk::unit@ target_unit = pk::hex_object_to_unit(target);
 			int target_strength = int(pk::core["무장.최대능력치"]) + 1;
 
@@ -84,10 +88,15 @@
 			if (attacker.has_skill(특기_공성) and target.is_instance(pk::building::type_id)) return true;
 
 			// 부대 목표, 숲에서 공격, 난전 특기 보유
-			if (target_unit !is null and pk::get_hex(attacker.get_pos()).terrain == 지형_숲 and attacker.has_skill(특기_난전)) return true;
+			if (target_unit !is null and pk::is_valid_pos(attacker.get_pos()))
+			{
+				pk::hex@ hex = pk::get_hex(attacker.get_pos());
+				if (hex !is null and hex.terrain == 지형_숲 and attacker.has_skill(특기_난전)) return true;
+			}
 
 			int n = 0;
 			pk::person@ leader = pk::get_person(attacker.leader);
+			if (!pk::is_alive(leader)) return false;
 
 			if (attacker.attr.stat[부대능력_무력] >= 80)
 				n = 5;

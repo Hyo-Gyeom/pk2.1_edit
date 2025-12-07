@@ -35,11 +35,11 @@ namespace 거점원군
     
     // 부대종류모드
     // ㄴ 2번 모드 사용 시 거점간 거리, 거점별 무장수를 기준으로 병종선택 (원거리거점, 교전거점 무장없거나, 교전거점 무장충분, 출진거점 무장부족 시 수송부대 출진)
-    const int  거점원군_부대종류모드 = 2;        // 2: 전투/수송부대 모두 허용,  1: 수송부대만 허용,  0: 전투부대만 허용
+    const int  거점원군_부대종류모드 = 0;        // 2: 전투/수송부대 모두 허용,  1: 수송부대만 허용,  0: 전투부대만 허용
     const int  거점원군_교전거점무장수 = 20;     // 부대종류모드2 적용 시 : 교전거점의 무장수 기준 이상일 경우 무장충분으로 판단하여 수송부대 출병
     
     const int  거점원군_전투부대수 = 100;      // 한 턴에 출진가능한 최대 부대수 (단, 거점간 거리에 따라 한 거점에서 출진가능 부대수 거리당 1씩 차감, 최소 1부대 가능)    
-    const int  거점원군_수송부대수 = 1;      // 한 턴에 출진가능한 최대 부대수
+    const int  거점원군_수송부대수 = 10;      // 한 턴에 출진가능한 최대 부대수
     
     const bool 거점원군_무장파병설정 = true;    // 빈 거점에 적군 침략 시 인접 거점에서 무장 파병지원
     
@@ -47,17 +47,11 @@ namespace 거점원군
     
     //------------------------------------------------------------
     // 거점공략원군 (by 기마책사)
-    const bool 거점공략_설정 = true;       // 인접한 공략도시에 지원군 출병 설정 (수송대, 공성병기, 전투부대)
+    const bool 거점공략_설정 = true;       // 인접한 공략도시에 지원군 출병 설정 (수송대, 전투부대)
     
-    const int  거점공략_전투부대수  = 100;     // 공략지원군 전투부대 출진 부대수 (최소1 ~ 최대3)
+    const int  거점공략_전투부대수  = 20;     // 공략지원군 전투부대 출진 부대수 (최소1 ~ 최대20)
     
-    const bool 거점공략_수송부대허용 = false;   // 공략지원군 수송대 허용
-    const int  거점공략_수송부대수 = 1;     // 공략지원군 수송부대 출진 부대수 (최소1 ~ 최대3)
-    
-    const bool 거점공략_공성병기허용 = true;   // 공략지원군 공성병기 허용
-    const int  거점공략_공성부대수 = 3;      // 공략지원군 공성부대 출진 부대수 (최소1 ~ 최대5)
-    
-    
+    bool 디버그모드 = true;
     //=======================================================================================
     
 	class Main
@@ -325,28 +319,16 @@ namespace 거점원군
                         int person_count = pk::get_person_list(src, pk::mibun_flags(신분_군주, 신분_도독, 신분_태수, 신분_일반)).count;
                         int idle_p_count = pk::get_idle_person_list(src).count;
                         
-                        int weapon_amount = 0;
-                        int siege_amount = 0;
-            
-                        for (int j = 병기_창; j <= 병기_군마; j++)     // 창극노마 병기수량 합하기
-                        {
-                            weapon_amount += pk::get_weapon_amount(src, j);
-                        }
-                        for (int j = 병기_충차; j <= 병기_목수; j++)     // 공성병기 수량 합하기
-                        {
-                            siege_amount += pk::get_weapon_amount(src, j);
-                        }
-                        
-                        // 출진대상거점 조건 (무장수, 병력, 병기, 병량 보유량)
+                        // 출진대상거점 조건 (무장수, 병력, 병량 보유량)
                         if (((has_person and person_count >= ref_p_count and idle_p_count > 0) or (!has_person and person_count == 0))
-                            and src_troops > ref_troops and weapon_amount >= ref_troops and src_food >= int(1.5f * ref_troops))
+                            and src_troops > ref_troops and src_food >= int(1.5f * ref_troops))
                         {
                             if (!reinforce_mode)    // 자세력 또는 동맹군
                             {
                                 best_src = src_id;
                                 src_list.add(src);  // 출진가능 거점리스트
                             }
-                            else if (reinforce_mode and siege_amount > 2)  // 적세력, 공성병기 보유유무 추가 확인
+                            else if (reinforce_mode)
                             {
                                 best_src = src_id;
                                 src_list.add(src);  // 출진가능 거점리스트
@@ -580,37 +562,19 @@ namespace 거점원군
                 cmd.type = 부대종류_수송;
                 cmd.member[0] = leader.get_id();
                 cmd.gold = (pk::get_gold(src_base) >= 1000) ? int(pk::min(2000.f, pk::get_gold(src_base) * 0.1f)) : 0;
-                cmd.food = pk::min(unit_food, 500000);
+                cmd.food = pk::min(unit_food, 300000);
                 cmd.troops = pk::min(60000, pk::max(1, reinforce_troops));
-                
-                // 창극노마 병기수량 합하기
-                int weapon_sum = 0;
-                for (int j = 병기_창; j <= 병기_군마; j++)     
-                {
-                    weapon_sum += pk::get_weapon_amount(src_base, j);
-                }
-                
-                // 병기 전체 수량은 병력만큼, 병기별 비율대로 배분
-                int i = 0;
-                for (int weapon_id = 병기_창; weapon_id <= 병기_군마; weapon_id++)
-                {
-                    int weapon_amount = int(pk::get_weapon_amount(src_base, weapon_id) * 0.9f);
-                    if (weapon_id <= 병기_군마 and weapon_amount > 0)
-                    {
-                        cmd.weapon_id[i] = weapon_id;
-                        cmd.weapon_amount[i] = pk::min(100000, weapon_amount, reinforce_troops * weapon_amount / weapon_sum);
-                        i++;
-                    }
-                    else if (is_siege_weapon(weapon_id) and weapon_amount > 0)
-                    {
-                        cmd.weapon_id[i] = weapon_id;
-                        cmd.weapon_amount[i] = pk::min(100, (1 + weapon_amount / 4));
-                        i++;
-                    }
-                }
                 
                 cmd.order = 부대임무_이동;
                 cmd.target_pos = dst_base.get_pos();  // 목표는 전투중인 거점
+
+                if (디버그모드)
+                {
+                    string src_name  = pk::decode(pk::get_name(src_base));
+                    string dst_name  = pk::decode(pk::get_name(dst_base));
+                    string unit_name = pk::decode(pk::get_name(leader));
+                    pk::info(pk::format("[PushTransportUnit] 준비 {}대 {}→{} 병력{} 식량{} 금{}", unit_name, src_name, dst_name, cmd.troops, cmd.food, cmd.gold));
+                }
 
                 // 출진.
                 int unit_id = pk::command(cmd);
@@ -629,6 +593,10 @@ namespace 거점원군
                         pk::info(pk::format("{}: {}대 {}: {}→{}", cmd_info, unit_name, order_str, src_name, dst_name));
                     }
                     return unit_id;
+                }
+                else if (디버그모드)
+                {
+                    pk::info("[PushTransportUnit] 출진 실패 - unit_id -1");
                 }
             }
             
@@ -652,26 +620,9 @@ namespace 거점원군
             auto person_list = pk::get_idle_person_list(src_base);
             if (person_list.count == 0) return -1;   // 무장 부족
             
-            // 대상거점이 관문/항구인 경우 노병 출진 우대
-            int base_type = get_base_type(dst_base.get_id());
-            cmd_archer = (base_type > 0);
-            
             // 통솔+무력 높은 순으로 정렬.
 			person_list.sort(function(a, b)
 			{
-                if (main.cmd_archer)    // 노병 우대 출진
-                {
-                    // 궁병 특기 반영 ('20.9.13)
-                    bool a_archer = (pk::has_skill(a, 특기_궁신) or pk::has_skill(a, 특기_궁장) or pk::has_skill(a, 특기_사수));
-                    bool b_archer = (pk::has_skill(b, 특기_궁신) or pk::has_skill(b, 특기_궁장) or pk::has_skill(b, 특기_사수));
-                    if ( a_archer and !b_archer) return true;   
-                    if (!a_archer and  b_archer) return false;  
-                    // 궁병 적성
-                    if (a.tekisei[병종_노병] != b.tekisei[병종_노병]) return (a.tekisei[병종_노병] > b.tekisei[병종_노병]);
-                    // 무장 능력
-                    return (a.stat[무장능력_무력] + a.stat[무장능력_통솔]) > (b.stat[무장능력_무력] + b.stat[무장능력_통솔]);
-                }
-                
 				return (a.stat[무장능력_무력] + a.stat[무장능력_통솔]) > (b.stat[무장능력_무력] + b.stat[무장능력_통솔]);
 			});
             pk::person@ leader = pk::get_person(person_list[0].get_id());
@@ -679,30 +630,7 @@ namespace 거점원군
             // 원군 병력 산정 : 기준 병력 초과분, 지휘가능병력 확인
             int reinforce_troops = pk::min(거점원군_최대전투병력, pk::get_command(leader), pk::max(1, pk::get_troops(src_base) - ref_troops));
 
-            // 최적 무기 선택
-            int ground_weapon_id = 병기_검;
-            int water_weapon_id = 병기_주가;
             int unit_troops = reinforce_troops;
-            
-            // 육상 무기 선택
-            get_ground_weapon(src_base, leader, reinforce_troops, ground_weapon_id, unit_troops);
-            if (ground_weapon_id == 0) return -1;    // 병기 부족
-            
-            // 수상 무기 선택
-            if (check_building_has_port(src_base) and check_building_has_port(dst_base))
-            {
-                if (leader.tekisei[병종_수군] == 적성_C)
-                    water_weapon_id = 병기_주가;
-                else
-                {
-                    if      (pk::get_weapon_amount(src_base, 병기_누선) > 0) water_weapon_id = 병기_누선;
-                    else if (pk::get_weapon_amount(src_base, 병기_투함) > 0) water_weapon_id = 병기_투함;
-                    else water_weapon_id = 병기_주가;
-                }
-            }
-            else
-                water_weapon_id = 병기_주가;
-            
             // 병량 계산
             int unit_food = int(pk::min(2.0f * unit_troops, pk::max( 0.5f * pk::get_food(src_base), 1.2f * unit_troops)));
             if (unit_food < int(0.5f * unit_troops)) return -1;   // 병량 부족
@@ -717,22 +645,27 @@ namespace 거점원군
                 cmd.member[0] = leader.get_id();
                 cmd.gold = (pk::get_gold(src_base) >= 1000) ? int(pk::min(1000.f, pk::get_gold(src_base) * 0.1f)) : 0;
                 cmd.troops = pk::max(1, unit_troops);
-                cmd.weapon_id[0] = ground_weapon_id;
-                cmd.weapon_id[1] = water_weapon_id;
-                cmd.weapon_amount[0] = (is_siege_weapon(ground_weapon_id))? 1 : pk::max(1, unit_troops);
-                cmd.weapon_amount[1] = (water_weapon_id == 병기_주가)? 0 : 1;
-                cmd.food = pk::min(50000, unit_food);
+                cmd.food = pk::min(20000, unit_food);
 
                 cmd.order = (src_base.get_force_id() == dst_base.get_force_id())? 부대임무_공격 : 
                                              ((pk::is_enemy(src_base, dst_base))? 부대임무_공격 : 부대임무_이동);    // 자세력, 적거점, 동맹군
 
-                cmd.target_pos = dst_base.get_pos();  // 목표는 전투중인 거점
+                cmd.target_pos = dst_base.get_pos();  // 목표는 전투중인 거점                
+
+                if (디버그모드)
+                {
+                    string src_name  = pk::decode(pk::get_name(src_base));
+                    string dst_name  = pk::decode(pk::get_name(dst_base));
+                    string unit_name = pk::decode(pk::get_name(leader));
+                    pk::info(pk::format("[PushCombatUnit] 준비 {}대 {}→{} 병력{} 식량{} 금{}", unit_name, src_name, dst_name, cmd.troops, cmd.food, cmd.gold));
+                }
 
                 // 출진.
                 int unit_id = pk::command(cmd);
                 pk::unit@ unit_cmd = pk::get_unit(unit_id);
                 if (pk::is_alive(unit_cmd))
                 {
+                    unit_cmd.weapon = 병기_창;
                     unit_cmd.action_done = true;
                     
                     if (디버그모드) 
@@ -746,182 +679,16 @@ namespace 거점원군
                     }
                     return unit_id;
                 }
-            }
-            
-            return -1;
-        }
-        
-        // 노병우대 출진여부
-        bool cmd_archer = false;    
-        
-        
-        // 공성병기 부대 출진 처리
-        int PushSiegeUnit(pk::building@ src_base, pk::building@ dst_base, bool do_cmd = true)
-        {
-            if (!pk::is_alive(src_base) or !pk::is_alive(dst_base)) return -1;
-            
-            int enemy_weight = countNeighborEnemyBase(src_base);    // 적병력 가중치
-            int ref_troops = (enemy_weight * 거점원군_경계병력단위) + 거점원군_거점최소병력;
-            if (pk::get_troops(src_base) <= (ref_troops + 거점원군_최소출진병력)) return -1;    // 병력 부족
-            
-            int person_count = pk::get_person_list(src_base, pk::mibun_flags(신분_군주, 신분_도독, 신분_태수, 신분_일반)).count;
-            if (person_count <= pk::max(1, (enemy_weight/4) + 거점원군_출진거점무장수)) return -1;   // 무장 부족
-            
-            auto person_list = pk::get_idle_person_list(src_base);
-            if (person_list.count == 0) return -1;   // 무장 부족
-
-            // 거점 공성병기 재고 확인
-            int siege_dir_id = (pk::has_tech(src_base, 기교_목수개발))? 병기_목수 : 병기_충차;
-            int siege_rng_id = (pk::has_tech(src_base, 기교_투석개발))? 병기_투석 : 병기_정란;
-            int amt_siege_dir = pk::get_weapon_amount(src_base, siege_dir_id);  // 직접 공성병기 수량
-            int amt_siege_rng = pk::get_weapon_amount(src_base, siege_rng_id);  // 간접 공성병기 수량
-            if ((amt_siege_rng + amt_siege_dir) == 0) return -1;     // 공성병기 없음
-            
-            // 공성특기 우대, 기력회복 특기 우대, 통솔+무력 높은 순으로 정렬.
-			person_list.sort(function(a, b)
-			{
-                // 공성 특기 우대
-                bool a_skill = (pk::has_skill(a, 특기_공신) or pk::has_skill(a, 특기_공성) or pk::has_skill(a, 특기_사정));
-                bool b_skill = (pk::has_skill(b, 특기_공신) or pk::has_skill(b, 특기_공성) or pk::has_skill(b, 특기_사정));
-                if ( a_skill and !b_skill) return true;   
-                if (!a_skill and  b_skill) return false;  
-                // 기력회복 특기 우대
-                bool a_energy = (pk::has_skill(a, 특기_주악) or pk::has_skill(a, 특기_시상) or pk::has_skill(a, 특기_노발));
-                bool b_energy = (pk::has_skill(b, 특기_주악) or pk::has_skill(b, 특기_시상) or pk::has_skill(b, 특기_노발));
-                if ( a_energy and !b_energy) return true;   
-                if (!a_energy and  b_energy) return false;  
-                // 병기 적성
-                if (a.tekisei[병종_병기] != b.tekisei[병종_병기]) return (a.tekisei[병종_병기] > b.tekisei[병종_병기]);
-                // 무장 능력
-                return (a.stat[무장능력_무력] + a.stat[무장능력_통솔]) > (b.stat[무장능력_무력] + b.stat[무장능력_통솔]);
-			});
-            pk::person@ leader = pk::get_person(person_list[0].get_id());
-            
-            // 원군 병력 산정 : 기준 병력 초과분, 지휘가능병력 확인
-            int reinforce_troops = pk::min(거점원군_최대전투병력, pk::get_command(leader), pk::max(1, pk::get_troops(src_base) - ref_troops));
-
-            // 최적 무기 선택
-            int ground_weapon_id = 병기_검;
-            int water_weapon_id = 병기_주가;
-            int unit_troops = reinforce_troops;
-            
-            // 간접 공성병기부터 우선 선택 (사정특기는 간접, 공성특기는 직접 병기 우선 배정)
-            if      (amt_siege_rng > 0 and pk::has_skill(leader, 특기_사정)) ground_weapon_id = siege_rng_id;
-            else if (amt_siege_dir > 0 and pk::has_skill(leader, 특기_공성)) ground_weapon_id = siege_dir_id;
-            else if (amt_siege_rng > 0)  ground_weapon_id = siege_rng_id;
-            else if (amt_siege_dir > 0)  ground_weapon_id = siege_dir_id;
-            
-            
-            // 병량 계산
-            int unit_food = int(pk::min(2.0f * unit_troops, pk::max( 0.5f * pk::get_food(src_base), 1.2f * unit_troops)));
-            if (unit_food < int(0.5f * unit_troops)) return -1;   // 병량 부족
-            
-            // 출진 명령
-            if (do_cmd)
-            {
-                // 출진 명령 정보 생성.
-                pk::com_deploy_cmd_info cmd;
-                @cmd.base = @src_base;
-                cmd.type = 부대종류_전투;
-                cmd.member[0] = leader.get_id();
-                cmd.gold = 0;   // 공성병기 부대는 건설불가로 금소지 안함
-                cmd.troops = pk::max(1, unit_troops);
-                cmd.weapon_id[0] = ground_weapon_id;
-                cmd.weapon_id[1] = water_weapon_id;
-                cmd.weapon_amount[0] = (is_siege_weapon(ground_weapon_id))? 1 : pk::max(1, unit_troops);
-                cmd.weapon_amount[1] = (water_weapon_id == 병기_주가)? 0 : 1;
-                cmd.food = pk::min(50000, unit_food);
-
-                cmd.order = (src_base.get_force_id() == dst_base.get_force_id())? 부대임무_공격 : 
-                                             ((pk::is_enemy(src_base, dst_base))? 부대임무_공격 : 부대임무_이동);    // 자세력, 적거점, 동맹군
-
-                cmd.target_pos = dst_base.get_pos();  // 목표는 전투중인 거점
-                
-                // 출진.
-                int unit_id = pk::command(cmd);
-                pk::unit@ unit_cmd = pk::get_unit(unit_id);
-                if (pk::is_alive(unit_cmd))
+                else if (디버그모드)
                 {
-                    unit_cmd.action_done = true;
-                    
-                    if (디버그모드) 
-                    {
-                        string src_name  = pk::decode(pk::get_name(src_base));
-                        string dst_name  = pk::decode(pk::get_name(dst_base));
-                        string unit_name = pk::decode(pk::get_name(leader));
-                        string order_str = get_order_info(unit_cmd.order);
-                        string cmd_info  = (pk::is_enemy(src_base, dst_base))? "거점공략" : "거점원군";
-                        pk::info(pk::format("{}: {}대 {}: {}→{}", cmd_info, unit_name, order_str, src_name, dst_name));
-                    }
-                    return unit_id;
+                    pk::info("[PushCombatUnit] 출진 실패 - unit_id -1");
                 }
             }
             
             return -1;
         }
-        
         
         //----------------------------------------------------------------------------------
-        
-        // 무기 선택 함수
-        void get_ground_weapon(pk::building@ base, pk::person@ leader, int troops_max, int &out weapon_sel, int &out troops_sel)
-        {
-            int troops_min = 거점원군_최소출진병력;
-            int weapon_max = 0;
-            int best_tekisei = 적성_C;
-            
-            weapon_sel = 병기_검;
-            troops_sel = 0;
-            
-            // 노병 우대 출진
-            if (cmd_archer)
-            {
-                int tekisei = leader.tekisei[pk::equipment_id_to_heishu(병종_노병)];
-                int weapon = pk::get_weapon_amount(base, 병기_노);
-                if (troops_min <= weapon and 적성_B <= tekisei)
-                {
-                    weapon_sel = 병기_노;
-                    troops_sel = pk::min(weapon, troops_max);
-                }
-            }
-            // 일반 출진
-            else    
-            {
-                // 출병병력 이상 보유한 무기 중 최고 적성 확인
-                for (int id = 병기_창; id <= 병기_군마; id++)
-                {
-                    int tekisei = leader.tekisei[pk::equipment_id_to_heishu(id)];
-                    int weapon_t = pk::get_weapon_amount(base, id);
-                    if (troops_min <= weapon_t and best_tekisei <= tekisei)
-                        best_tekisei = tekisei;
-                }
-                
-                // 최고 적성 이상의 병과 중 무기 가장 많은 병과 선택
-                for (int id = 병기_창; id <= 병기_군마; id++)
-                {
-                    int tekisei = leader.tekisei[pk::equipment_id_to_heishu(id)];
-                    int weapon_t = pk::get_weapon_amount(base, id);
-                    if (troops_min <= weapon_t and weapon_max <= weapon_t and best_tekisei <= tekisei)
-                    {
-                        best_tekisei = tekisei;
-                        weapon_max = weapon_t;
-                        weapon_sel = id;
-                        troops_sel = pk::min(weapon_max, troops_max);
-                    }
-                }
-            }
-            
-            if (weapon_sel == 0)
-            {
-                troops_sel = troops_min;
-            }
-        }
-        
-        bool is_siege_weapon(int weapon_id)
-        {
-            if (병기_충차 <= weapon_id and weapon_id <= 병기_목수) return true;
-            return false;
-        }
         
         bool check_building_has_port(pk::building@ base)
         {
@@ -1137,22 +904,18 @@ namespace 거점원군
             if ((2*ref_status) <= status and status < (4*ref_status))
             {   // 공격측 우세
                 status_info = "공격측 병력 우세";
-                int num_atk_support_unit = count_atk_unit_type(src_base, dst_base, 부대종류_수송, /*siege_weapon*/false);
-                int unit_type = (!거점공략_수송부대허용 or pk::enemies_around(src_base) or num_atk_support_unit > max_unit_supply)? 부대종류_전투 : 부대종류_수송;
-                cmd = (PushAttackUnit(dst_base, src_base, unit_type, /*siege_weapon*/false, /*max_unit*/1) or cmd); // 전투 or 수송부대
+                cmd = (PushAttackUnit(dst_base, src_base, 부대종류_전투, /*max_unit*/1) or cmd); // 전투부대
             }
             else if (0 <= status and status < (2*ref_status))
             {   // 공방 치열
                 status_info = "공방 치열";
-                int num_atk_support_unit = count_atk_unit_type(src_base, dst_base, 부대종류_전투, /*siege_weapon*/true);
-                bool siege = (!거점공략_공성병기허용 or pk::enemies_around(src_base) or num_atk_support_unit > max_unit_siege)? false : true;
-                cmd = (PushAttackUnit(dst_base, src_base, 부대종류_전투, /*siege_weapon*/siege, /*max_unit*/1) or cmd); // 전투 or 공성부대
+                cmd = (PushAttackUnit(dst_base, src_base, 부대종류_전투, /*max_unit*/1) or cmd);
             }
             else if ((-1*ref_status) <= status and status < 0)
             {   // 수비측 우세
                 status_info = "수비측 병력 우세";
                 int max_unit = (pk::enemies_around(src_base))? 1 : max_unit_combat;
-                cmd = (PushAttackUnit(dst_base, src_base, 부대종류_전투, /*siege_weapon*/false, /*max_unit*/max_unit) or cmd); // 전투부대
+                cmd = (PushAttackUnit(dst_base, src_base, 부대종류_전투, /*max_unit*/max_unit) or cmd); // 전투부대
             }
         
             if (디버그모드)
@@ -1171,12 +934,10 @@ namespace 거점원군
         }
         
         int ref_status = 5000;    // 공방우위_기준병력
-        int max_unit_combat = pk::max(1, pk::min(10, 거점공략_전투부대수));
-        int max_unit_supply = pk::max(1, pk::min(3, 거점공략_수송부대수));
-        int max_unit_siege  = pk::max(1, pk::min(5, 거점공략_공성부대수));
+        int max_unit_combat = pk::max(1, pk::min(20, 거점공략_전투부대수));
         
         
-        bool PushAttackUnit(pk::building@ dst_base, pk::building@ src_base, int attack_type, bool siege_weapon=false, int max_unit=1)
+        bool PushAttackUnit(pk::building@ dst_base, pk::building@ src_base, int attack_type, int max_unit=1)
         {
             // 원군 출진 거점
             int src_id = src_base.get_id();
@@ -1204,22 +965,12 @@ namespace 거점원군
                             list_attack_base.add(src_base);
                     }
                 }
-                else if (attack_type == 부대종류_전투 and !siege_weapon)
+                else if (attack_type == 부대종류_전투)
                 {
-                   int unit_id = PushCombatUnit(src_base, dst_base, true);     // 전투부대 출진
+                    int unit_id = PushCombatUnit(src_base, dst_base, true);
                     if (unit_id != -1)
                     {
-                        unit_count += 1;     // 전투부대 카운트
-                        if (!list_attack_base.contains(src_base))
-                            list_attack_base.add(src_base);
-                    }
-                }
-                else if (attack_type == 부대종류_전투 and siege_weapon)
-                {
-                    int unit_id = PushSiegeUnit(src_base, dst_base, true);     // 공성부대 출진
-                    if (unit_id != -1)
-                    {
-                        unit_count += 1;     // 전투부대 카운트
+                        unit_count += 1;
                         if (!list_attack_base.contains(src_base))
                             list_attack_base.add(src_base);
                     }
@@ -1229,45 +980,6 @@ namespace 거점원군
             
 			return false;
         }
-        
-        // 목표 적 거점으로 진군 중인 부대수
-        int count_atk_unit_type(pk::building@ src_base, pk::building@ dst_base, int check_type, bool siege_weapon=false)
-        {
-            int count = 0;
-            if (!pk::is_alive(src_base) or !pk::is_alive(dst_base)) return -1;
-            int src_id = src_base.get_id();
-            int dst_id = dst_base.get_id();
-            if (src_id == dst_id) return -1;
-            
-            pk::district@ district = pk::get_district(src_base.get_district_id());
-            pk::array<pk::unit@> arr_unit = pk::list_to_array(pk::get_unit_list(district));
-            for (int i = 0; i < int(arr_unit.length); i++)
-            {
-                pk::unit@ unit = arr_unit[i];
-                int service_id = pk::get_service(unit);
-                
-                bool is_valid_type = false;
-                if (check_type == 부대종류_수송)
-                    is_valid_type = (unit.type == check_type);
-                else if (check_type == 부대종류_전투)
-                {
-                    if (siege_weapon and is_siege_weapon(pk::get_ground_weapon_id(unit)))
-                        is_valid_type = (unit.type == check_type);
-                    else if (!siege_weapon and !is_siege_weapon(pk::get_ground_weapon_id(unit)))
-                        is_valid_type = (unit.type == check_type);
-                }
-                
-                if (is_valid_type and service_id == src_id and unit.target_type == 부대임무대상_거점)
-                {
-                    pk::building@ building_t = pk::get_building(unit.target);
-                    if (pk::is_alive(building_t) and building_t.get_id() == dst_id and pk::is_enemy(unit, building_t))
-                        count++;
-                }
-            }
-            return count;
-        }
-        
-        
         
         //---------------------------------------------------------------------------------------
         // 거점별 병력 현황 업데이트
@@ -1409,13 +1121,7 @@ namespace 거점원군
             
             return name;
         }
-        
-        //---------------------------------------------------------------------------------------
-        bool 디버그모드 = false;
-        
-        
-        
-        
+ 
 	};
 
 	Main main;

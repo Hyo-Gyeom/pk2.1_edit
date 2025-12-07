@@ -8,17 +8,21 @@
 		}
 
 		int callback(pk::city@ city, const pk::detail::arrayptr<pk::person@> &in actors, int troops)
-		{
-			int n = 100;
+		{			
+			if (actors.length == 0) return 0;
+			
+			int n = 400;
 			bool has_myungseong = false;
 			for (int i = 0; i < actors.length; i++)
 			{
 				pk::person@ actor = actors[i];
 				if (pk::is_alive(actor))
+				{
 					n = n + actor.stat[int(pk::core["징병.능력"])];
-				
-				if (pk::has_skill(actor, 특기_명성))		
-					has_myungseong = true;
+					
+					if (pk::has_skill(actor, 특기_명성))		
+						has_myungseong = true;
+				}
 			}
 
 			// 법령정비 기교가 치안 저하를 줄임

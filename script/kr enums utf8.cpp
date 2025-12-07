@@ -1684,6 +1684,7 @@ const int 부대상태_유인 = 5;
 const int 부대상태_회피 = 6;
 const int 부대상태_끝 = 7;
 
+const int 부대임무_없음 = -1;
 const int 부대임무_대기 = 0;
 const int 부대임무_이동 = 1;
 const int 부대임무_설치 = 2;
@@ -1912,7 +1913,17 @@ const int 적성_C = 0;
 const int 적성_B = 1;
 const int 적성_A = 2;
 const int 적성_S = 3;
-const int 적성_끝 = 4;
+const int 적성_S1 = 4;
+const int 적성_S2 = 5;
+const int 적성_S3 = 6;
+const int 적성_S4 = 7;
+const int 적성_S5 = 8;
+const int 적성_S6 = 9;
+const int 적성_S7 = 10;
+const int 적성_S8 = 11;
+const int 적성_S9 = 12;
+const int 적성_X = 13;
+const int 적성_끝 = 14;
 
 const int 전략경향_중화통일 = 0;
 const int 전략경향_지방통일 = 1;

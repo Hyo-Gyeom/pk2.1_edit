@@ -22,45 +22,41 @@ namespace 야전부대교전최적화
     // 부대/거점 공격목표 변경 시기 설정 (3: 턴시작/중간 모두, 2: 턴중간 변동조건마다, 1: 턴시작 시에만,  0: 기능OFF)
     const int  업데이트_주기설정 = 3;       // 주의 : 업데이트 주기를 2 또는 3으로 설정 시 유닛이 많아지면 게임이 느려질 수 있음
     
-    const bool 목표부대변경     = true;    // 공격목표부대 재설정 시 타켓부대 설정여부 (거점목표 변경에는 영향 안줌)
-    const bool 대화표시설정     = true;    // 공격목표 변경내용 대화표시여부
+    const bool 야전부대교전최적화_활성 = true;  // 전체 기능 토글 (true: 동작, false: 비활성화)
+    const bool 목표부대변경 = true;    // 공격목표부대 재설정 시 타켓부대 설정여부 (거점목표 변경에는 영향 안줌)
+    const bool 대화표시설정 = true;    // 공격목표 변경내용 대화표시여부
     
     const int  부대목표변경_세력조건 = 0;     // 0: 컴퓨터AI 와 플레이어_위임군단 모두,  1: 플레이어_위임군단만, 2: 컴퓨터AI만,  3: 모두 미적용
-    const bool 부대목표변경_유저군단적용 = false;   // 세력조건과 별개로 적용여부 설정, 유저의 임무지정 무시되므로 false 권장
     
     // 가중치 추가옵션 설정 (기본적으로는 병과/적성만으로 판단함)
-    const bool 부대목표변경_공격가중치적용 = false;   // 목표대상의 부대공격력을 가중치 추가 적용
-    const bool 부대목표변경_방어가중치적용 = true;   // 목표대상의 부대방어력을 가중치 추가 적용
-    const bool 부대목표변경_신분가중치적용 = true;   // 목표대상이 군주/도독 부대인 경우 가중치 추가 적용 (패시브효과.cpp 내 부대궤멸효과 사용 시 추천 설정)
     const bool 부대목표변경_병력가중치적용 = true;   // 목표대상과 임무부대의 병력차이에 대한 가중치 추가 적용 (궤멸시키기 쉬운 소부대를 공격할 가능성 높임)
-    const bool 부대목표변경_계략가중치적용 = false;   // 목표대상이 계략특기 보유부대인 경우 가중치 추가 적용
+    const bool 부대목표변경_공격가중치적용 = true;   // 목표대상의 부대공격력을 가중치 추가 적용
+    const bool 부대목표변경_방어가중치적용 = true;   // 목표대상의 부대방어력을 가중치 추가 적용
+    const bool 부대목표변경_신분가중치적용 = false;   // 목표대상이 군주/도독 부대인 경우 가중치 추가 적용 (패시브효과.cpp 내 부대궤멸효과 사용 시 추천 설정)
+    
     
     // 교전가능 시 건설편제 판단 기준
-    const bool 건설편제_제외설정    = true;
-    const int  건설편제_기준소지금  = 1000;     // 기준값이 높아지면 컴퓨터 건설명령불가
-    const int  건설편제_기준병력    = 3000;     // 기준 소지금 이상 및 기준병력 이하인 경우 건설편제로 취급
-    const bool 건설편제_임무우대    = true;     // 부대임무가 설치로 설정된 경우 함정 외 시설 허용
-    
-    // 교전가능 시 계략부대 판단 기준
-    const bool  계략부대_제외설정  = true;
-    const bool  계략부대_특기우대 = true;     // 계략계열 특기 보유한 부대 우대 (신산,허실,백출,귀모,연환은 무조건 우대)
-    const float 계략부대_지력공방비 = 1.5f;      // 부대지력이 부대공방평균 대비 기준 이상이면 계략부대로 취급
+    const bool 건설편제_제외설정 = true;
+    const int  건설편제_기준소지금 = 1000;     // 기준값이 높아지면 컴퓨터 건설명령불가
+    const int  건설편제_기준병력 = 3000;     // 기준 소지금 이상 및 기준병력 이하인 경우 건설편제로 취급
+    const bool 건설편제_임무우대 = true;     // 부대임무가 설치로 설정된 경우 함정 외 시설 허용
     
     // 교전가능 시 목수/정란/투석 부대 부대전투 설정 ('20.8.30)
-    const bool  공성병기_부대전투_참여설정  = true; // 공성병기부대가 부대간 전투에 참여할지 설정
-    const int   공성병기_부대전투_기준기력  = 60;   // 공성병기부대가 부대간 전투에 참여기준 (기력 이상인 경우 참여)
-    
+    const bool 공성병기_부대전투_참여설정 = true; // 공성병기부대가 부대간 전투에 참여할지 설정
+    const int 공성병기_부대전투_기준기력 = 60;   // 공성병기부대가 부대간 전투에 참여기준 (기력 이상인 경우 참여)
+    const bool 적거점_점령허용    = true;   // 부대가 적지에 있을 시 주변에 교전가능한 부대가 없을 경우 거점 공략으로 임무설정됨
+    const bool 적거점_점령공성병기적용 = true;   // 점령 허용 시 공성병기 부대만 거점 공략 실행 (true=공성병기만 점령실행  / false=병기 관계없이 점령실행)
+    // 도시에서 정복 출병 시 최대 거점 거리 제한 및 부대주변 자세력 부대수 확인 시 거리 제한
+    // 관문/항구: 적세력이면 정복목표_최대거리, 아니면 1
+    // 공략군: 최대 거리 2로 별도 제한 (정복목표_최대거리와 무관)
+    const int  정복목표_최대거리 = 3;       
     //---------------------------------------------------------------------------------------
     
     // 교전 중인 주변 거점 병력 부족 시 지원
     const bool 아군거점_수성지원 = true;   // 근접 전투 부대 주변의 교전 중인 거점에 병력 적을 시 거점 진입하여 수성 지원
     const bool 도시거점_수성지원 = true;   // 아군거점_수성지원 설정 true 인 경우: 도시거점 수성지원 여부 활성화
     const bool 관문항구_수성지원 = true;   // 아군거점_수성지원 설정 true 인 경우: 관문항구 수성지원 여부 활성화
-    
-    // 적지 침투 부대의 거점공략 허용
-    const bool 적거점_점령허용    = true;   // 부대가 적지에 있을 시 주변에 교전가능한 부대가 없을 경우 거점 공략으로 임무설정됨
-    const bool 적거점_점령성격적용 = true;   // 점령 허용 시 부대 주장의 성격에 따른 행동 (true=대담,저돌만 점령실행  / false=성격 관계없이 점령실행)
-    
+       
     // 거점 진입 시 병력 초과인 경우 소속거점으로 복귀 
     const bool  진입부대_초과병력귀환 = true;   // 거점으로 부대진입 전 병력한도 초과여부 확인 후 귀환목표 재설정
     const float 진입부대_초과한도기준 = 1.0f;   // 거점최대병력 대비 병력/병기(거점+부대) 한도초과 기준설정 (0.0f~1.0f)
@@ -69,8 +65,10 @@ namespace 야전부대교전최적화
     
     //---------------------------------------------------------------------------------------
     const bool 극소병력부대_거점복귀허용 = true;    // 궤멸직전 AI부대 소속거점으로 복귀 기능 (유저부대 미적용)
-    const int  극소병력부대_복귀병력기준 = 500;     // 소속거점 복귀 기준 병력, 기준 미만 시 거점 복귀함
+    const int  극소병력부대_복귀병력기준 = 1000;     // 소속거점 복귀 기준 병력, 기준 미만 시 거점 복귀함
     
+
+    bool 디버그모드 = true;
     //=======================================================================================
     
     
@@ -82,13 +80,9 @@ namespace 야전부대교전최적화
             pk::bind(102, pk::trigger102_t(onGameInit));
             pk::bind(111, pk::trigger111_t(onTurnStart));
             
-            pk::bind(160, pk::trigger160_t(onBuildingCreate));
-            pk::bind(161, pk::trigger161_t(onBuildingDestroyed));
-
             pk::bind(170, pk::trigger170_t(onUnitCreate));
             pk::bind(171, pk::trigger171_t(onUnitEliminated));
             pk::bind(172, pk::trigger172_t(onUnitPosChange));
-            pk::bind(173, pk::trigger173_t(onUnitExpAdd));
         }
         //---------------------------------------------------------------------------
         
@@ -131,25 +125,7 @@ namespace 야전부대교전최적화
             if (!pk::is_normal_force(force)) return;
             optimize_current_force_target();    // 공통함수호출
         }
-        
-        // 건물 생성 시 업데이트
-        void onBuildingCreate(pk::building@ building, int type)
-        {
-            if (pk::is_campaign()) return;
-            if (pk::get_scenario().difficulty < 난이도_특급) return;
-            
-            optimize_pos_range_target(building.pos);    // 공통함수호출 ('20.9.7)
-        }
-        
-        // 건물 파괴 시 업데이트
-        void onBuildingDestroyed(pk::building@ building, int type)
-        {
-            if (pk::is_campaign()) return;
-            if (pk::get_scenario().difficulty < 난이도_특급) return;
-            
-            optimize_pos_range_target(building.pos);    // 공통함수호출 ('20.9.7)
-        }
-        
+                
         // 부대 생성 시 업데이트
         void onUnitCreate(pk::unit@ unit, int type)
         {
@@ -174,16 +150,6 @@ namespace 야전부대교전최적화
             optimize_pos_range_target(unit.pos);    // 공통함수호출 ('20.9.7)
         }
         
-        // 부대 경험치 획득 시
-        void onUnitExpAdd(pk::unit@ unit, int type)
-        {
-            if (pk::is_campaign()) return;
-            if (pk::get_scenario().difficulty < 난이도_특급) return;
-            if (!pk::is_alive(unit)) return;
-
-            optimize_pos_range_target(unit.pos);    // 공통함수호출 ('20.9.7)
-        }
-        
         // 부대 위치 변동 시 (전법에 의한 이동 포함)
         void onUnitPosChange(pk::unit@ unit_t, const pk::point &in pos)
         {
@@ -196,14 +162,15 @@ namespace 야전부대교전최적화
             if (!pk::is_normal_force(force_id)) return;
             pk::force@ force = pk::get_force(force_id);
             
-            optimize_pos_range_target(pos);    // 공통함수호출 ('20.9.7)
-            
+            optimize_pos_range_target(pos);    // 공통함수호출 ('20.9.7)            
         }
         
         //---------------------------------------------------------------------------
         // 기준 좌표로부터 일정 거리 내에 있는 현재 턴 세력 부대 최적화 (공통함수 추가, '20.9.7)
         void optimize_pos_range_target(pk::point pos_t)
         {
+            
+            if (!야전부대교전최적화_활성) return;
             if (업데이트_주기설정 != 2 and 업데이트_주기설정 != 3) return;
             
             if (!pk::is_valid_pos(pos_t)) return;
@@ -211,14 +178,16 @@ namespace 야전부대교전최적화
             int force_id = pk::get_current_turn_force_id();
             if (!pk::is_normal_force(force_id)) return;
             pk::force@ force = pk::get_force(force_id);
+            log_force_any(pk::format("턴 처리 시작, 좌표({}, {})", pos_t.x, pos_t.y), force_id);
             
             // 해당 좌표로부터 범위 내 현재 턴 부대검색
             pk::array<pk::point> arr_range = pk::range(pos_t, 1, order_update_range);
+            
             for (int i = 0; i < int(arr_range.length); i++)
             {
                 pk::unit@ unit = pk::get_unit(arr_range[i]);
                 if (check_valid_unit(unit) and check_force_option(unit))
-                {
+                {                    
                     if (!unit.action_done and unit.get_force_id() == force_id )
                         optimize_combat_unit_target(unit);     // 부대목표 재설정 함수    
                 }
@@ -233,6 +202,7 @@ namespace 야전부대교전최적화
             int force_id = pk::get_current_turn_force_id();
             if (!pk::is_normal_force(force_id)) return;
             pk::force@ force = pk::get_force(force_id);
+            // process_idle_units_for_conquest(force);
             
             // 세력 전체 미행동 부대 
             pk::array<pk::unit@> arr_unit_list = pk::list_to_array(pk::get_unit_list());
@@ -248,19 +218,134 @@ namespace 야전부대교전최적화
             }
         }
         
+        void process_idle_units_for_conquest(pk::force@ force)
+        {
+            if (!야전부대교전최적화_활성) return;
+            if (!pk::is_alive(force)) return;
+            int force_id = force.get_id();
+            log_force_any("대기 부대 정복 재지정 시작", force_id);
+            pk::list<pk::unit@> unit_list = pk::get_unit_list(force);
+            log_force_any(pk::format("대기 부대 수 {}", unit_list.count), force_id);
+            for (int i = 0; i < unit_list.count; i++)
+            {
+                pk::unit@ unit = unit_list[i];
+                if (!check_valid_unit(unit))
+                {
+                    log_force_any(pk::format("부대 {} 제외: check_valid_unit 실패", unit.get_id()), force_id);
+                    continue;
+                }
+                if (pk::is_player_controlled(unit))
+                {
+                    log_force_any(pk::format("부대 {} 제외: 플레이어 조종", unit.get_id()), force_id);
+                    continue;
+                }
+                if (unit.order != -1)
+                {
+                    log_force_any(pk::format("부대 {} 제외: order {}", unit.get_id(), unit.order), force_id);
+                    continue;
+                }
+                log_force_any(pk::format("부대 {} 처리 시작 (좌표 {}, {})", unit.get_id(), unit.pos.x, unit.pos.y), force_id);
+                int pos_building_id = pk::get_building_id(unit.pos);
+                if (pos_building_id < 0)
+                {
+                    log_force_any(pk::format("부대 {} 위치한 건물 없음, 좌표({}, {})", unit.get_id(), unit.pos.x, unit.pos.y), force_id);
+                }
+                pk::building@ pos_base = pk::get_building(pos_building_id);
+                int service_id = pk::get_service(unit);
+                if (service_id < 0)
+                {
+                    log_force_any(pk::format("부대 {} 소속 거점 없음", unit.get_id()), force_id);
+                }
+                pk::building@ service_base = pk::get_building(service_id);
+                pk::building@ ref_base = pk::is_alive(pos_base) ? pos_base : service_base;
+                log_force_any(pk::format("부대 {} pos_base {}, service_base {}", unit.get_id(), pk::is_alive(pos_base) ? pos_base.get_id() : -1, pk::is_alive(service_base) ? service_base.get_id() : -1), force_id);
+                if (!pk::is_alive(ref_base))
+                {
+                    log_force_any(pk::format("참조 거점 없음, 부대 {}", unit.get_id()), force_id);
+                    continue;
+                }
+                
+                log_force_any(pk::format("부대 {} 정복 후보 계산 시작, ref_base {}", unit.get_id(), ref_base.get_id()), force_id);
+                int target_id = get_forced_conquest_target(ref_base, unit);
+                log_force_any(pk::format("부대 {} 정복 후보 계산 완료, target_id {}", unit.get_id(), target_id), force_id);
+                log_force_any(pk::format("참조 거점 {}에서 정복 대상 {}", ref_base.get_id(), target_id), force_id);
+                if (target_id == -1)
+                {
+                    log_force_any(pk::format("정복 대상 없음, 부대 {}", unit.get_id()), force_id);
+                    continue;
+                }
+                pk::building@ target_base = pk::get_building(target_id);
+                log_force_any(pk::format("목표 거점 {} 유효성 {}", target_id, pk::is_alive(target_base)), force_id);
+                if (!pk::is_alive(target_base))
+                {
+                    log_force_any(pk::format("목표 거점 무효, 부대 {}", unit.get_id()), force_id);
+                    continue;
+                }
+                
+                string leader_name = pk::decode(pk::get_name(pk::get_person(unit.leader)));
+                string target_name = pk::decode(pk::get_name(target_base));
+                log_force_any(pk::format("부대 {} → 정복 목표 {}", leader_name, target_name), force_id);
+                
+                // 병량 보급
+                int max_food = pk::get_max_food(unit);
+                log_force_any(pk::format("부대 {} 병량 보급 체크, max_food {}", unit.get_id(), max_food), force_id);
+                if (max_food > 0)
+                {
+                    int cur_food = unit.food;
+                    int add_food = pk::min(2000, max_food - cur_food);
+                    if (add_food > 0)
+                    {
+                        log_force_any(pk::format("부대 {} 병량 보급 +{}", leader_name, add_food), force_id);
+                        pk::add_food(unit, add_food, false);
+                    }
+                }
+                
+                log_force_any(pk::format("부대 {} 목표 배열 기록 준비", unit.get_id()), force_id);
+                arr_target_base_id[unit.get_id()] = target_id;
+                arr_target_unit_id[unit.get_id()] = -1;
+                log_force_any(pk::format("부대 {} 목표 배열 기록 완료 base:{}, unit:-1", unit.get_id(), target_id), force_id);
+                pk::set_order(unit, 부대임무_정복, target_base.pos);
+                log_force_any(pk::format("부대 {} 정복 명령 설정", unit.get_id()), force_id);
+                
+                pk::building@ spawn_city = null;
+                if (pk::is_alive(pos_base) and pos_base.get_id() >= 건물_도시시작 and pos_base.get_id() < 건물_도시끝)
+                    @spawn_city = @pos_base;
+                else if (pk::is_alive(service_base) and service_base.get_id() >= 건물_도시시작 and service_base.get_id() < 건물_도시끝)
+                    @spawn_city = @service_base;
+                
+                if (spawn_city !is null)
+                {
+                    log_force_any(pk::format("도시 {}에서 정복 출병", spawn_city.get_id()), force_id);
+                    spawn_city_reinforce_units(spawn_city, target_id);
+                    log_force_any(pk::format("도시 {} 출병 처리 완료", spawn_city.get_id()), force_id);
+                }
+                else
+                {
+                    log_force_any(pk::format("정복 출병 도시 없음, 부대 {}", unit.get_id()), force_id);
+                }
+                
+                assign_same_target_to_all_units(unit, target_id, target_base.pos);
+                log_force_any(pk::format("부대 {}와 동일 도시 부대 정복 목표 공유", unit.get_id()), force_id);
+                
+                if (디버그모드)
+                    pk::info(pk::format("대기부대 정복 재지정: {} → {}", pk::decode(pk::get_name(pk::get_person(unit.leader))), pk::decode(pk::get_name(target_base))));
+            }
+            log_force_any("대기 부대 정복 재지정 종료", force_id);
+        }
+        
         //---------------------------------------------------------------------------
         //---------------------------------------------------------------------------
         
         // 부대목표 재설정 함수
         void optimize_combat_unit_target(pk::unit@ unit)
         {
+            if (!야전부대교전최적화_활성) return;
             // 정상부대가 아니면 종료
             if (!pk::is_alive(unit)) return;
             if (unit.status != 부대상태_통상) return;
             
             // 부대 목표
             @dst_unit_old = pk::hex_object_to_unit(pk::get_hex_object(unit.target_pos));
-            
             // ------ 공격 가능한 적부대 검색함수 호출 -------------
             // 주의 :: def_force_base_nearby, atk_enemy_base_nearby, retreat_exceed_unit 함수보다 먼저 사용할 것
             get_list_candidate_unit(unit);
@@ -290,9 +375,6 @@ namespace 야전부대교전최적화
             // AI건설편제인 경우 임무 미변경
             if (건설편제_제외설정 and (check_construction_unit(unit))) return ;
             
-            // 계략부대인 경우 임무 미변경
-            if (계략부대_제외설정 and (func_strategy_unit_type(unit) > 0)) return ;
-            
             // 공격목표부대 변경
             if (목표부대변경 and candidate_count > 0)
                 func_change_target_unit(unit);  // 주변 적부대 공격설정
@@ -313,7 +395,8 @@ namespace 야전부대교전최적화
                 int unit_id = unit.get_id();
                 int service_id = pk::get_service(unit);
                 pk::building@ base = pk::get_building(pk::get_service(unit));
-                if (pk::is_alive(base) and arr_target_base_id[unit_id] != service_id and pk::get_distance(base.pos, unit.pos) <= 25)
+                bool is_valid_distance = (pk::is_valid_pos(base.pos) and pk::is_valid_pos(unit.pos));
+                if (pk::is_alive(base) and arr_target_base_id[unit_id] != service_id and is_valid_distance and pk::get_distance(base.pos, unit.pos) <= 25)
                 {
                     arr_target_base_id[unit_id] = service_id;
                     pk::set_order(unit, 부대임무_이동, base.pos);
@@ -488,10 +571,6 @@ namespace 야전부대교전최적화
             string str_p0 = pk::decode(pk::get_name(pk::get_person(src_unit.leader)));
             string str_w0 = get_weapon_name(src_unit.weapon);
             string str_t0 = get_tekisei_name(pk::get_tekisei(src_unit));
-            //string str_f1 = pk::decode(pk::get_name(pk::get_force(dst_unit_old.get_force_id())));
-            //string str_p1 = pk::decode(pk::get_name(pk::get_person(dst_unit_old.leader)));
-            //string str_w1 = get_weapon_name(dst_unit_old.weapon);
-            //string str_t1 = get_tekisei_name(pk::get_tekisei(dst_unit_old));
             string str_f2 = pk::decode(pk::get_name(pk::get_force(dst_unit_new.get_force_id())));
             string str_p2 = pk::decode(pk::get_name(pk::get_person(dst_unit_new.leader)));
             string str_w2 = get_weapon_name(dst_unit_new.weapon);
@@ -532,7 +611,7 @@ namespace 야전부대교전최적화
                 bool is_candidate_base = (candidate_count == 0 or (is_weak_base(target_base) and candidate_count > 0));
                 if (is_enemy_base and is_candidate_base and (arr_target_base_id[unit_id] != target_id and arr_target_unit_id[unit_id] != -1) )
                 {
-                    if ((적거점_점령성격적용 and (leader.character == 성격_대담 or leader.character == 성격_저돌)) or !적거점_점령성격적용)
+                    if ((적거점_점령공성병기적용 and is_siege_weapon(unit.weapon)) or !적거점_점령공성병기적용)
                     {
                         // 목표 재설정 정보 저장
                         arr_target_base_id[unit_id] = target_id;
@@ -761,7 +840,7 @@ namespace 야전부대교전최적화
                     if (is_exceed_unit)
                     { 
                         // 거점 검색 함수
-                        int dst_id = get_neighbor_base_retreat(base_t, unit);
+                        int dst_id = get_retreat_base_with_conquest(base_t, unit);
                         pk::building@ dst_base = pk::get_building(dst_id);
                         if (!pk::is_alive(dst_base)) return false;
                         
@@ -788,15 +867,65 @@ namespace 야전부대교전최적화
             
             return false;            
         }
+		
+		int get_city_id_from_building(pk::building@ building)
+		{
+			if (!pk::is_alive(building)) return -1;
+			int building_id = building.get_id();
+			if (building_id >= 0 and building_id < 건물_도시끝) return building_id;
+			if (pk::is_valid_pos(building.pos)) return pk::get_city_id(building.pos);
+			return -1;
+		}
+		
+		bool has_player_path_via_distance2(int src_city_id, int dst_city_id)
+		{
+			if (src_city_id < 0 or dst_city_id < 0) return false;
+			for (int i = 0; i < 건물_거점끝; i++)
+			{
+				pk::building@ mid = pk::get_building(i);
+				if (!pk::is_alive(mid)) continue;
+				if (!mid.is_player()) continue;
+				int mid_city_id = get_city_id_from_building(mid);
+				if (mid_city_id < 0) continue;
+				if (pk::get_city_distance(src_city_id, mid_city_id) == 1 and pk::get_city_distance(mid_city_id, dst_city_id) == 1)
+					return true;
+			}
+			return false;
+		}
+        
+        bool has_player_path_via_distance3(int src_city_id, int dst_city_id)
+        {
+            if (src_city_id < 0 or dst_city_id < 0) return false;
+            for (int i = 0; i < 건물_거점끝; i++)
+            {
+                pk::building@ mid1 = pk::get_building(i);
+                if (!pk::is_alive(mid1)) continue;
+                if (!mid1.is_player()) continue;
+                int mid1_city_id = get_city_id_from_building(mid1);
+                if (mid1_city_id < 0) continue;
+                if (pk::get_city_distance(src_city_id, mid1_city_id) != 1) continue;
+                
+                for (int j = 0; j < 건물_거점끝; j++)
+                {
+                    pk::building@ mid2 = pk::get_building(j);
+                    if (!pk::is_alive(mid2)) continue;
+                    if (!mid2.is_player()) continue;
+                    int mid2_city_id = get_city_id_from_building(mid2);
+                    if (mid2_city_id < 0) continue;
+                    if (pk::get_city_distance(mid1_city_id, mid2_city_id) != 1) continue;
+                    if (pk::get_city_distance(mid2_city_id, dst_city_id) == 1)
+                        return true;
+                }
+            }
+            return false;
+        }
         
         // 가까운 병력 부족 거점을 얻음
         pk::building@ src_t;
         int get_neighbor_base_retreat(pk::building@ src_base, pk::unit@ unit)
         {
             if (!pk::is_alive(unit) or !pk::is_alive(src_base)) return -1;
-            int dst_id = -1;
             int best_dst = -1;
-			int best_distance = 0;
             int src_id = src_base.get_id();
             pk::list<pk::building@> dst_list; 
             @src_t = @src_base;
@@ -810,11 +939,11 @@ namespace 야전부대교전최적화
                 for (int i = 0; i < 건물_거점끝; i++)
                 {
                     pk::building@ dst = pk::get_building(i);
-                    int dst_id = dst.get_id();
+                    int candidate_id = dst.get_id();
                     bool is_exceed_unit = check_exceed_unit(dst, unit, true);
-                    if (!is_exceed_unit and src_id != dst_id and src_base.get_force_id() == dst.get_force_id())
+                    if (!is_exceed_unit and src_id != candidate_id and src_base.get_force_id() == dst.get_force_id())
                     {
-                        best_dst = dst_id;
+                        best_dst = candidate_id;
                         dst_list.add(dst);  // 철수가능 거점리스트 추가
                     }
                 }
@@ -837,6 +966,343 @@ namespace 야전부대교전최적화
                 best_dst = dst_list[0].get_id();
             }
 			return best_dst;
+        }
+        
+        void log_force_any(string msg, int force_id)
+        {
+            if (!디버그모드) return;
+            string force_name = pk::decode(pk::get_name(pk::get_force(force_id)));
+            pk::info(pk::format("[세력 {} ({})] {}", force_name, force_id, msg));
+        }
+
+        int get_retreat_base_with_conquest(pk::building@ src_base, pk::unit@ unit)
+        {
+            if (!pk::is_alive(unit) or !pk::is_alive(src_base)) return -1;
+            int best_dst = -1;
+            int src_id = src_base.get_id();
+            pk::list<pk::building@> dst_list; 
+            @src_t = @src_base;
+            pk::force@ force = pk::get_force(src_base.get_force_id());
+            
+            bool last_city = (pk::get_city_list(force).count <= 1 and src_id < 건물_도시끝);
+            if (last_city)
+                return get_forced_conquest_target(src_base, unit);
+            
+            for (int i = 0; i < 건물_거점끝; i++)
+            {
+                pk::building@ dst = pk::get_building(i);
+                if (!pk::is_alive(dst)) continue;
+                int dst_id = dst.get_id();
+                if (dst_id == src_id) continue;
+                if (src_base.get_force_id() != dst.get_force_id()) continue;
+                bool is_exceed_unit = check_exceed_unit(dst, unit, true);
+                if (is_exceed_unit) continue;
+                dst_list.add(dst);  // 철수가능 거점리스트 추가
+            }
+            
+            if (dst_list.count == 0)
+                best_dst = -1;
+            else
+            {
+                dst_list.sort(function(a, b)
+                {
+                    if (!pk::is_alive(main.src_t)) return false;
+                    int build_dist_a = -1;
+                    int build_dist_b = -1;
+                    int pos_dist_a = -1;
+                    int pos_dist_b = -1;
+                    
+                    if (pk::is_alive(a) and pk::is_alive(b) and pk::is_alive(main.src_t))
+                    {
+                        build_dist_a = pk::get_building_distance(a.get_id(), main.src_t.get_id(), a.get_force_id());
+                        build_dist_b = pk::get_building_distance(b.get_id(), main.src_t.get_id(), b.get_force_id());
+                        
+                        if (pk::is_valid_pos(a.pos) and pk::is_valid_pos(main.src_t.pos))
+                            pos_dist_a = pk::get_distance(a.pos, main.src_t.pos);
+                        if (pk::is_valid_pos(b.pos) and pk::is_valid_pos(main.src_t.pos))
+                            pos_dist_b = pk::get_distance(b.pos, main.src_t.pos);
+                    }
+                    
+                    if (build_dist_a >= 0 and build_dist_b >= 0 and build_dist_a != build_dist_b) 
+                        return (build_dist_a < build_dist_b);
+                    if (pos_dist_a >= 0 and pos_dist_b >= 0)
+                        return (pos_dist_a < pos_dist_b);
+                    return false;
+                });
+                best_dst = dst_list[0].get_id();
+            }
+			return best_dst;
+        }
+        
+        int get_forced_conquest_target(pk::building@ src_base, pk::unit@ unit)
+        {
+            if (!pk::is_alive(src_base) or !pk::is_alive(unit)) return -1;
+            pk::force@ unit_force = pk::get_force(unit.get_force_id());
+            if (!pk::is_alive(unit_force)) return -1;
+            
+            int src_id = src_base.get_id();
+            log_force_any(pk::format("[정복타겟] 부대 {} src_base {}", unit.get_id(), src_id), unit_force.get_id());
+            int src_city_id = get_city_id_from_building(src_base);
+            pk::list<pk::building@> priority_list_1; // 거리 1 플레이어 거점
+            pk::list<pk::building@> priority_list_2; // 아군 도시 경유 거리 2 플레이어 거점
+            pk::list<pk::building@> priority_list_3; // 아군 도시들 경유 거리 3 플레이어 거점
+            pk::list<pk::building@> priority_list_4; // 그 외
+            @src_t = @src_base;
+            
+            int max_distance = pk::max(1, pk::min(5, 정복목표_최대거리));
+            for (int i = 0; i < 건물_거점끝; i++)
+            {
+                pk::building@ dst = pk::get_building(i);
+                if (!pk::is_alive(dst))
+                {
+                    continue;
+                }
+                int cur_dst_id = dst.get_id();
+                if (src_id == cur_dst_id)
+                {
+                    continue;
+                }
+                if (!pk::is_enemy(unit_force, dst))
+                {
+                    continue;
+                }
+                
+                int dst_city_id = get_city_id_from_building(dst);
+                int city_dist = -1;
+                if (src_city_id >= 0 and dst_city_id >= 0)
+                    city_dist = pk::get_city_distance(src_city_id, dst_city_id);
+                
+                if (city_dist < 1 or city_dist > max_distance)
+                {
+                    continue;
+                }
+                
+                bool added = false;
+                bool is_player_dst = dst.is_player();
+                
+                if (is_player_dst and city_dist == 1)
+                {
+                    priority_list_1.add(dst);
+                    added = true;
+                }
+                else if (is_player_dst and city_dist == 2 and has_player_path_via_distance2(src_city_id, dst_city_id))
+                {
+                    priority_list_2.add(dst);
+                    added = true;
+                }
+                else if (is_player_dst and city_dist == 3 and has_player_path_via_distance3(src_city_id, dst_city_id))
+                {
+                    priority_list_3.add(dst);
+                    added = true;
+                }
+                
+                if (!added and 3 >= city_dist)
+                {
+                    priority_list_4.add(dst);
+                }
+            }
+            
+            log_force_any(pk::format("[정복타겟] list1 {}, list2 {}, list3 {}, list4 {}", priority_list_1.count, priority_list_2.count, priority_list_3.count, priority_list_4.count), unit_force.get_id());
+            
+            if (priority_list_1.count > 0)
+            {
+                log_force_any("[정복타겟] list1 정렬 시작", unit_force.get_id());
+                priority_list_1.sort(function(a, b)
+                {
+                    if (!pk::is_alive(main.src_t)) return false;
+                    int troops_a = pk::get_troops(a);
+                    int troops_b = pk::get_troops(b);
+                    if (troops_a != troops_b) return (troops_a < troops_b);
+                    
+                    int pos_dist_a = -1;
+                    int pos_dist_b = -1;
+                    if (pk::is_valid_pos(a.pos) and pk::is_valid_pos(main.src_t.pos))
+                        pos_dist_a = pk::get_distance(a.pos, main.src_t.pos);
+                    if (pk::is_valid_pos(b.pos) and pk::is_valid_pos(main.src_t.pos))
+                        pos_dist_b = pk::get_distance(b.pos, main.src_t.pos);
+                    
+                    if (pos_dist_a >= 0 and pos_dist_b >= 0)
+                        return (pos_dist_a < pos_dist_b);
+                    return false;
+                });
+                int pick = priority_list_1[0].get_id();
+                log_force_any(pk::format("[정복타겟] list1 pick {}", pick), unit_force.get_id());
+                return pick;
+            }
+            else if (priority_list_2.count > 0)
+            {
+                priority_list_2.sort(function(a, b)
+                {
+                    if (!pk::is_alive(main.src_t)) return false;
+                    int troops_a = pk::get_troops(a);
+                    int troops_b = pk::get_troops(b);
+                    if (troops_a != troops_b) return (troops_a < troops_b);
+                    
+                    int pos_dist_a = -1;
+                    int pos_dist_b = -1;
+                    if (pk::is_valid_pos(a.pos) and pk::is_valid_pos(main.src_t.pos))
+                        pos_dist_a = pk::get_distance(a.pos, main.src_t.pos);
+                    if (pk::is_valid_pos(b.pos) and pk::is_valid_pos(main.src_t.pos))
+                        pos_dist_b = pk::get_distance(b.pos, main.src_t.pos);
+                    
+                    if (pos_dist_a >= 0 and pos_dist_b >= 0)
+                        return (pos_dist_a < pos_dist_b);
+                    return false;
+                });
+                log_force_any("[정복타겟] list2 정렬 완료", unit_force.get_id());
+                int pick = priority_list_2[0].get_id();
+                log_force_any(pk::format("[정복타겟] list2 pick {}", pick), unit_force.get_id());
+                return pick;
+            }
+            else if (priority_list_3.count > 0)
+            {
+                log_force_any("[정복타겟] list3 정렬 시작", unit_force.get_id());
+                priority_list_3.sort(function(a, b)
+                {
+                    if (!pk::is_alive(main.src_t)) return false;
+                    int troops_a = pk::get_troops(a);
+                    int troops_b = pk::get_troops(b);
+                    if (troops_a != troops_b) return (troops_a < troops_b);
+                    
+                    int pos_dist_a = -1;
+                    int pos_dist_b = -1;
+                    if (pk::is_valid_pos(a.pos) and pk::is_valid_pos(main.src_t.pos))
+                        pos_dist_a = pk::get_distance(a.pos, main.src_t.pos);
+                    if (pk::is_valid_pos(b.pos) and pk::is_valid_pos(main.src_t.pos))
+                        pos_dist_b = pk::get_distance(b.pos, main.src_t.pos);
+                    
+                    if (pos_dist_a >= 0 and pos_dist_b >= 0)
+                        return (pos_dist_a < pos_dist_b);
+                    return false;
+                });
+                log_force_any("[정복타겟] list3 정렬 완료", unit_force.get_id());
+                int pick = priority_list_3[0].get_id();
+                log_force_any(pk::format("[정복타겟] list3 pick {}", pick), unit_force.get_id());
+                return pick;
+            }
+            else if (priority_list_4.count > 0)
+            {
+                if (!pk::is_alive(main.src_t))
+                {
+                    log_force_any("[정복타겟] src_t 사라짐, list4 종료", unit_force.get_id());
+                    return -1;
+                }
+                log_force_any(pk::format("[정복타겟] list4 직접 탐색 시작 (후보 {})", priority_list_4.count), unit_force.get_id());
+                pk::building@ best = null;
+                int best_build_dist = 1000000;
+                int best_pos_dist = 1000000;
+                for (int i = 0; i < priority_list_4.count; i++)
+                {
+                    pk::building@ candidate = priority_list_4[i];
+                    if (!pk::is_alive(candidate)) continue;
+                    int build_dist = pk::get_building_distance(candidate.get_id(), main.src_t.get_id(), candidate.get_force_id());
+                    if (build_dist < 0) continue;
+                    int pos_dist = (pk::is_valid_pos(candidate.pos) and pk::is_valid_pos(main.src_t.pos)) ? pk::get_distance(candidate.pos, main.src_t.pos) : 1000000;
+                    
+                    bool better = false;
+                    if (build_dist < best_build_dist)
+                        better = true;
+                    else if (build_dist == best_build_dist and pos_dist < best_pos_dist)
+                        better = true;
+                    
+                    if (better)
+                    {
+                        @best = candidate;
+                        best_build_dist = build_dist;
+                        best_pos_dist = pos_dist;
+                    }
+                }
+                if (best is null)
+                {
+                    log_force_any("[정복타겟] list4 후보 모두 무효, -1 반환", unit_force.get_id());
+                    return -1;
+                }
+                int pick = best.get_id();
+                log_force_any(pk::format("[정복타겟] list4 pick {}", pick), unit_force.get_id());
+                return pick;
+            }
+            
+            log_force_any("[정복타겟] 후보 없음 반환 -1", unit_force.get_id());
+            return -1;
+        }
+        
+        
+        void assign_same_target_to_all_units(pk::unit@ pivot_unit, int target_base_id, pk::point target_pos)
+        {
+            if (!pk::is_alive(pivot_unit)) return;
+            pk::force@ force = pk::get_force(pivot_unit.get_force_id());
+            if (!pk::is_alive(force)) return;
+            pk::building@ target_base = pk::get_building(target_base_id);
+            string target_name = pk::is_alive(target_base) ? pk::decode(pk::get_name(target_base)) : "???";
+            
+            int pivot_service_id = pk::get_service(pivot_unit);
+            pk::list<pk::unit@> force_units = pk::get_unit_list(force);
+            for (int i = 0; i < force_units.count; i++)
+            {
+                pk::unit@ target_unit = force_units[i];
+                if (!pk::is_alive(target_unit)) continue;
+                int target_unit_id = target_unit.get_id();
+                if (target_unit_id == pivot_unit.get_id()) continue;
+                if (target_unit.type != 부대종류_전투) continue;
+                if (pk::get_service(target_unit) != pivot_service_id) continue;
+                
+                int area_building_id = pk::get_building_id(target_unit.pos);
+                bool is_inside_friendly_base = false;
+                if (area_building_id >= 0 and area_building_id < 건물_거점끝)
+                {
+                    pk::building@ area_building = pk::get_building(area_building_id);
+                    if (pk::is_alive(area_building) and area_building.get_force_id() == force.get_id())
+                        is_inside_friendly_base = true;
+                }
+                if (is_inside_friendly_base) continue;
+                
+                arr_target_base_id[target_unit_id] = target_base_id;
+                arr_target_unit_id[target_unit_id] = -1;
+                pk::set_order(target_unit, 부대임무_정복, target_pos);
+                
+                if (디버그모드)
+                {
+                    pk::person@ shared_leader = pk::get_person(target_unit.leader);
+                    string shared_name = pk::is_alive(shared_leader) ? pk::decode(pk::get_name(shared_leader)) : pk::format("부대{}", target_unit_id);
+                    pk::info(pk::format("정복임무 공유: {} → {}", shared_name, target_name));
+                }
+            }
+        }
+        
+        void spawn_city_reinforce_units(pk::building@ city, int target_base_id)
+        {
+            pk::building@ target_base = pk::get_building(target_base_id);
+            if (!pk::is_alive(city) or !pk::is_alive(target_base)) return;
+            if (city.get_id() < 건물_도시시작 or city.get_id() >= 건물_도시끝) return;
+            
+            // 거점원군의 전투부대 출병 함수를 활용하여 동일한 로직 적용
+            int created = 0;
+            const int max_attempt = 2;   // 과도한 반복 방지를 위해 소량만 시도
+            for (int i = 0; i < max_attempt; i++)
+            {
+                int new_unit_id = 거점원군::main.PushCombatUnit(city, target_base, true);
+                if (디버그모드)
+                    pk::info(pk::format("거점원군 출병 시도 {}: {}", i + 1, (new_unit_id == -1) ? "실패" : pk::decode(pk::get_name(target_base))));
+                if (new_unit_id == -1) break;
+                
+                arr_target_base_id[new_unit_id] = target_base_id;
+                arr_target_unit_id[new_unit_id] = -1;
+                pk::unit@ new_unit = pk::get_unit(new_unit_id);
+                if (pk::is_alive(new_unit))
+                {
+                    pk::set_order(new_unit, 부대임무_정복, target_base.pos);
+                    created += 1;
+                    if (디버그모드)
+                    {
+                        pk::person@ leader = pk::get_person(new_unit.leader);
+                        string unit_name = pk::is_alive(leader) ? pk::decode(pk::get_name(leader)) : pk::format("출병{}", new_unit_id);
+                        pk::info(pk::format("거점원군 신규 부대 {} → {} 정복 명령 부여", unit_name, pk::decode(pk::get_name(target_base))));
+                    }
+                }
+            }
+            
+            if (디버그모드 and created > 0)
+                pk::info(pk::format("거점원군 출병 연동: {} → {} ({}개)", pk::decode(pk::get_name(city)), pk::decode(pk::get_name(target_base)), created));
         }
         
         
@@ -910,15 +1376,35 @@ namespace 야전부대교전최적화
             return is_exceed_unit;
         }
         
-        // 부대의 이동범위 내에 목표거점이 위치하는지 확인
+        void debug_log_troop_state(const string &in tag, pk::building@ base, pk::unit@ unit, bool is_exceed)
+        {
+            if (!디버그모드) return;
+            if (!pk::is_alive(base) or !pk::is_alive(unit)) return;
+            pk::person@ leader = pk::get_person(unit.leader);
+            string base_name = pk::decode(pk::get_name(base));
+            string unit_name = pk::is_alive(leader) ? pk::decode(pk::get_name(leader)) : pk::format("부대{}", unit.get_id());
+            pk::force@ force = pk::get_force(unit.get_force_id());
+            string force_name = pk::is_alive(force) ? pk::decode(pk::get_name(force)) : "???";
+            int base_troops = pk::get_troops(base);
+            int base_max = pk::get_max_troops(base);
+            int unit_troops = unit.troops;
+            int total = base_troops + unit_troops;
+            string state = is_exceed ? "초과" : "진입가능";
+            pk::info(pk::format("[{}][{}] 거점:{} {}/{} + 부대:{}({}) => 합계 {} ({})", tag, force_name, base_name, base_troops, base_max, unit_name, unit_troops, total, state));
+        }
+        
+        // 부대의 이동범위 내에 목표거점이 위치하는지 확인 (거점원군처럼 get_movable_pos 사용 안 함)
         bool check_base_in_movable_range(pk::unit@ unit, pk::building@ base)
         {
             if (!pk::is_alive(unit) or !pk::is_alive(base)) return false;
             
-            pk::array<pk::point> arr_range = pk::get_movable_pos(unit);;
-            for (int i = 0; i < int(arr_range.length); i++)
+            // 거리만 체크 (거점원군처럼 get_movable_pos 사용 안 함)
+            if (pk::is_valid_pos(unit.pos) and pk::is_valid_pos(base.pos))
             {
-                if (base.pos == arr_range[i]) return true;
+                int distance = pk::get_distance(unit.pos, base.pos);
+                int move_stat = unit.attr.stat[부대능력_이동];
+                // 부대 이동력 범위 내에 거점이 있는지 확인
+                if (distance <= move_stat) return true;
             }
             return false;
         }
@@ -951,19 +1437,12 @@ namespace 야전부대교전최적화
         // 세력 확인 함수
         bool check_force_option(pk::unit@ unit_t)
         {
-            // 플레이어 군단 미적용 (유저의 임무지정 무시하면서 목표재설정하므로 미적용 권장)
             if (!pk::is_alive(unit_t)) return false;
-            if (pk::is_player_controlled(unit_t)) 
-            {
-                if (부대목표변경_유저군단적용) return true;
-                else return false;   
-            }
-            
-            // 0: 컴퓨터AI 와 플레이어_위임군단 모두,  1: 플레이어_위임군단만, 2: 컴퓨터AI만,  3: 모두 미적용
-            if      (부대목표변경_세력조건 == 0 and !pk::is_player_controlled(unit_t)) return true;
-            else if (부대목표변경_세력조건 == 1 and unit_t.is_player() and !pk::is_player_controlled(unit_t)) return true;
-            else if (부대목표변경_세력조건 == 2 and !unit_t.is_player()) return true;
-            else if (부대목표변경_세력조건 == 3) return false;
+            // 0: 컴퓨터AI 와 플레이어_위임군단 모두 (플레이어 직접 제어 부대 제외),  1: 플레이어_위임군단만, 2: 컴퓨터AI만,  3: 모두 미적용            
+            if (!pk::is_player_controlled(unit_t) and 부대목표변경_세력조건 == 0) return true;
+            if (부대목표변경_세력조건 == 1 and unit_t.is_player()) return true;
+            if (부대목표변경_세력조건 == 2 and !unit_t.is_player()) return true;
+            if (부대목표변경_세력조건 == 3) return false;
             
             return false;
         }
@@ -992,45 +1471,6 @@ namespace 야전부대교전최적화
             
             return false;
         }
-        
-        // 계략부대 여부 판단 함수
-        int func_strategy_unit_type(pk::unit@ unit)
-        {
-            if (!pk::is_alive(unit)) return -1;
-            if (pk::is_player_controlled(unit)) return -1; // 유저군단은 무조건 제외
-            
-            // 무조건 우대 특기
-            if (unit.has_skill(특기_신산) or unit.has_skill(특기_허실) or unit.has_skill(특기_백출) 
-                or unit.has_skill(특기_귀모) or unit.has_skill(특기_연환))
-                return 3;
-            
-            // 보유 특기 확인
-            for (int i = 0; i < 3; i++)
-            {
-                pk::person@ member = pk::get_person(unit.member[i]);
-                if (pk::is_alive(member))
-                {
-                    int skill_id = member.skill;
-                    pk::skill@ skill = pk::get_skill(skill_id);
-                    
-                    // 신/장 계열 공격특기인 경우 계략부대 아닌 것으로 판정 (지력공방비 무시)
-                    if (skill_id >= 특기_창장 and skill_id <= 특기_맹장) return 0;   
-                    
-                    // 계략특기 우대
-                    if (계략부대_특기우대 and pk::is_alive(skill))
-                    {
-                        if (skill.type == 특기종류_계략) return 2;    
-                    }
-                }
-            }
-            
-            // 지력 대 공방 비율 판단 (일반부대)
-            float stat_ratio = float(2.0f * unit.attr.stat[부대능력_지력] / (unit.attr.stat[부대능력_공격] + unit.attr.stat[부대능력_방어]));
-            if (stat_ratio >= 계략부대_지력공방비) return 1;
-            
-            return 0;
-        }
-        
         
         //---------------------------------------------------------------------------
         
@@ -1098,37 +1538,34 @@ namespace 야전부대교전최적화
             int tekisei    = pk::min(적성_S, pk::get_tekisei(unit));
             int unit_atk   = unit.attr.stat[부대능력_공격];
             int unit_def   = unit.attr.stat[부대능력_방어];
-            int unit_skill = func_strategy_unit_type(unit);
             
             if (heishu_id < 0 or heishu_id >= 6) return 0.0f;
             
             float relative_stat = 0.0f;
             float weight  = main.heishu_weight[heishu_id] ;
             
-            // 상성, 적성 가중치 적용
+            // 1. 상성, 적성 가중치 적용
             relative_stat = pk::max(0.f, weight) + float(적성_끝 - tekisei)/float(적성_끝) ;
             
-            // 공격력 가중치 적용
+            // 5. 병력 가중치 적용 ('19.3.1)
+            if (부대목표변경_병력가중치적용)
+            {
+                if (int(unit.troops) <= 5000)
+                    relative_stat += float(5000 - unit.troops)/5000.f;  // 병력이 적을수록 가중치 증가 (최대 1.0, 병력 0일 때)
+            }
+            
+            // 2. 공격력 가중치 적용
             if (부대목표변경_공격가중치적용) relative_stat += float(unit_atk)/128.0f;
-            // 방여력 가중치 적용
-            if (부대목표변경_방어가중치적용) relative_stat += float(unit_def)/128.0f;
+            
+            // 3. 방어력 가중치 적용 (방어력이 낮을수록 우선)
+            if (부대목표변경_방어가중치적용) relative_stat += float(128 - unit_def)/128.0f;
                         
-            // 군주/도독 신분 가중치 적용
+            // 4. 군주/도독 신분 가중치 적용
             if (부대목표변경_신분가중치적용)
             {
                 if      (unit.leader == pk::get_kunshu_id(unit)) relative_stat += 0.50f;
                 else if (unit.leader == pk::get_totoku_id(unit)) relative_stat += 0.25f;
             }
-            
-            // 병력 가중치 적용 ('19.3.1)
-            if (부대목표변경_병력가중치적용)
-            {
-                if (int(unit.troops) <= 5000)
-                    relative_stat += float(5000 - unit.troops)/10000.f;
-            }
-            
-            // 계략우대 특기 보유 가중치 적용 ('20.8.30)
-            if (부대목표변경_계략가중치적용 and (unit_skill > 1)) relative_stat += 0.4f * float(unit_skill);
             
             return relative_stat;
         }
@@ -1252,6 +1689,16 @@ namespace 야전부대교전최적화
                 case 적성_B  : tekisei_name = "B"; break;
                 case 적성_A  : tekisei_name = "A"; break;
                 case 적성_S  : tekisei_name = "S"; break;
+                case 적성_S1 : tekisei_name = "S1"; break;
+                case 적성_S2 : tekisei_name = "S2"; break;
+                case 적성_S3 : tekisei_name = "S3"; break;
+                case 적성_S4 : tekisei_name = "S4"; break;
+                case 적성_S5 : tekisei_name = "S5"; break;
+                case 적성_S6 : tekisei_name = "S6"; break;
+                case 적성_S7 : tekisei_name = "S7"; break;
+                case 적성_S8 : tekisei_name = "S8"; break;
+                case 적성_S9 : tekisei_name = "S9"; break;
+                case 적성_X : tekisei_name = "X"; break;
                 default    : tekisei_name = "?"; break;
             }
             return tekisei_name;
@@ -1310,12 +1757,6 @@ namespace 야전부대교전최적화
             
             return name;
         }
-        
-
-        bool 디버그모드 = false;
 	}
-
-    
 	Main main;
 }
-

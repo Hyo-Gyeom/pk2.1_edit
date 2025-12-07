@@ -11,7 +11,7 @@ namespace 출진병종최적화
     // 설정변수
     const bool 병종최적화_활성화 = true;         // true: 기능 활성화, false: 기능 비활성화
     const bool 병종최적화_화면표시 = true;       // true: 메시지 표시, false: 메시지 숨김
-    const int  병종최적화_적용대상 = 0;          // 0: 컴퓨터AI 와 플레이어_위임군단 모두,  1: 플레이어_위임군단만, 2: 컴퓨터AI만,  3: 모두 미적용
+    const int  병종최적화_적용대상 = 2;          // 0: 컴퓨터AI 와 플레이어_위임군단 모두,  1: 플레이어_위임군단만, 2: 컴퓨터AI만,  3: 모두 미적용
     
     // 적성 기준치 (이 값 미만의 적성은 고려하지 않음)
     const int 적성_최소기준 = 0;  // 0:적성C, 1:적성B, 2:적성A, 3:적성S
@@ -21,8 +21,14 @@ namespace 출진병종최적화
     const int 극병_우선순위 = 0;
     const int 노병_우선순위 = 0;
     const int 기병_우선순위 = 2;  // 최우선
+    const int 병기_우선순위 = 0;  // 충차, 정란
+
+    // 최종 적성이 병기로 선택되었을 경우 사용
     const int 충차_우선순위 = 0;  // 충차, 목수
-    const int 정란_우선순위 = 1;  // 정란, 투석
+    const int 정란_우선순위 = 0;  // 정란, 투석
+    
+    // 병기 선택 비율 (충차와 정란 우선순위가 같을 때 사용)
+    const int 충차_선택비율 = 30;  // 충차 선택 확률 (0~100, 100 - 충차선택비율 = 정란선택비율)
 
     //---------------------------------------------------------------------------------------
     
@@ -65,7 +71,8 @@ namespace 출진병종최적화
             // 최적의 병종 찾기
             int best_heishu = find_best_heishu(leader, current_heishu, current_weapon_id);
             
-            if (best_heishu != current_heishu && best_heishu >= 0)
+            // 검병이거나 병종이 다르면 변경
+            if (best_heishu >= 0 && (current_weapon_id == 병기_검 || best_heishu != current_heishu))
             {
                 // 부대를 대기 목록에 추가 (이동 시 변경)
                 pending_unit_ids.insertLast(unit_t.get_id());
@@ -136,7 +143,7 @@ namespace 출진병종최적화
                 // 적성이 다르면 높은 쪽 선택
                 if (tekisei_창병 > tekisei_극병)
                     return 병종_창병;
-                else
+                else if (tekisei_극병 > tekisei_창병)
                     return 병종_극병;
                 
                 // 적성이 같으면 우선순위로 비교
@@ -238,16 +245,7 @@ namespace 출진병종최적화
             else if (heishu == 병종_극병) return 극병_우선순위;
             else if (heishu == 병종_노병) return 노병_우선순위;
             else if (heishu == 병종_기병) return 기병_우선순위;
-            else if (heishu == 병종_병기)
-            {
-                // 충차와 정란 우선순위 비교
-                if (충차_우선순위 > 정란_우선순위)
-                    return 충차_우선순위;
-                else if (정란_우선순위 > 충차_우선순위)
-                    return 정란_우선순위;
-                else
-                    return pk::rand_bool(50) ? 충차_우선순위 : 정란_우선순위;  // 같으면 랜덤
-            }
+            else if (heishu == 병종_병기) return 병기_우선순위;
             return 0;
         }
         
@@ -303,9 +301,10 @@ namespace 출진병종최적화
             // 부대 병과정보 및 능력치 업데이트 (필수!)
             unit_t.update();
             
-            // 병력을 최대값으로 설정
+            // 병력을 최대값 및 병량 5천 추가 설정
             unit_t.troops = pk::get_max_troops(unit_t);
-            
+            pk::add_food(unit_t, 5000, false);
+             
             // 병력 변경 후 다시 업데이트
             unit_t.update();
             
@@ -340,15 +339,17 @@ namespace 출진병종최적화
                 else if (정란_우선순위 > 충차_우선순위)
                     weapon_id = 병기_정란;
                 else
-                    weapon_id = pk::rand_bool(50) ? 병기_충차 : 병기_정란;  // 같으면 랜덤
+                    weapon_id = pk::rand_bool(충차_선택비율) ? 병기_충차 : 병기_정란;  // 같으면 비율로 선택
 
                 // 투석 기교 연구 완료시 투석
                 pk::force@ force = pk::get_force(leader.get_force_id());
-                if (pk::has_tech(force, 기교_투석개발))
+                if (weapon_id == 병기_정란 && pk::has_tech(force, 기교_투석개발))
                     return 병기_투석;
                 
-                if (pk::has_tech(force, 기교_목수개발))
+                if (weapon_id == 병기_충차 && pk::has_tech(force, 기교_목수개발))
                     return 병기_목수;
+                
+                return weapon_id;  // 충차 또는 정란 반환
             }
             
             // if (heishu == 병종_수군) return 병기_주가;    // 주가

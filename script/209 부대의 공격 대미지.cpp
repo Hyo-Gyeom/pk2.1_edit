@@ -17,6 +17,7 @@
 			pk::building@ target_building = pk::get_building(target_pos);
 			int atk = 0;
 			int troops_atk = 0;
+			int dst_atk, dst_def, dst_troops;
 			int buffed = 0;
 
 			// 공격 능력치
@@ -261,8 +262,7 @@
 			{
 				info.dst_troops = pk::get_troops(target_building);
 
-				int facility_id = target_building.facility;
-				int troops_atk, dst_atk, dst_def, dst_troops;
+				int facility_id = target_building.facility;				
 				func_5af0e0(troops_atk, dst_atk, dst_def, dst_troops, target_building);
 				float troops_damage = func_5aee60(atk, command, troops_atk, buffed, dst_def, dst_troops);
 
@@ -327,8 +327,6 @@
 				int facility_id = target_building.facility;
 				int tactics_atk = 0;
 				float hp_damage = 0;
-
-				pk::trace("start info.troops_damage : " + info.troops_damage);
 
 				if (pk::is_valid_tactics_id(tactics_id))
 					tactics_atk = pk::get_tactics(tactics_id).hp_atk;
@@ -403,9 +401,6 @@
 				if (facility_id == 시설_제방 and not target_building.completed)
 					hp_damage = 0;
 				
-				pk::trace("start info.troops_damage : " + info.troops_damage);
-				pk::trace("start hp_damage  : " + hp_damage);
-
 				// 태수 능력
 				pk::building@ building = target_building;
 				if (building !is null) 
@@ -414,9 +409,23 @@
 					{	
 						/**
 							태수 능력을 추가함에 따라 공격부대의 공격력으로 상쇄
-						*/					
-						pk::city@ city = pk::building_to_city(target_building);
-						pk::person@ taishu = pk::get_person(city.taishu);
+						*/
+						pk::person@ taishu = null;
+						if (facility_id == 시설_도시)
+						{		
+							pk::city@ city = pk::building_to_city(target_building);
+							@taishu = pk::get_person(city.taishu);
+						}
+						else if (facility_id == 시설_관문)
+						{	
+							pk::gate@ gate = pk::building_to_gate(target_building);
+							@taishu = pk::get_person(gate.taishu);
+						}
+						else if (facility_id == 시설_항구)
+						{	
+							pk::port@ port = pk::building_to_port(target_building);
+							@taishu = pk::get_person(port.taishu);
+						}						
 
 						float taishu_troops_damage = 0;
 						float taishu_hp_damage = 0;
@@ -437,9 +446,6 @@
 							else
 								taishu_hp_damage =  taishu_status / 8.f;
 
-							pk::trace("attacker_atk : " + attacker_atk);
-							pk::trace("taishu_troops_damage : " + taishu_troops_damage);
-
 							// 부대 공격력 능력 적용
 							if (attacker.weapon == 병기_충차 or attacker.weapon == 병기_목수)
 								hp_damage += (attacker_atk) - taishu_hp_damage;
@@ -448,9 +454,6 @@
 								info.troops_damage += attacker_atk - taishu_troops_damage;
 								hp_damage += (attacker_atk * 0.25) - taishu_hp_damage;
 							}
-
-							pk::trace("add taishu info.troops_damage : " + info.troops_damage);
-							pk::trace("add taishu_hp_damage : " + hp_damage);
 					
 							// 방어 스킬 적용
 							if (building.has_skill(특기_공신) or building.has_skill(특기_신산))
@@ -463,16 +466,19 @@
 								info.troops_damage *= 0.80f;
 								hp_damage *= 0.80f;
 							}
-
-							if (building.has_skill(특기_통찰))
+							
+							if (target_unit !is null)
 							{
-								info.troops_damage *= 0.80f;
-								hp_damage *= 0.80f;
-							}
-							else if (target_unit.has_skill(특기_명경) or target_unit.has_skill(특기_규율) or target_unit.has_skill(특기_침착))
-							{
-								info.troops_damage *= 0.90f; 
-								hp_damage *= 0.90f;
+								if (target_unit.has_skill(특기_통찰))
+								{
+									info.troops_damage *= 0.80f;
+									hp_damage *= 0.80f;
+								}
+								else if (target_unit.has_skill(특기_명경) or target_unit.has_skill(특기_규율) or target_unit.has_skill(특기_침착))
+								{
+									info.troops_damage *= 0.90f; 
+									hp_damage *= 0.90f;
+								}
 							}
 
 							if (building.has_skill(특기_불굴) or building.has_skill(특기_금강) or building.has_skill(특기_둔전))
@@ -850,11 +856,6 @@
 		*/
 		float func_5aeff0(int src_atk, int src_troops, int tactics_atk, int buffed)
 		{
-			pk::trace("src_troops : " +src_troops);
-			pk::trace("src_atk : " + src_atk);
-			pk::trace("tactics_atk : " + tactics_atk);
-			pk::trace("buffed : " + buffed);
-
 			/**
 				장수가 성장함에 따라 공격력이 증가하기 때문에 조절 필요
 			*/
@@ -887,9 +888,7 @@
 			
 			// 버프 태고대 20%증가
 			float buf = pk::max(buffed * 1.2f, 1.f);
-			
-			pk::trace("base_atk : " + troops_atk * base_atk * tactics_atk * buf);
-	
+
 			return troops_atk * base_atk * tactics_atk * buf;
 		}
 

@@ -38,9 +38,9 @@
 			pk::reset_func(255);
 			pk::set_func(255, pk::func255_t(func255));
 
-			@func256_ = cast<pk::func256_t@>(pk::get_func(256));
-			pk::reset_func(256);
-			pk::set_func(256, pk::func256_t(func256));
+			// @func256_ = cast<pk::func256_t@>(pk::get_func(256));
+			// pk::reset_func(256);
+			// pk::set_func(256, pk::func256_t(func256));
 
 			xml();
 		}
@@ -49,7 +49,7 @@
 		int func101(pk::city@ city, const pk::detail::arrayptr<pk::person@> &in actors, int troops)
 		{
 			int n = cast<pk::func101_t@>(pk::get_func(101, true))(city, actors, troops);
-			if (!city.is_player()) n /= 2;
+			if (!city.is_player()) n /= 4;
 			return n;
 		}
 
@@ -354,15 +354,13 @@
 						context.push_cmd(거점AI_징병);
 						context.push_cmd(거점AI_순찰);
 						context.push_cmd(거점AI_생산);
-						context.push_cmd(거점AI_생산);
-						context.push_cmd(거점AI_철거);
+						context.push_cmd(거점AI_생산);						
 					}
 					else
 					{
 						context.push_cmd(거점AI_징병);
 						context.push_cmd(거점AI_순찰);
-						context.push_cmd(거점AI_생산);
-						context.push_cmd(거점AI_철거);
+						context.push_cmd(거점AI_생산);						
 					}
 				}
 				return;
@@ -382,69 +380,63 @@
 				switch (base.status)
 				{
 				case 거점상태_후방:
+				context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_거래);
-					context.push_cmd(거점AI_최소인재탐색);
-					context.push_cmd(거점AI_최소무장등용);
+					context.push_cmd(거점AI_순찰);
+					context.push_cmd(거점AI_개발);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_순찰);
+					context.push_cmd(거점AI_최소인재탐색);
+					context.push_cmd(거점AI_최소무장등용);					
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_거래2);
-					context.push_cmd(거점AI_훈련);
-					context.push_cmd(거점AI_철거);
-					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_훈련);					
 					context.push_cmd(거점AI_흡수합병);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
-				case 거점상태_경계:
-					context.push_cmd(거점AI_공격);
+				case 거점상태_경계:					
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_개발);
 					context.push_cmd(거점AI_징병);
-					context.push_cmd(거점AI_생산);
-					context.push_cmd(거점AI_최소인재탐색);
-					context.push_cmd(거점AI_최소무장등용);
+					context.push_cmd(거점AI_공격);					
+					context.push_cmd(거점AI_생산);					
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
+					context.push_cmd(거점AI_최소인재탐색);
+					context.push_cmd(거점AI_최소무장등용);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_계략);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_거래);
-					context.push_cmd(거점AI_훈련);
-					context.push_cmd(거점AI_철거);
-					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_훈련);					
 					context.push_cmd(거점AI_흡수합병);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
-				case 거점상태_전방:
+				case 거점상태_전방:					
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_개발);
 					context.push_cmd(거점AI_징병);
-					context.push_cmd(거점AI_생산);
-					context.push_cmd(거점AI_공격);
-					context.push_cmd(거점AI_최소인재탐색);
-					context.push_cmd(거점AI_최소무장등용);
+					context.push_cmd(거점AI_생산);					
+					context.push_cmd(거점AI_공격);										
 					context.push_cmd(거점AI_설치);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_철거);
-					context.push_cmd(거점AI_흡수합병);
-					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_포상);										
 					// 무장과 금이 충분한 경우 내정시설 2개씩 건설
 					if (base.num_officers >= officers_needed and gold > 1500)
 						context.push_cmd(거점AI_개발);
@@ -453,6 +445,8 @@
 						context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_훈련);
+					context.push_cmd(거점AI_흡수합병);					
+					context.push_cmd(거점AI_최소인재탐색);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_이동);
@@ -478,12 +472,7 @@
 					// 적 부대 있음
 					else
 					{
-						// 자세력 부대 수와 남아 있는 무장 수의 합이 적 세력 부대 수보다 적을 때만 철거
-						if (base.num_own_units + base.num_idle_officers < base.num_enemy_units)
-						{
-							context.push_cmd(거점AI_철거);
-						}
-						else if (base.num_own_units > base.num_enemy_units and pk::get_troops(building) > 15000)
+						if (base.num_own_units > base.num_enemy_units and pk::get_troops(building) > 15000)
 						{
 							context.push_cmd(거점AI_흡수합병);
 							context.push_cmd(거점AI_개발);
@@ -496,12 +485,12 @@
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_거래);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -532,8 +521,11 @@
 					break;
 
 				case 거점상태_경계:
-					context.push_cmd(거점AI_공격);
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_공격);					
 					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_도시수송);
@@ -542,23 +534,24 @@
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
 				case 거점상태_전방:
-					context.push_cmd(거점AI_공격);
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_생산);	
 					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_공격);					
 					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_설치);
 					context.push_cmd(거점AI_훈련);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_관문수송);
@@ -569,8 +562,11 @@
 					break;
 
 				case 거점상태_전투:
-					context.push_cmd(거점AI_방어);
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_징병);
+					context.push_cmd(거점AI_방어);					
 					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_훈련);
@@ -584,23 +580,21 @@
 			}
 		}
 
-		/** 컴퓨터 행동력 최대 */
-		void func256(pk::ai_context@ context, pk::building@ building, int cmd)
-		{
-			if (!building.is_player())
-			{
-				if (pk::get_scenario().ai_table.force[building.get_force_id()].troops_rank > 49)
-				{
-					pk::get_district(building.get_district_id()).ap = 255;
-					context.ap = 255;
-				}
-			}
-
-			if (func256_ !is null)
-				func256_(context, building, cmd);
-		}
-
-		pk::func256_t@ func256_;
+		// /** 컴퓨터 행동력 최대 */		
+		// void func256(pk::ai_context@ context, pk::building@ building, int cmd)
+		// {
+		// 	// 플레이어 세력이 아닌 경우 (AI 세력)
+		// 	if (!building.is_player())
+		// 	{
+		// 		// 행동력을 최대치(255)로 설정
+		// 		pk::get_district(building.get_district_id()).ap = 255;
+		// 		context.ap = 255;			
+		// 	}
+		// 	// 기존 func256 콜백이 있으면 실행
+		// 	if (func256_ !is null)
+		// 		func256_(context, building, cmd);
+		// }
+		// pk::func256_t@ func256_;
 
 		void xml()
 		{
@@ -642,7 +636,7 @@
 				</건업>
 				<회계>
 					<이웃 번호="0" 경로="일반" x="-1" y="-1"/>
-					<거리 건업="1"/>
+					<거리 건업="2"/>
 				</회계>
 				<강하>
 					<이웃 번호="0" 경로="샛길" x="129" y="110"/>
@@ -1880,11 +1874,11 @@
 			// 인공지능
 			pk::load_xml("""
 			<pk utf8="true" trace="true">
-				<인공지능.개발.개발지탐색향상 값="false"/>
+				<인공지능.개발.개발지탐색향상 값="true"/>
 				<인공지능.개발.공방강제 값="false"/>
 				<인공지능.개발.암시장사용 값="false"/>
 				<인공지능.개발.최대시설가중치>
-					<전체 병영="255" 대장간="125" 마구간="200" 공방="0" 조선="0" 연병소="0" 대시장="255" 어시장="200"/>
+					<전체 병영="125" 대장간="123" 마구간="124" 공방="0" 조선="0" 연병소="0" 대시장="125" 어시장="125"/>
 				</인공지능.개발.최대시설가중치>
 				<인공지능.개발.최소시설가중치>
 					<전체 시장="16"/>
@@ -1895,16 +1889,16 @@
 					<강릉 조선="0"/>
 					<장사 조선="0"/>
 				</인공지능.개발.최소시설수>
-				<인공지능.개발.특색가중치 마구간="200" 대장간="127" 공방="" 조선="0"/>
-				<인공지능.개발.특수가중치 군사부="255" 부절태="0" 인재부="0" 외교부="0" 계략부="0" 연병소="1"/>
+				<인공지능.개발.특색가중치 마구간="125" 대장간="123" 공방="0" 조선="0"/>
+				<인공지능.개발.특수가중치 군사부="125" 부절태="0" 인재부="0" 외교부="0" 계략부="0" 연병소="0"/>
 				<인공지능.공격.가중치.경로.육로 값="14"/>
 				<인공지능.공격.가중치.빈도시 값="80"/>
 				<인공지능.공격.같은주우선 값="false"/>
-				<인공지능.공격.공격임무사용 값="false"/>
+				<인공지능.공격.공격임무사용 값="true"/>
 				<인공지능.공격.국력기준 값="0"/>
 				<인공지능.공격.기력기준 값="50"/>
 				<인공지능.공격.능력우선부대출진 값="true"/>
-				<인공지능.공격.도시공략세력확인 값="false"/>
+				<인공지능.공격.도시공략세력확인 값="true"/>
 				<인공지능.공격.병량제한 값="false"/>
 				<인공지능.공격.보유도시수비례 값="false"/>
 				<인공지능.공격.손씨양주우선 값="false"/>
@@ -1936,61 +1930,61 @@
 					<전법성공확률 값="1"/>
 				</적성>
 				<적성 번호="2">
-					<필요경험치 값="50"/>
+					<필요경험치 값="100"/>
 					<전법성공확률 값="2"/>
 				</적성>
 				<적성 번호="3">
-					<필요경험치 값="100"/>
+					<필요경험치 값="150"/>
 					<전법성공확률 값="3"/>
 				</적성>
 				<적성 번호="4">
 					<이름 값="S1"/>
-					<필요경험치 값="115"/>
+					<필요경험치 값="200"/>
 					<전법성공확률 값="5"/>
 				</적성>
 				<적성 번호="5">
 					<이름 값="S2"/>
-					<필요경험치 값="130"/>
+					<필요경험치 값="205"/>
 					<전법성공확률 값="6"/>
 				</적성>
 				<적성 번호="6">
 					<이름 값="S3"/>
-					<필요경험치 값="150"/>
+					<필요경험치 값="210"/>
 					<전법성공확률 값="7"/>
 				</적성>
 				<적성 번호="7">
 					<이름 값="S4"/>
-					<필요경험치 값="170"/>
+					<필요경험치 값="215"/>
 					<전법성공확률 값="8"/>
 				</적성>
 				<적성 번호="8">
 					<이름 값="S5"/>
-					<필요경험치 값="200"/>
+					<필요경험치 값="220"/>
 					<전법성공확률 값="9"/>
 				</적성>
 				<적성 번호="9">
 					<이름 값="S6"/>
-					<필요경험치 값="210"/>
+					<필요경험치 값="225"/>
 					<전법성공확률 값="10"/>
 				</적성>
 				<적성 번호="10">
 					<이름 값="S7"/>
-					<필요경험치 값="220"/>
+					<필요경험치 값="235"/>
 					<전법성공확률 값="11"/>
 				</적성>
 				<적성 번호="11">
 					<이름 값="S8"/>
-					<필요경험치 값="230"/>
+					<필요경험치 값="240"/>
 					<전법성공확률 값="12"/>
 				</적성>
 				<적성 번호="12">
 					<이름 값="S9"/>
-					<필요경험치 값="240"/>
+					<필요경험치 값="245"/>
 					<전법성공확률 값="13"/>
 				</적성>
 				<적성 번호="13">
 					<이름 값="X"/>
-					<필요경험치 값="250"/>
+					<필요경험치 값="255"/>
 					<전법성공확률 값="15"/>
 				</적성>
 			</pk>

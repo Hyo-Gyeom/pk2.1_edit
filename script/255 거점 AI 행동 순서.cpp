@@ -21,7 +21,6 @@
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_생산);
-					context.push_cmd(거점AI_철거);
 				}
 				return;
 			}
@@ -38,9 +37,11 @@
 				case 거점상태_후방:
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_순찰);
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_최소무장등용);					
 					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_최소인재탐색);
-					context.push_cmd(거점AI_최소무장등용);
+					context.push_cmd(거점AI_최소인재탐색);					
 					context.push_cmd(거점AI_최소타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_거래);
@@ -50,68 +51,63 @@
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_거래2);
-					context.push_cmd(거점AI_훈련);
-					context.push_cmd(거점AI_철거);
-					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_훈련);					
 					context.push_cmd(거점AI_흡수합병);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
-				case 거점상태_경계:
+				case 거점상태_경계:					
+					context.push_cmd(거점AI_개발);
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_거래);
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_공격);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_이동);
-					context.push_cmd(거점AI_최소인재탐색);
 					context.push_cmd(거점AI_최소무장등용);
+					context.push_cmd(거점AI_최소인재탐색);					
 					context.push_cmd(거점AI_최소타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_계략);
 					context.push_cmd(거점AI_거래2);
-					context.push_cmd(거점AI_훈련);
-					context.push_cmd(거점AI_철거);
-					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_훈련);					
 					context.push_cmd(거점AI_흡수합병);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
-				case 거점상태_전방:
+				case 거점상태_전방:					
+					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_개발);
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_생산);
 					context.push_cmd(거점AI_거래);
 					context.push_cmd(거점AI_공격);
 					context.push_cmd(거점AI_설치);
 					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_최소인재탐색);
 					context.push_cmd(거점AI_최소무장등용);
+					context.push_cmd(거점AI_최소인재탐색);					
 					context.push_cmd(거점AI_최소타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_순찰);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_거래2);
-					context.push_cmd(거점AI_철거);
-					context.push_cmd(거점AI_개발);
+					context.push_cmd(거점AI_거래2);					
 					context.push_cmd(거점AI_흡수합병);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_관문수송);
-					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -119,7 +115,6 @@
 
 				case 거점상태_전투:
 					context.push_cmd(거점AI_방어);
-					context.push_cmd(거점AI_철거);
 					context.push_cmd(거점AI_징병);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_생산);
@@ -129,8 +124,8 @@
 					context.push_cmd(거점AI_계략);
 					context.push_cmd(거점AI_거래2);
 					context.push_cmd(거점AI_포상);
-					context.push_cmd(거점AI_인재탐색);
 					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
@@ -143,6 +138,7 @@
 				switch (base.status)
 				{
 				case 거점상태_후방:
+					context.push_cmd(거점AI_무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
@@ -150,13 +146,13 @@
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_계략);
 					context.push_cmd(거점AI_인재탐색);
-					context.push_cmd(거점AI_무장등용);
+					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
-				case 거점상태_경계:
+				case 거점상태_경계:					
 					context.push_cmd(거점AI_공격);
 					context.push_cmd(거점AI_도시수송);
 					context.push_cmd(거점AI_관문수송);
@@ -164,15 +160,14 @@
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_훈련);
 					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_인재탐색);
 					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);
 					break;
 
-				case 거점상태_전방:
-					context.push_cmd(거점AI_포상);
+				case 거점상태_전방:					
 					context.push_cmd(거점AI_공격);
 					context.push_cmd(거점AI_설치);
 					context.push_cmd(거점AI_훈련);
@@ -180,8 +175,8 @@
 					context.push_cmd(거점AI_이동);
 					context.push_cmd(거점AI_관문수송);
 					context.push_cmd(거점AI_계략);
-					context.push_cmd(거점AI_인재탐색);
 					context.push_cmd(거점AI_무장등용);
+					context.push_cmd(거점AI_인재탐색);					
 					context.push_cmd(거점AI_타세력무장등용);
 					context.push_cmd(거점AI_포상);
 					context.push_cmd(거점AI_계략);

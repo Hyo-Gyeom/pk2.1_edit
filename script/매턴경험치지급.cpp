@@ -2,7 +2,9 @@
 // 제작자:
 // 설명: 매턴 장수들에게 경험치를 자동으로 지급
 // Update: 2025.10.29 / 초기 버전 작성
-//         2025.11.09 / 763~799번 무장 수동 처리 수정 및및 추가
+//         2025.11.09 / 763~799번 무장 수동 처리 수정 및 추가
+//         2025.11.17 / 763~799번 무장 처리 방식 변경 (능력치 직접 상승만)
+//                     base_stat 와 stat 둘다 올리기기로 변경
 */
 
 namespace 매턴경험치지급
@@ -10,7 +12,7 @@ namespace 매턴경험치지급
     //---------------------------------------------------------------------------------------
     // 설정변수
     const bool 경험치지급_활성화 = true;          // true: 기능 활성화, false: 기능 비활성화
-    const int  경험치지급_적용대상 = 2;           // 0: 모든 세력, 1: 플레이어 세력만, 2: 컴퓨터 세력만
+    const int 경험치지급_적용대상 = 2;           // 0: 모든 세력, 1: 플레이어 세력만, 2: 컴퓨터 세력만
     const int 능력치_상승_필요경험치 = 70;    // 능력치 1 오르는데 필요한 경험치
     
     // 최종 능력치 최대값 게임내 최대값과 동일해야하며 763~799번 무장은 수동으로 능력치 상승을 시켜줘야함
@@ -64,9 +66,6 @@ namespace 매턴경험치지급
     // 병종 적성 경험치 (병종최적화 로직으로 선택된 병종만 지급)
     const int 적성_경험치 = 4;    // 선택된 병종에 지급할 적성 경험치
     
-
-    
-    
     //---------------------------------------------------------------------------------------
     
     class Main
@@ -94,16 +93,13 @@ namespace 매턴경험치지급
                 
                 int person_id = person.get_id();
                 
+                // 무장 경험치 지급
+                give_exp_to_person(person);
+
                 // 763~799번 무장 특수 처리
                 if (person_id >= 763 && person_id <= 799)
-                {
-                    give_exp_to_special_person(person);
-                }
-                else
-                {
-                    // 일반 무장 경험치 지급
-                    give_exp_to_person(person);
-                }
+                    stat_up_to_special_person(person);
+                
             }
         }
         
@@ -142,24 +138,12 @@ namespace 매턴경험치지급
             }
         }
         
-        // 763~799번 무장 전용 경험치 지급 및 능력치 상승
-        void give_exp_to_special_person(pk::person@ person)
+        // 763~799번 무장 전용 능력치 상승
+        void stat_up_to_special_person(pk::person@ person)
         {
             if (person is null) return;
             if (!pk::is_alive(person)) return;
-            
-            int person_id = person.get_id();
-            
-            // 디버그 출력
-            pk::trace("무장 " + person_id + " 처리: 통솔=" + person.stat[무장능력_통솔] + " exp=" + person.stat_exp[무장능력_통솔] + " / 무력=" + person.stat[무장능력_무력] + " exp=" + person.stat_exp[무장능력_무력]);
-            
-            // 능력 경험치 지급 (구간별 차등)
-            give_stat_exp(person, 무장능력_통솔, 통솔_최대값, 통솔_경험치_구간1, 통솔_경험치_구간2, 통솔_경험치_구간3, 통솔_경험치_구간4, 통솔_경험치_구간5);
-            give_stat_exp(person, 무장능력_무력, 무력_최대값, 무력_경험치_구간1, 무력_경험치_구간2, 무력_경험치_구간3, 무력_경험치_구간4, 무력_경험치_구간5);
-            give_stat_exp(person, 무장능력_지력, 지력_최대값, 지력_경험치_구간1, 지력_경험치_구간2, 지력_경험치_구간3, 지력_경험치_구간4, 지력_경험치_구간5);
-            give_stat_exp(person, 무장능력_정치, 정치_최대값, 정치_경험치_구간1, 정치_경험치_구간2, 정치_경험치_구간3, 정치_경험치_구간4, 정치_경험치_구간5);
-            give_stat_exp(person, 무장능력_매력, 매력_최대값, 매력_경험치_구간1, 매력_경험치_구간2, 매력_경험치_구간3, 매력_경험치_구간4, 매력_경험치_구간5);
-            
+
             // 능력치 타입 배열
             array<int> stat_types = {무장능력_통솔, 무장능력_무력, 무장능력_지력, 무장능력_정치, 무장능력_매력};
             
@@ -168,14 +152,13 @@ namespace 매턴경험치지급
             {
                 int stat_type = stat_types[j];
                 
-                if(person.base_stat[stat_type] < 최종_능력치_최대값 && person.stat_exp[stat_type] >= 능력치_상승_필요경험치)
-                {
+                if(person.stat[stat_type] < 최종_능력치_최대값 && person.stat_exp[stat_type] >= 능력치_상승_필요경험치)
+                {   
+                    person.stat_exp[stat_type] = person.stat_exp[stat_type] - 능력치_상승_필요경험치;
+                    person.stat[stat_type] = person.stat[stat_type] + 1;
                     person.base_stat[stat_type] = person.base_stat[stat_type] + 1;
-                    person.stat_exp[stat_type] = person.stat_exp[stat_type] - 능력치_상승_필요경험치;                    
-                    pk::trace("무장 " + person_id + " 능력치[" + stat_type + "] +1");
-                }
-            }
-            person.update();
+                }                
+            }          
         }
         
         // 능력치 구간별 경험치 지급

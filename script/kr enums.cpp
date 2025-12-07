@@ -1580,7 +1580,6 @@ const int 何措烙公_级戈 = 11;
 const int 何措烙公_眠辆 = 12; // 荤侩 救 窃
 const int 何措烙公_场 = 13;
 
-const int 何措烙公措惑_绝澜 = -1;
 const int 何措烙公措惑_芭痢 = 0;
 const int 何措烙公措惑_何措 = 1;
 const int 何措烙公措惑_谅钎 = 2;
@@ -1793,6 +1792,16 @@ const int 利己_C = 0;
 const int 利己_B = 1;
 const int 利己_A = 2;
 const int 利己_S = 3;
+const int 利己_S1 = 4;
+const int 利己_S2 = 5;
+const int 利己_S3 = 6;
+const int 利己_S4 = 7;
+const int 利己_S5 = 8;
+const int 利己_S6 = 9;
+const int 利己_S7 = 10;
+const int 利己_S8 = 11;
+const int 利己_S9 = 12;
+const int 利己_X = 13;
 const int 利己_场 = 4;
 
 const int 傈帆版氢_吝拳烹老 = 0;
