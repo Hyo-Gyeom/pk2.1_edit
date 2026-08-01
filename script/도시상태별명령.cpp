@@ -199,7 +199,12 @@ namespace 도시상태별명령
                 }
 
                 // ----------------------공격 처리----------------------
-                pk::building@ player_city = find_nearest_player_city_building(city_building);
+                pk::building@ player_city = null;
+                // 위임 도시(플레이어 세력)가 아닌 경우에만 플레이어 도시를 찾음
+                if (!force.is_player())
+                {
+                    @player_city = find_nearest_player_city_building(city_building);
+                }
                 pk::info("플레이어 도시 찾기: " + (pk::is_alive(player_city) ? pk::decode(pk::get_name(player_city)) : "없음"));
                 if (pk::is_alive(player_city))
                 {
@@ -1000,8 +1005,8 @@ namespace 도시상태별명령
             
             int city_id = city_building.get_id();
             
-            // 도시 주변 범위 확인 (도시는 4칸, 관문/항구는 3칸)
-            int range = (city_building.facility == 시설_도시) ? 4 : 3;
+            // 도시 주변 범위 확인 (도시는 10칸, 관문/항구는 7칸)
+            int range = (city_building.facility == 시설_도시) ? 10 : 7;
             auto territory_range = pk::range(city_building.get_pos(), 0, range);
             
             for (int i = 0; i < territory_range.length; i++)
@@ -1053,7 +1058,7 @@ namespace 도시상태별명령
             {
                 pk::list<pk::unit@> unit_list = pk::get_unit_list(force);
                 int city_id = city_building.get_id();
-                int city_range = (city_building.facility == 시설_도시) ? 4 : 3;
+                int city_range = (city_building.facility == 시설_도시) ? 7 : 5;
                 
                 for (int i = 0; i < unit_list.count; i++)
                 {
@@ -1088,7 +1093,7 @@ namespace 도시상태별명령
             pk::unit@ nearest = null;
             int best_dist = 999;
             
-            int range = (city_building.facility == 시설_도시) ? 4 : 3;
+            int range = (city_building.facility == 시설_도시) ? 7 : 5;
             auto territory_range = pk::range(city_building.get_pos(), 0, range);
             
             for (int i = 0; i < territory_range.length; i++)
@@ -1146,41 +1151,44 @@ namespace 도시상태별명령
         // 제일 가까운 적대 도시 찾기 (동맹/정전 제외)
         pk::building@ find_nearest_enemy_city(pk::building@ city_building, pk::building@ player_city, pk::force@ force)
         {
-            if (!pk::is_alive(city_building) or !pk::is_alive(player_city) or !pk::is_alive(force)) return null;
+            if (!pk::is_alive(city_building) or !pk::is_alive(force)) return null;
             
-            // 통로 도시 목록 가져오기
-            pk::array<pk::building@> path_forces = get_path_forces_sorted_by_distance(city_building, player_city, force);
-            array<bool> is_path_force(세력_끝, false);
-            for (int i = 0; i < int(path_forces.length); i++)
+            if (pk::is_alive(player_city))
             {
-                pk::building@ path_city = path_forces[i];
-                if (!pk::is_alive(path_city)) continue;
-                is_path_force[path_city.get_force_id()] = true;
-            }
-            
-            // 1단계: 거리 1인 도시 중 통로 도시가 맞고 우호도 40 이하면 반환
-            for (int i = 0; i < 건물_도시끝; i++)
-            {
-                pk::building@ dst = pk::get_building(i);
-                if (!pk::is_alive(dst)) continue;
-                if (dst.get_id() == city_building.get_id()) continue;
-                
-                pk::force@ dst_force = pk::get_force(dst.get_force_id());
-                if (!pk::is_alive(dst_force)) continue;
-                
-                int dst_force_id = dst.get_force_id();
-                
-                // 거리 1 확인
-                int distance = pk::get_building_distance(city_building.get_id(), dst.get_id(), city_building.get_force_id());
-                if (distance != 1) continue;
-                
-                // 통로 도시이고 우호도 40 이하면 반환
-                if (is_path_force[dst_force_id])
+                // 통로 도시 목록 가져오기
+                pk::array<pk::building@> path_forces = get_path_forces_sorted_by_distance(city_building, player_city, force);
+                array<bool> is_path_force(세력_끝, false);
+                for (int i = 0; i < int(path_forces.length); i++)
                 {
-                    int relations = force.relations[dst_force_id];
-                    if (relations < 40)
+                    pk::building@ path_city = path_forces[i];
+                    if (!pk::is_alive(path_city)) continue;
+                    is_path_force[path_city.get_force_id()] = true;
+                }
+                
+                // 1단계: 거리 1인 도시 중 통로 도시가 맞고 우호도 40 이하면 반환
+                for (int i = 0; i < 건물_도시끝; i++)
+                {
+                    pk::building@ dst = pk::get_building(i);
+                    if (!pk::is_alive(dst)) continue;
+                    if (dst.get_id() == city_building.get_id()) continue;
+                    
+                    pk::force@ dst_force = pk::get_force(dst.get_force_id());
+                    if (!pk::is_alive(dst_force)) continue;
+                    
+                    int dst_force_id = dst.get_force_id();
+                    
+                    // 거리 1 확인
+                    int distance = pk::get_building_distance(city_building.get_id(), dst.get_id(), city_building.get_force_id());
+                    if (distance != 1) continue;
+                    
+                    // 통로 도시이고 우호도 40 이하면 반환
+                    if (is_path_force[dst_force_id])
                     {
-                        return dst;
+                        int relations = force.relations[dst_force_id];
+                        if (relations < 40)
+                        {
+                            return dst;
+                        }
                     }
                 }
             }
@@ -1199,6 +1207,9 @@ namespace 도시상태별명령
                 if (!pk::is_alive(dst_force)) continue;
                 
                 int dst_force_id = dst.get_force_id();
+                
+                // 자기 세력이면 제외
+                if (force.get_id() == dst_force_id) continue;
                 
                 // 동맹이면 제외
                 if (force.ally[dst_force_id]) continue;
@@ -1327,7 +1338,7 @@ namespace 도시상태별명령
         {
             if (!pk::is_alive(base)) return false;
             
-            int range = (base.facility == 시설_도시) ? 4 : 3;
+            int range = (base.facility == 시설_도시) ? 7 : 5;
             auto nearby_range = pk::range(base.get_pos(), 0, range);
             
             for (int i = 0; i < nearby_range.length; i++)
