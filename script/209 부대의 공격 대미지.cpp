@@ -49,9 +49,9 @@
 			{
 				pk::force@ target_force = pk::get_force(target_unit.get_force_id());
 				int facility_id = 시설_진;
-				if (pk::has_tech(target_force, 기교_시설강화))
+				if (pk::is_alive(target_force) and pk::has_tech(target_force, 기교_시설강화))
 					facility_id = 시설_요새;
-				if (pk::has_tech(target_force, 기교_성벽강화))
+				if (pk::is_alive(target_force) and pk::has_tech(target_force, 기교_성벽강화))
 					facility_id = 시설_성채;
 				if (func_5aedc0(target_unit.get_pos(), 1, pk::get_facility(facility_id).max_range, target_unit.get_force_id()))
 					info.debuffer = facility_id;
@@ -94,9 +94,9 @@
 							troops_damage *= 병기상성_강;
 					}
 
-					if (pk::has_tech(force, 기교_정예창병))
+					if (pk::is_alive(force) and pk::has_tech(force, 기교_정예창병))
 						troops_damage *= 정예기교_공격력;
-					else if (pk::has_tech(force, 기교_창병단련))
+					else if (pk::is_alive(force) and pk::has_tech(force, 기교_창병단련))
 						troops_damage *= 단련기교_공격력;
 					break;
 
@@ -109,9 +109,9 @@
 							troops_damage *= 병기상성_약;
 					}
 
-					if (pk::has_tech(force, 기교_정예극병))
+					if (pk::is_alive(force) and pk::has_tech(force, 기교_정예극병))
 						troops_damage *= 정예기교_공격력;
-					else if (pk::has_tech(force, 기교_극병단련))
+					else if (pk::is_alive(force) and pk::has_tech(force, 기교_극병단련))
 						troops_damage *= 단련기교_공격력;
 					break;
 
@@ -119,9 +119,9 @@
 					if (pk::is_valid_tactics_id(tactics_id) and pk::equipment_id_to_heishu(target_unit.weapon) == 병종_병기)
 						troops_damage *= 병기상성_약;
 
-					if (pk::has_tech(force, 기교_정예노병))
+					if (pk::is_alive(force) and pk::has_tech(force, 기교_정예노병))
 						troops_damage *= 정예기교_공격력;
-					else if (pk::has_tech(force, 기교_노병단련))
+					else if (pk::is_alive(force) and pk::has_tech(force, 기교_노병단련))
 						troops_damage *= 단련기교_공격력;
 					break;
 
@@ -134,9 +134,9 @@
 							troops_damage *= 병기상성_강;
 					}
 
-					if (pk::has_tech(force, 기교_정예기병))
+					if (pk::is_alive(force) and pk::has_tech(force, 기교_정예기병))
 						troops_damage *= 정예기교_공격력;
-					else if (pk::has_tech(force, 기교_기병단련))
+					else if (pk::is_alive(force) and pk::has_tech(force, 기교_기병단련))
 						troops_damage *= 단련기교_공격력;
 					break;
 
@@ -187,10 +187,10 @@
 						troops_damage *= 1.1f;
 
 					pk::force@ target_force = pk::get_force(target_unit.get_force_id());
-					if (pk::has_tech(target_force, 기교_숙련병))
+					if (pk::is_alive(target_force) and pk::has_tech(target_force, 기교_숙련병))
 						troops_damage *= 0.9f;
 
-					if (pk::has_tech(force, 기교_숙련병))
+					if (pk::is_alive(force) and pk::has_tech(force, 기교_숙련병))
 						troops_damage *= 1.1f;
 
 					if (target_unit.has_skill(특기_등갑))
@@ -665,7 +665,7 @@
 	
 				// 방어 기술 적용	
 				// 기교연구로 항관확장 익혔을 경우 거점 피해량 설정.
-               			if (pk::has_tech(target_building, 기교_항관확장)) 
+               			if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_항관확장)) 
 				{
 					if (facility_id == 시설_항구 or facility_id == 시설_관문)
 					{
@@ -675,48 +675,48 @@
 				}
 				
 				// 기교연구로 화살방패 익혔을 경우 거점 피해량 설정
-               			if (pk::has_tech(target_building, 기교_화살방패)) 
+               			if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_화살방패)) 
 				{
 					info.troops_damage = info.troops_damage * 0.70f;
 					hp_damage = hp_damage * 0.90f;					
 				}
 
 				// 기교연구로 숙련병 익혔을 경우 거점 피해량 설정
-               			if (pk::has_tech(target_building, 기교_숙련병)) 
+               			if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_숙련병)) 
 				{
 					info.troops_damage = info.troops_damage * 0.90f;
 					hp_damage = hp_damage * 0.90f;					
 				}
 
 				// 기교연구로 석조건축 익혔을 경우 거점 피해량 설정
-               			if (pk::has_tech(target_building, 기교_석조건축)) 
+               			if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_석조건축)) 
 				{
 					info.troops_damage = info.troops_damage * 0.90f;
 					hp_damage = hp_damage * 0.70f;					
 				}
 
 				// 기교연구로 공병육성 익혔을 경우 거점 피해량 설정
-               			if (pk::has_tech(target_building, 기교_공병육성)) // 기교_공병육성
+               			if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_공병육성)) // 기교_공병육성
 				{
 					info.troops_damage = info.troops_damage * 0.80f;
 					hp_damage = hp_damage * 0.80f;
 				}
 
 				// 기교연구로 시설강화 시 설정
-				if (pk::has_tech(target_building, 기교_시설강화))
+				if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_시설강화))
 				{
 					info.troops_damage = info.troops_damage * 0.80f;
 					hp_damage = hp_damage * 0.80f;	
 				}
             		   	// 기교연구로 성벽강화 시 설정
-				if (pk::has_tech(target_building, 기교_성벽강화))
+				if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_성벽강화))
 				{
 					info.troops_damage = info.troops_damage * 0.70f;
 					hp_damage = hp_damage * 0.70f;
 				}
 
             			 // 기교연구로 방어강화 시 설정               			
-				if (pk::has_tech(target_building, 기교_방어강화))
+				if (pk::is_alive(target_building) and pk::has_tech(target_building, 기교_방어강화))
 				{
 					info.troops_damage = info.troops_damage * 0.80f;
 					hp_damage = hp_damage * 0.80f;					

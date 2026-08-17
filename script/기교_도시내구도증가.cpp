@@ -1,12 +1,12 @@
 namespace City_hp_up
 {
-    const int KEY = pk::hash("±â±³³»±¸»ó½Â");  
+    const int KEY = pk::hash("ê¸°êµë‚´êµ¬ìƒìŠ¹");  
 
     class cityInfo
     {
         int city_id = -1;
         bool has_hp_boost = false;
-        int base_max_hp = 0; // ?? µµ½ÃÀÇ ¿ø·¡ ÃÖ´ë ³»±¸µµ¸¦ ÀúÀå
+        int base_max_hp = 0; // ?? ë„ì‹œì˜ ì›ë˜ ìµœëŒ€ ë‚´êµ¬ë„ë¥¼ ì €ì¥
     };
 
     class Main
@@ -21,7 +21,7 @@ namespace City_hp_up
 
         void Init()
         {
-            LoadData(); // ÀúÀåµÈ ³»±¸µµ »ó½Â ±â·ÏÀ» ºÒ·¯¿È
+            LoadData(); // ì €ì¥ëœ ë‚´êµ¬ë„ ìƒìŠ¹ ê¸°ë¡ì„ ë¶ˆëŸ¬ì˜´
             auto current_cities = pk::list_to_array(pk::get_city_list());
 
             for (int i = 0; i < int(current_cities.length); i++)
@@ -33,84 +33,84 @@ namespace City_hp_up
                 if (!pk::is_alive(building) || !pk::is_alive(force))
                     continue;
 
-                // ?? 1. ÀúÀåµÈ cityInfo¸¦ Ã£½À´Ï´Ù.
+                // ?? 1. ì €ì¥ëœ cityInfoë¥¼ ì°¾ìŠµë‹ˆë‹¤.
                 cityInfo@ info = null;
                 for (int j = 0; j < _cityInfos.length; j++)
                 {
                     if (_cityInfos[j].city_id == city.get_id())
                     {
-                        info = _cityInfos[j];
+                        @info = _cityInfos[j];
                         break;
                     }
                 }
                 
                 bool already_recorded = (info != null);
                 
-                // ?? 2. Base HP¸¦ °áÁ¤ÇÏ°í city.max_hp¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.
+                // ?? 2. Base HPë¥¼ ê²°ì •í•˜ê³  city.max_hpë¥¼ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
                 int current_base_hp = city.max_hp;
                 
                 if (already_recorded && info.base_max_hp > 0)
                 {
-                    // ÀúÀåµÈ Base HP°¡ ÀÖÀ¸¸é ±× °ªÀ» ³»±¸µµ Àç°è»êÀÇ ±âÁØÀ¸·Î »ç¿ë
+                    // ì €ì¥ëœ Base HPê°€ ìˆìœ¼ë©´ ê·¸ ê°’ì„ ë‚´êµ¬ë„ ì¬ê³„ì‚°ì˜ ê¸°ì¤€ìœ¼ë¡œ ì‚¬ìš©
                     current_base_hp = info.base_max_hp;
                 }
                 
-                // ³»±¸µµ¸¦ ±âº» ³»±¸µµ °ªÀ¸·Î µÇµ¹·Á ¼¼·Â º¯°æ ½Ã Àç»ó½Â ¹®Á¦¸¦ ¹æÁöÇÕ´Ï´Ù.
+                // ë‚´êµ¬ë„ë¥¼ ê¸°ë³¸ ë‚´êµ¬ë„ ê°’ìœ¼ë¡œ ë˜ëŒë ¤ ì„¸ë ¥ ë³€ê²½ ì‹œ ì¬ìƒìŠ¹ ë¬¸ì œë¥¼ ë°©ì§€í•©ë‹ˆë‹¤.
                 city.max_hp = current_base_hp; 
 
                 
-                // ?? 3. ÇöÀç ¼¼·ÂÀÇ ±â¼ú¿¡ ¸ÂÃç ³»±¸µµ¸¦ °è»ê ¹× Àû¿ëÇÕ´Ï´Ù.
+                // ?? 3. í˜„ì¬ ì„¸ë ¥ì˜ ê¸°ìˆ ì— ë§ì¶° ë‚´êµ¬ë„ë¥¼ ê³„ì‚° ë° ì ìš©í•©ë‹ˆë‹¤.
                 float temp_hp = float(city.max_hp);
                 bool applied = false;
 
-                if (pk::has_tech(force, ±â±³_°øº´À°¼º)) // ¿ÜºÎ »ó¼ö ÂüÁ¶
+                if (pk::has_tech(force, ê¸°êµ_ê³µë³‘ìœ¡ì„±)) // ì™¸ë¶€ ìƒìˆ˜ ì°¸ì¡°
                 {
                     temp_hp += 300;
                     applied = true;
                 }
                 
-                if (pk::has_tech(force, ±â±³_½Ã¼³°­È­)) // ¿ÜºÎ »ó¼ö ÂüÁ¶
+                if (pk::has_tech(force, ê¸°êµ_ì‹œì„¤ê°•í™”)) // ì™¸ë¶€ ìƒìˆ˜ ì°¸ì¡°
                 {
                     temp_hp += 300;
                     applied = true;
                 }
-                if (pk::has_tech(force, ±â±³_¹æ¾î°­È­)) // ¿ÜºÎ »ó¼ö ÂüÁ¶
+                if (pk::has_tech(force, ê¸°êµ_ë°©ì–´ê°•í™”)) // ì™¸ë¶€ ìƒìˆ˜ ì°¸ì¡°
                 {
                     temp_hp += 300;
                     applied = true;
                 }
 
-		if (pk::has_tech(force, ±â±³_¼®Á¶°ÇÃà)) // ¿ÜºÎ »ó¼ö ÂüÁ¶
+		if (pk::has_tech(force, ê¸°êµ_ì„ì¡°ê±´ì¶•)) // ì™¸ë¶€ ìƒìˆ˜ ì°¸ì¡°
                 {
                     temp_hp += 1000;
                     applied = true;
                 }
 		
-                // °è»êµÈ °ªÀ» Àû¿ëÇÏ°í »óÇÑÄ¡¸¦ Ã³¸®ÇÕ´Ï´Ù.
-                city.max_hp = int(temp_hp + 0.5f); // ¹İ¿Ã¸² Àû¿ë
+                // ê³„ì‚°ëœ ê°’ì„ ì ìš©í•˜ê³  ìƒí•œì¹˜ë¥¼ ì²˜ë¦¬í•©ë‹ˆë‹¤.
+                city.max_hp = int(temp_hp + 0.5f); // ë°˜ì˜¬ë¦¼ ì ìš©
                 
                 if (city.max_hp > 9999)
                 {
-                    city.max_hp = 9999; // ? ³»±¸µµ »óÇÑÄ¡ Àû¿ë
+                    city.max_hp = 9999; // ? ë‚´êµ¬ë„ ìƒí•œì¹˜ ì ìš©
                 }
 
-                // ?? 4. Á¤º¸ ±â·Ï ¶Ç´Â ¾÷µ¥ÀÌÆ®
+                // ?? 4. ì •ë³´ ê¸°ë¡ ë˜ëŠ” ì—…ë°ì´íŠ¸
                 if (!already_recorded)
                 {
-                    // ÃÖÃÊ Àû¿ë: ±âº» ³»±¸µµ¿Í ÇÔ²² ±â·ÏÇÕ´Ï´Ù.
+                    // ìµœì´ˆ ì ìš©: ê¸°ë³¸ ë‚´êµ¬ë„ì™€ í•¨ê»˜ ê¸°ë¡í•©ë‹ˆë‹¤.
                     cityInfo new_info;
                     new_info.city_id = city.get_id();
                     new_info.has_hp_boost = applied;
-                    new_info.base_max_hp = current_base_hp; // ¿ø·¡ °ª ÀúÀå
+                    new_info.base_max_hp = current_base_hp; // ì›ë˜ ê°’ ì €ì¥
                     _cityInfos.insertLast(new_info);
                 }
                 else
                 {
-                    // ÀÌ¹Ì ±â·ÏµÈ °æ¿ì, base_max_hp°¡ 0ÀÌ¾ú´Ù¸é ÇöÀç max_hp¸¦ ÀúÀåÇÕ´Ï´Ù.
+                    // ì´ë¯¸ ê¸°ë¡ëœ ê²½ìš°, base_max_hpê°€ 0ì´ì—ˆë‹¤ë©´ í˜„ì¬ max_hpë¥¼ ì €ì¥í•©ë‹ˆë‹¤.
                     if (info.base_max_hp == 0)
                         info.base_max_hp = current_base_hp;
                         
-                    // ÇöÀç ±â¼ú Àû¿ë ¿©ºÎ¸¸ ¾÷µ¥ÀÌÆ® (¼±ÅÃ »çÇ×)
+                    // í˜„ì¬ ê¸°ìˆ  ì ìš© ì—¬ë¶€ë§Œ ì—…ë°ì´íŠ¸ (ì„ íƒ ì‚¬í•­)
                     info.has_hp_boost = applied;
                 }
             }
@@ -118,7 +118,7 @@ namespace City_hp_up
 
         void LoadData()
         {
-            // ¹è¿­À» ºñ¿ò
+            // ë°°ì—´ì„ ë¹„ì›€
             while (_cityInfos.length > 0)
             {
                 _cityInfos.removeLast();
@@ -131,14 +131,14 @@ namespace City_hp_up
                 cityInfo ui;
                 ui.city_id = int(pk::load(KEY, li++, 0));
                 ui.has_hp_boost = (int(pk::load(KEY, li++, 0)) == 1);
-                ui.base_max_hp = int(pk::load(KEY, li++, 0)); // ?? base_max_hp ·Îµå
+                ui.base_max_hp = int(pk::load(KEY, li++, 0)); // ?? base_max_hp ë¡œë“œ
                 _cityInfos.insertLast(ui);
             }
         }
 
         void SaveData(int file_id)
         {
-            // °ÔÀÓ ³» ÇöÀç µµ½Ã ¸ñ·Ï ±âÁØÀ¸·Î µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ® (µµ½Ã ÇØ»ê ´ëºñ)
+            // ê²Œì„ ë‚´ í˜„ì¬ ë„ì‹œ ëª©ë¡ ê¸°ì¤€ìœ¼ë¡œ ë°ì´í„° ì—…ë°ì´íŠ¸ (ë„ì‹œ í•´ì‚° ëŒ€ë¹„)
             array<cityInfo> temp_infos;
             auto current_cities = pk::list_to_array(pk::get_city_list());
 
@@ -148,13 +148,13 @@ namespace City_hp_up
                 cityInfo info;
                 info.city_id = city.get_id();
                 
-                // ±âÁ¸ _cityInfos¿¡¼­ Á¤º¸ Ã£¾Æ¿Í¼­ ¾÷µ¥ÀÌÆ®
+                // ê¸°ì¡´ _cityInfosì—ì„œ ì •ë³´ ì°¾ì•„ì™€ì„œ ì—…ë°ì´íŠ¸
                 for (int j = 0; j < _cityInfos.length; j++)
                 {
                     if (_cityInfos[j].city_id == city.get_id())
                     {
                         info.has_hp_boost = _cityInfos[j].has_hp_boost;
-                        info.base_max_hp = _cityInfos[j].base_max_hp; // ?? base_max_hp ÀúÀå
+                        info.base_max_hp = _cityInfos[j].base_max_hp; // ?? base_max_hp ì €ì¥
                         break;
                     }
                 }
@@ -162,7 +162,7 @@ namespace City_hp_up
             }
             _cityInfos = temp_infos;
 
-            // µ¥ÀÌÅÍ ÀúÀå
+            // ë°ì´í„° ì €ì¥
             pk::store(KEY, 0, _cityInfos.length);
             int si = 1;
             for (int i = 0; i < _cityInfos.length; i++)
@@ -170,7 +170,7 @@ namespace City_hp_up
                 cityInfo@ ui = _cityInfos[i];
                 pk::store(KEY, si++, ui.city_id);
                 pk::store(KEY, si++, ui.has_hp_boost ? 1 : 0);
-                pk::store(KEY, si++, ui.base_max_hp); // ?? base_max_hp ÀúÀå
+                pk::store(KEY, si++, ui.base_max_hp); // ?? base_max_hp ì €ì¥
             }
         }
     }
